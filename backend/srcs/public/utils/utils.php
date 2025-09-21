@@ -2,13 +2,13 @@
 
 
 function response($status, $data) {
-    if (status == 200) {
-        json_encode(['success' => $data]);
+    if ($status == 200) {
+        echo json_encode(['success' => $data]);
     } else {
         http_response_code($status);
-        json_encode(['error' => $data]);
+        echo json_encode(['error' => $data]);
     }
-    exit ;
+    exit;
 }
 
 function isId($num) {
@@ -19,24 +19,31 @@ function isId($num) {
 }
 
 function getAndCheck($body, $content) {
+    if (!isset($body[$content]))
+        response(400, 'bad request - missing field: ' . $content);
+        
     $data = $body[$content];
     if (!$data)
-        response(400, 'bad request');
+        response(400, 'bad request - empty field: ' . $content);
+        
     if (!checkSqlInjection($data))
         response(403, 'FORBIDDEN');
+        
     return ($data);
 }
 
 function checkSqlInjection($string) {
     $blacklist = [
         'select', 'insert', 'update', 'drop', 'truncate',
-        'union', 'or', 'and', '--', ';', '/*', '*/', '@@', '@',
-        'char', 'nchar', 'varchar', 'nvarchar', 'exec', 'xp_'
+        'union', '--', ';', '/*', '*/', '@@',
+        'exec', 'xp_'
     ];
     $lowerStr = strtolower($string);
     foreach ($blacklist as $word) {
-        if (strpos($lowerStr, $word))
+        // Usar === false es importante aquí para evitar falsos positivos con 0
+        if (strpos($lowerStr, $word) !== false) {
             return (false);
+        }
     }
     return (true);
 }

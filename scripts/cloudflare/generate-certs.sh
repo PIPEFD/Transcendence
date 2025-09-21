@@ -7,7 +7,8 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 # Directorio para los certificados
-CERT_DIR="/workspaces/Transcendence/scripts/certs"
+CERT_DIR="/workspaces/Transcendence/config/ssl"
+CLOUDFLARE_CERT_DIR="/workspaces/Transcendence/config/cloudflare/certs"
 
 # Verifica si certbot está instalado
 check_certbot() {
@@ -43,10 +44,17 @@ generate_cert() {
     sudo cp /etc/letsencrypt/live/$domain/fullchain.pem "$CERT_DIR/"
     sudo cp /etc/letsencrypt/live/$domain/privkey.pem "$CERT_DIR/"
     
+    # También copiar al directorio de Cloudflare
+    mkdir -p "$CLOUDFLARE_CERT_DIR"
+    sudo cp /etc/letsencrypt/live/$domain/fullchain.pem "$CLOUDFLARE_CERT_DIR/"
+    sudo cp /etc/letsencrypt/live/$domain/privkey.pem "$CLOUDFLARE_CERT_DIR/"
+    
     # Generar el archivo dhparam.pem si no existe
     if [ ! -f "$CERT_DIR/dhparam.pem" ]; then
         echo -e "${YELLOW}Generando parámetros DH...${NC}"
         openssl dhparam -out "$CERT_DIR/dhparam.pem" 2048
+        # Copiar también a Cloudflare
+        cp "$CERT_DIR/dhparam.pem" "$CLOUDFLARE_CERT_DIR/"
     fi
     
     # Ajustar permisos

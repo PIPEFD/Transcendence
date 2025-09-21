@@ -31,7 +31,7 @@ create_tunnel() {
     TUNNEL_ID=$(cloudflared tunnel list | grep "$tunnel_name" | awk '{print $1}')
     
     # Crear la configuración del túnel
-    cat > config.yml << EOF
+    cat > /workspaces/Transcendence/config/cloudflare/config.yml << EOF
 tunnel: ${TUNNEL_ID}
 credentials-file: /root/.cloudflared/${TUNNEL_ID}.json
 ingress:

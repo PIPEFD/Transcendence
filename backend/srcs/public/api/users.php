@@ -8,6 +8,7 @@ $queryId = $context['queryId'];
 switch ($requestMethod) {
     case 'POST':
         createUser($context); // no pide auth
+        break;
     case 'GET':
         if ($queryId) {
             userDataById($context); // no pide auth
@@ -15,10 +16,13 @@ switch ($requestMethod) {
         else {
             userList($context); // no pide auth
         }
+        break;
     case 'PATCH':
         editUserData($context); // pide auth
+        break;
     case 'DELETE':
         deleteUser($context); // pide auth
+        break;
     default:
         response(405, 'unauthorized method');
 }
@@ -27,8 +31,8 @@ function userList($context) {
     $database = $context['database'];
 
     $sqlQuery = "SELECT id, username, elo FROM users";
-    $res = $database->exec($sqlQuery);
-    if (!res)
+    $res = $database->query($sqlQuery); // Cambiado de exec a query para SELECT
+    if (!$res)
         response(500, 'Sql error: ' . $database->lastErrorMsg());
 
     $data = [];
@@ -44,11 +48,15 @@ function userDataById($context) {
     $queryId = isId($context['queryId']);
 
     $sqlQuery = "SELECT username, email, elo FROM users WHERE id = '$queryId'";
-    $res = $database->single_query($sqlQuery);
+    $res = $database->query($sqlQuery); // Cambiado a query para SELECT
     if (!$res)
         response(404, 'user not found');
 
-    echo json_encode($res->fetchArray(SQLITE3_ASSOC));
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    if (!$row)
+        response(404, 'user not found');
+
+    echo json_encode($row);
     exit ;
 }
 
@@ -61,9 +69,9 @@ function createUser($context) {
     $pass = getAndCheck($body, 'password');
 
     $passwordHash = password_hash($pass, PASSWORD_DEFAULT);
-    $sqlQuery = "INSERT INTO users (username, email, pass) VALUES ('$username', '$email', '$passwordHash')";
-    $res = $database->exec($sqlQuery);
-    if (!res) {
+    $sqlQuery = "INSERT INTO users (username, email, password_hash) VALUES ('$username', '$email', '$passwordHash')";
+    $res = $database->exec($sqlQuery); // exec es correcto para INSERT
+    if (!$res) {
         response(500, 'Sql error: ' . $database->lastErrorMsg());
     }
 
@@ -78,16 +86,16 @@ function editUserData($context) {
     $body = $context['body'];
     $database = $context['database'];
 
-    if ($context['body']['password'])
+    if (isset($context['body']['password']))
         editUserPass($id, $body, $database);
 
     $username = getAndCheck($body, 'username');
     $email = getAndCheck($body, 'email');
 
     $updates = [ "username = '$username'", "email = '$email'" ];
-    $sqlQuery = "UPDATE users SET" . implode(', ', $updates) . "WHERE id = '$id'";
-    $res = $database->exec($sqlQuery);
-    if (!res)
+    $sqlQuery = "UPDATE users SET " . implode(', ', $updates) . " WHERE id = '$id'";
+    $res = $database->exec($sqlQuery); // exec es correcto para UPDATE
+    if (!$res)
         response(500, 'Sql error: ' . $database->lastErrorMsg());
 
     echo json_encode(['success' => 'user data modified']);
@@ -98,9 +106,9 @@ function editUserPass($id, $body, $database) {
     $newPassword = getAndCheck($body, 'password');
     $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
 
-    $sqlQuery = "UPDATE users SET pass = '$newPasswordHash' WHERE id = '$id'";
-    $res = $database->exec($sqlQuery);
-    if (!res)
+    $sqlQuery = "UPDATE users SET password_hash = '$newPasswordHash' WHERE id = '$id'";
+    $res = $database->exec($sqlQuery); // exec es correcto para UPDATE
+    if (!$res)
         response(500, 'Sql error: ' . $database->lastErrorMsg());
 
     echo json_encode(['success' => 'password updated']);
@@ -111,14 +119,13 @@ function deleteUser($context) {
     if ($context['tokenId'] !== $context['queryId'])
         response(403, 'forbidden access');
     $database = $context['database'];
+    $id = $context['queryId'];
 
-    $sqlQuery = "DELETE FROM users WHERE id = :id";
-    $res = $database->exec($sqlQuery);
+    $sqlQuery = "DELETE FROM users WHERE id = '$id'";
+    $res = $database->exec($sqlQuery); // exec es correcto para DELETE
     if (!$res)
         response(500, 'Sql error: ' . $database->lastErrorMsg());
     
     echo json_encode(['success' => 'user deleted']);
     exit ;
 }
-
-?>

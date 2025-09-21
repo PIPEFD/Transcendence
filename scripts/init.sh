@@ -44,8 +44,21 @@ setup_directories() {
     
     # Crear directorios necesarios si no existen
     mkdir -p backend/srcs/database
-    mkdir -p scripts/certs
+    mkdir -p config/ssl
+    mkdir -p config/cloudflare
     mkdir -p logs/nginx
+    
+    # Si existen archivos en scripts/certs, moverlos a config/ssl
+    if [ -d "scripts/certs" ] && [ "$(ls -A scripts/certs 2>/dev/null)" ]; then
+        print_status "Moviendo certificados a la nueva ubicación..."
+        cp -r scripts/certs/* config/ssl/
+    fi
+    
+    # Si existen archivos en scripts/cloudflare, moverlos a config/cloudflare
+    if [ -d "scripts/cloudflare" ] && [ "$(ls -A scripts/cloudflare 2>/dev/null)" ]; then
+        print_status "Moviendo configuración de Cloudflare a la nueva ubicación..."
+        cp -r scripts/cloudflare/* config/cloudflare/
+    fi
     
     print_success "Directorios configurados"
 }

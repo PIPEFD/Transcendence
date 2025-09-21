@@ -1,0 +1,362 @@
+name: transcendence
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: transcendence-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../config/ssl:/etc/ssl:ro
+      - ../config/auth:/etc/nginx/auth:ro
+      - ../logs/nginx:/var/log/nginx
+      - ../backend/srcs/public:/var/www/html:ro
+    command: nginx -g "daemon off;"
+    networks: [default, monitoring]
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
+      grafana:
+        condition: service_healthy
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: transcendence-backend
+    volumes:
+      - ../backend/srcs/public:/var/www/html
+      - ../backend/srcs/database:/var/www/database
+    expose:
+      - "${BACKEND_PORT:-9000}"
+    environment:
+      - APP_ENV=${ENV:-development}
+      - APP_DEBUG=${APP_DEBUG:-true}
+      - DB_DATABASE=/var/www/database/database.sqlite
+      - APP_KEY=${APP_KEY}
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks: [default, monitoring]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: transcendence-frontend
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks: [default]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  game-ws:
+    build:
+      context: ../game-ws
+      dockerfile: ../docker/game-ws/Dockerfile
+    container_name: transcendence-game-ws
+    volumes:
+      - ../game-ws:/app
+    ports:
+      - "${GAME_WS_PORT:-8081}:8080"
+    networks: [default]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: transcendence-prometheus
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    command: ['--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.path=/prometheus', '--web.console.libraries=/usr/share/prometheus/console_libraries', '--web.console.templates=/usr/share/prometheus/consoles']
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks: [monitoring]
+    # Mejoras de seguridad
+    user: "nobody"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: transcendence-grafana
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_SECURITY_DISABLE_GRAVATAR=true
+      - GF_USERS_ALLOW_SIGN_UP=false
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks: [monitoring]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: transcendence-cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "${CADVISOR_PORT:-8080}:8080"
+    networks: [monitoring]
+    privileged: true
+    devices:
+      - /dev/kmsg
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: transcendence-node-exporter
+    expose:
+      - "9100"
+    networks: [monitoring]
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: transcendence-nginx-exporter
+    command:
+      - -nginx.scrape-uri=http://nginx:80/stub_status
+    expose:
+      - "9113"
+    networks: [monitoring]
+    depends_on:
+      - nginx
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+  php-fpm-exporter:
+    image: ghcr.io/hipages/php-fpm_exporter:latest
+    container_name: transcendence-php-fpm-exporter
+    command:
+      - --phpfpm.scrape-uri=tcp://backend:9000/status
+    expose:
+      - "9253"
+    networks: [monitoring]
+    depends_on:
+      - backend
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+    # Reinicio automático en caso de fallo
+    restart: unless-stopped
+
+# Redes definidas
+networks:
+  default:
+    # Añadir configuración de red para aislar servicios
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+  monitoring:
+    # Red aislada para servicios de monitoreo
+    driver: bridge
+    internal: true  # Solo comunicación interna, no accesible desde fuera
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.29.0.0/16
+
+# Volúmenes persistentes
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

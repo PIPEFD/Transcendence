@@ -1,124 +1,237 @@
-# ft_transcendence
-Frontend en TypeScript (Babylon listo), NGINX (HTTPS/WSS), Backend PHP-FPM (REST + SQLite) y Game-WS en PHP-CLI (WebSocket). Observabilidad con ELK.
+# Transcendence
 
-## Arranque rápido
-1) `make certs` (TLS autofirmado)
-2) `make up`
-3) Frontend: https://localhost  • Kibana: http://localhost:5601  • ES: http://localhost:9200
+Proyecto de juego multijugador de Pong con funcionalidades sociales y de autenticación.
 
-## Servicios
-- nginx: sirve estáticos + proxy /api/* (FPM) + /ws/game (CLI)
-- backend: PHP-FPM + SQLite
-- game-ws: PHP-CLI (Ratchet) servidor WebSocket
-- elasticsearch + logstash + kibana: logs centralizados
+## Arquitectura
 
-## Desarrollo FE
-Compila TS a `dist/` con tu bundler (Vite/Webpack). NGINX servirá lo que haya en `frontend/dist/`.
+- **Frontend**: TypeScript/Babylon.js
+- **Backend**: PHP-FPM con REST API y SQLite
+- **Game-WS**: Servidor WebSocket en PHP-CLI
+- **Nginx**: HTTPS/WSS, proxy inverso y servidor web
+- **Observabilidad**: ELK Stack (Elasticsearch, Logstash, Kibana)
+- **Seguridad**: WAF con ModSecurity + OWASP CRS
 
-## Web Application Firewall (WAF)
+## Requisitos Previos
 
-The project includes a WAF using ModSecurity v3 + OWASP Core Rule Set (CRS) in a sidecar/front proxy container. This provides an additional layer of security by filtering and monitoring HTTP traffic between clients and the application.
+- Docker y Docker Compose
+- Git
+- Acceso a Internet para descargar imágenes de Docker
 
-### Traffic Flow with WAF
+## Inicio Rápido
 
-```
-Client → WAF:80 → Nginx:80 → Backend Services
-```
+Siga estos simples pasos para iniciar el proyecto:
 
-The WAF acts as the first point of contact for all incoming traffic, providing:
-- Request filtering based on OWASP CRS rules
-- JSON audit logging of security events
-- Rate limiting for API endpoints
-- Security headers enforcement
+1. Clone este repositorio:
+   ```bash
+   git clone https://github.com/PIPEFD/Transcendence.git
+   cd Transcendence
+   ```
 
-### Configuration
+2. Inicialice el entorno completo:
+   ```bash
+   make init
+   ```
+   Este comando:
+   - Crea la estructura de directorios necesaria
+   - Genera certificados SSL autofirmados
+   - Crea un archivo `.env` con valores predeterminados
+   - Inicia todos los servicios
 
-#### Paranoia Level
+3. Acceda a la aplicación:
+   - **Frontend**: https://localhost
+   - **Monitorización**:
+     - Kibana: http://localhost:5601
+     - Elasticsearch: http://localhost:9200
+     - Grafana: https://localhost/grafana (si está activado)
+     - Prometheus: https://localhost/prometheus (si está activado)
 
-The WAF's paranoia level can be configured using the `PARANOIA_LEVEL` environment variable:
+## Comandos Principales
 
-```bash
-PARANOIA_LEVEL=1 make security-up  # Default, less strict
-PARANOIA_LEVEL=2 make security-up  # More strict, may require tuning
-```
-
-Higher paranoia levels provide stricter security but may require more tuning to avoid false positives.
-
-#### WebSocket Handling
-
-WebSocket connections are automatically allowed through the WAF when using the proper upgrade headers. The `/ws` path is configured to bypass certain WAF rules that might interfere with WebSocket handshakes.
-
-#### Rate Limiting
-
-API endpoints are rate-limited by default:
-- 10 requests per second per IP
-- Burst allowance of 20 requests
-- Returns HTTP 429 when exceeded
-
-### Security Testing
-
-Run security tests using:
+El proyecto utiliza un sistema de Makefile simplificado:
 
 ```bash
-make security-test
+# Mostrar ayuda con todos los comandos disponibles
+make
+
+# Inicializar el entorno completo
+make init
+
+# Iniciar todos los servicios
+make up
+
+# Detener todos los servicios
+make down
+
+# Reiniciar todos los servicios
+make restart
+
+# Ver los logs de todos los servicios
+make logs
+
+# Ejecutar pruebas automáticas
+make test
+
+# Limpiar recursos Docker sin usar
+make clean
+
+# Reiniciar completamente el entorno (elimina datos)
+make reset
 ```
 
-To run specific test categories:
+### Servicios Individuales
+
 ```bash
-make security-test "pytest -v -k 'security or waf or headers'"
+# Iniciar solo el frontend
+make up-frontend
+
+# Iniciar solo el backend
+make up-backend
+
+# Iniciar solo el servicio de juego
+make up-game
+
+# Iniciar solo el servidor nginx
+make up-nginx
+
+# Iniciar con el Web Application Firewall
+make up-waf
 ```
 
-The security test suite includes:
-- Security headers verification
-- WAF blocking tests for common attacks
-- Rate limiting tests
-- WebSocket connectivity tests
-- Audit log verification
+## Estructura del Proyecto
 
-### Audit Logs
+- `backend/`: Código del backend en PHP
+- `frontend/`: Código del frontend en TypeScript
+- `game-ws/`: Servidor WebSocket para el juego
+- `nginx/`: Configuración del servidor web
+- `docker/`: Archivos Dockerfile
+- `compose/`: Archivo Docker Compose principal
+- `config/`: Configuraciones y secretos centralizados
+- `monitoring/`: Configuración de Grafana y Prometheus
+- `scripts/`: Scripts de utilidades y configuración
+- `tests/`: Pruebas automatizadas
+- `elk/`: Configuración de Elasticsearch, Logstash y Kibana
+- `waf/`: Configuración del Web Application Firewall
 
-WAF audit logs are written to `./waf/logs/` in JSON format. Each blocked request includes:
-- Timestamp
-- Request ID (X-Request-ID header)
-- Triggered rule IDs
-- Anomaly scores
-- Request details
+## Desarrollo
 
-To correlate requests across services, use the X-Request-ID header that's automatically added to all requests.
+### Frontend
 
-### ELK Integration
+El código fuente del frontend está en `frontend/src/`. Compile TypeScript a `frontend/dist/` con su bundler favorito (Vite/Webpack). NGINX servirá automáticamente lo que haya en `frontend/dist/`.
 
-The WAF and Nginx are configured to output JSON-formatted logs ready for ELK ingestion:
+### Backend
 
-- WAF audit logs: `/var/log/modsec/audit.log`
-  - Format: JSON with security event details
-  - Fields: service.name=waf, security.event=true, waf.rule.id, waf.anomaly.score
+El backend utiliza PHP-FPM y SQLite. El código fuente se encuentra en `backend/srcs/`. La API REST está disponible en la ruta `/api/`.
 
-- Nginx access logs: `/var/log/nginx/access.json`
-  - Format: JSON with standard fields
-  - Additional: X-Request-ID for correlation
+### WebSockets
 
-### Security Headers
+El servidor WebSocket para el juego se ejecuta en PHP-CLI utilizando Ratchet. El código se encuentra en `game-ws/src/`. La conexión WebSocket está disponible en la ruta `/ws/game`.
 
-The following security headers are automatically added to all responses:
-- Content-Security-Policy (CSP)
-- X-Content-Type-Options
-- X-Frame-Options
-- Referrer-Policy
-- Permissions-Policy
-- Strict-Transport-Security (HSTS, when using HTTPS)
+## Seguridad
 
-### Making Changes
+### Certificados SSL
 
-1. WAF Configuration:
-   - ModSecurity settings: `waf/modsecurity.conf`
-   - CRS settings: `waf/crs-setup.conf`
-   - Nginx config: `waf/nginx.conf`
+Los certificados SSL se generan automáticamente durante la inicialización. Si necesita regenerarlos:
 
-2. Testing Changes:
-   - Add test cases to `tests/test_security.py`
-   - Use `make security-test` to validate
+```bash
+rm -rf config/ssl/*
+make create-certs
+```
 
-3. Viewing Logs:
-   - WAF audit logs: `tail -f waf/logs/audit.log`
-   - Test reports: `reports/report.html`
+### Web Application Firewall (WAF)
+
+El proyecto incluye un WAF utilizando ModSecurity v3 y OWASP Core Rule Set (CRS):
+
+```bash
+# Iniciar con WAF
+make up-waf
+```
+
+El nivel de paranoia del WAF se puede configurar con la variable de entorno `PARANOIA_LEVEL`:
+
+```bash
+PARANOIA_LEVEL=1 make up-waf  # Por defecto, menos estricto
+PARANOIA_LEVEL=2 make up-waf  # Más estricto, puede requerir ajustes
+```
+
+## Pruebas Automatizadas
+
+El proyecto incluye pruebas automatizadas unitarias y de integración:
+
+```bash
+# Ejecutar todas las pruebas
+make test
+
+# Ejecutar solo pruebas unitarias
+make test-unit
+
+# Ejecutar solo pruebas de integración
+make test-integration
+```
+
+## Observabilidad
+
+### Logs Centralizados (ELK Stack)
+
+Los logs de todos los servicios se centralizan en Elasticsearch y pueden visualizarse en Kibana:
+
+- Kibana: http://localhost:5601
+- Elasticsearch: http://localhost:9200
+
+### Métricas (Prometheus + Grafana)
+
+Monitorización de métricas:
+
+- Grafana: https://localhost/grafana
+- Prometheus: https://localhost/prometheus
+
+## Solución de Problemas
+
+### Verificar Estado de los Servicios
+
+```bash
+make ps
+```
+
+### Ver Logs
+
+```bash
+# Ver todos los logs
+make logs
+
+# Ver logs de un servicio específico
+docker logs transcendence-nginx
+docker logs transcendence-backend
+docker logs transcendence-frontend
+docker logs transcendence-game-ws
+```
+
+### Reinicio de Servicios
+
+Si encuentra problemas, pruebe a reiniciar los servicios:
+
+```bash
+make restart
+```
+
+### Entorno Inconsistente
+
+Si el entorno está en un estado inconsistente, puede reiniciar completamente:
+
+```bash
+make reset
+make init
+```
+
+### Limpieza del Proyecto
+
+Se ha realizado una limpieza de archivos Docker Compose redundantes. Ahora el proyecto utiliza un único archivo `docker-compose.yml` que integra todos los servicios mediante perfiles.
+
+Si necesita limpiar archivos o directorios adicionales:
+
+```bash
+./scripts/cleanup.sh
+```
+
+## Créditos
+
+Desarrollado por PIPEFD

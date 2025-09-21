@@ -18,6 +18,6 @@ class GameWs implements MessageComponentInterface {
   public function onClose(ConnectionInterface $conn){ $this->clients->detach($conn); }
   public function onError(ConnectionInterface $conn, \Exception $e){ $conn->close(); }
 }
-$server = IoServer::factory(new HttpServer(new WsServer(new GameWs())), 9001, "0.0.0.0");
-echo "WS listening on :9001\n";
+$server = IoServer::factory(new HttpServer(new WsServer(new GameWs())), 8080, "0.0.0.0");
+echo "WS listening on :8080\n";
 $server->run();

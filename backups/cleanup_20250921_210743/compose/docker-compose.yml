@@ -1,0 +1,163 @@
+name: transcendence
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: transcendence-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../config/ssl:/etc/ssl:ro
+      - ../config/auth:/etc/nginx/auth:ro
+      - ../logs/nginx:/var/log/nginx
+      - ../backend/srcs/public:/var/www/html:ro
+    command: nginx -g "daemon off;"
+    networks: [default, monitoring]
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
+      grafana:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: transcendence-backend
+    volumes:
+      - ../backend/srcs/public:/var/www/html
+      - ../backend/srcs/database:/var/www/database
+    expose:
+      - "${BACKEND_PORT:-9000}"
+    environment:
+      - APP_ENV=${ENV:-development}
+      - APP_DEBUG=${APP_DEBUG:-true}
+      - DB_DATABASE=/var/www/database/database.sqlite
+      - APP_KEY=${APP_KEY}
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks: [default, monitoring]
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: transcendence-frontend
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks: [default]
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: transcendence-prometheus
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+    command: ['--config.file=/etc/prometheus/prometheus.yml']
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks: [monitoring]
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: transcendence-grafana
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: transcendence-cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "${CADVISOR_PORT:-8080}:8080"
+    networks: [monitoring]
+    privileged: true
+    devices:
+      - /dev/kmsg
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: transcendence-node-exporter
+    expose:
+      - "9100"
+    networks: [monitoring]
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: transcendence-nginx-exporter
+    command:
+      - -nginx.scrape-uri=http://nginx:80/stub_status
+    expose:
+      - "9113"
+    networks: [monitoring]
+    depends_on:
+      - nginx
+
+  php-fpm-exporter:
+    image: ghcr.io/hipages/php-fpm_exporter:latest
+    container_name: transcendence-php-fpm-exporter
+    command:
+      - --phpfpm.scrape-uri=tcp://backend:9000/status
+    expose:
+      - "9253"
+    networks: [monitoring]
+    depends_on:
+      - backend
+
+networks:
+  default:
+  monitoring:

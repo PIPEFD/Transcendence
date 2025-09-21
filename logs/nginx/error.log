@@ -4281,3 +4281,391 @@
 2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on 0.0.0.0:443, ignored
 2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on [::]:443, ignored
 2025/09/21 19:27:02 [emerg] 584#584: host not found in upstream "cadvisor" in /etc/nginx/conf.d/monitoring.conf:30
+2025/09/21 19:44:45 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:44:50 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:45:20 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:45:47 [warn] 22#22: *14 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 19:45:50 [warn] 34#34: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:46:20 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:46:50 [warn] 46#46: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:47:20 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:47:40 [error] 21#21: *47 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/test.html HTTP/2.0", upstream: "http://172.18.0.4:9000/api/test.html", host: "localhost:443"
+2025/09/21 19:47:50 [warn] 57#57: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:48:20 [warn] 63#63: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:48:50 [warn] 69#69: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:49:20 [warn] 75#75: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:49:50 [warn] 81#81: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:50:20 [warn] 87#87: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:50:50 [warn] 93#93: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:51:21 [warn] 99#99: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:51:51 [warn] 105#105: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:52:21 [warn] 111#111: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:52:51 [warn] 117#117: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:53:21 [warn] 123#123: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:53:51 [warn] 129#129: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:54:21 [warn] 135#135: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:54:51 [warn] 141#141: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:55:21 [warn] 147#147: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:55:51 [warn] 153#153: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:56:21 [warn] 159#159: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:56:51 [warn] 165#165: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:57:21 [warn] 171#171: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:57:21 [warn] 171#171: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:57:21 [warn] 171#171: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:57:21 [warn] 171#171: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:57:21 [warn] 171#171: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:57:51 [warn] 177#177: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:57:51 [warn] 177#177: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:57:51 [warn] 177#177: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:57:51 [warn] 177#177: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:57:51 [warn] 177#177: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:58:21 [warn] 183#183: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:58:21 [warn] 183#183: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:58:21 [warn] 183#183: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:58:21 [warn] 183#183: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:58:21 [warn] 183#183: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:58:51 [warn] 189#189: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:58:51 [warn] 189#189: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:58:51 [warn] 189#189: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:58:51 [warn] 189#189: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:58:51 [warn] 189#189: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:59:21 [warn] 195#195: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:59:21 [warn] 195#195: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:59:21 [warn] 195#195: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:59:21 [warn] 195#195: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:59:21 [warn] 195#195: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:59:51 [warn] 201#201: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:00:21 [warn] 207#207: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:00:52 [warn] 213#213: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:01:22 [warn] 219#219: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:01:52 [warn] 225#225: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:02:22 [warn] 231#231: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:02:52 [warn] 237#237: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:03:22 [warn] 243#243: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:03:52 [emerg] 249#249: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:04:22 [emerg] 255#255: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:04:52 [emerg] 261#261: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:05:22 [emerg] 267#267: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:05:52 [emerg] 273#273: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:06:22 [emerg] 279#279: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:06:52 [emerg] 285#285: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:07:22 [emerg] 291#291: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:08:05 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:08:10 [warn] 22#22: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:08:40 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:09:10 [warn] 34#34: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:09:40 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:10:10 [warn] 46#46: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:10:40 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:11:15 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:11:20 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:11:50 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:12:20 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:12:51 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:13:00 [error] 21#21: *16 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api HTTP/2.0", upstream: "http://172.18.0.2:9000/api", host: "localhost:443"
+2025/09/21 20:13:21 [warn] 48#48: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:13:51 [warn] 54#54: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:14:21 [warn] 60#60: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:14:51 [warn] 66#66: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:15:21 [warn] 72#72: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:15:51 [warn] 78#78: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:16:21 [warn] 84#84: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:16:51 [warn] 90#90: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:17:21 [warn] 96#96: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:17:51 [warn] 102#102: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:18:21 [warn] 108#108: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:18:51 [warn] 114#114: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:19:21 [warn] 120#120: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:19:51 [warn] 126#126: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:20:21 [warn] 132#132: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:20:51 [warn] 138#138: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:21:21 [warn] 144#144: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:21:52 [warn] 150#150: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:22:22 [warn] 156#156: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:22:52 [warn] 162#162: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:23:22 [warn] 168#168: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:23:52 [warn] 174#174: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:24:22 [warn] 180#180: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:24:52 [warn] 186#186: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:25:22 [warn] 192#192: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:25:52 [warn] 198#198: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:26:22 [warn] 204#204: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:26:52 [warn] 209#209: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:27:22 [warn] 215#215: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:27:52 [warn] 221#221: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:28:22 [warn] 227#227: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:28:52 [warn] 233#233: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:29:22 [warn] 239#239: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:29:52 [warn] 244#244: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:30:22 [warn] 250#250: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:30:52 [warn] 256#256: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:31:23 [warn] 262#262: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:31:53 [warn] 268#268: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:32:23 [warn] 274#274: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:32:53 [warn] 280#280: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:33:23 [warn] 286#286: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:33:53 [warn] 292#292: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:34:23 [warn] 298#298: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:34:53 [warn] 304#304: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:35:23 [warn] 310#310: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:35:53 [warn] 316#316: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:36:23 [warn] 322#322: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:36:53 [warn] 328#328: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:37:23 [warn] 334#334: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:37:53 [warn] 340#340: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:38:23 [warn] 346#346: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:38:53 [warn] 352#352: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:39:23 [warn] 358#358: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:39:53 [warn] 364#364: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:40:23 [warn] 370#370: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:40:53 [warn] 375#375: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:41:23 [warn] 381#381: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:41:54 [warn] 387#387: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:42:24 [warn] 393#393: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:42:54 [warn] 399#399: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:43:24 [warn] 405#405: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:43:54 [warn] 411#411: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:44:24 [warn] 417#417: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:44:54 [warn] 423#423: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:45:24 [warn] 429#429: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:45:54 [warn] 435#435: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:46:24 [warn] 441#441: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:46:54 [warn] 447#447: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:47:24 [warn] 453#453: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:47:54 [warn] 459#459: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:48:24 [warn] 465#465: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:48:54 [warn] 471#471: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:49:24 [warn] 477#477: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:49:54 [warn] 483#483: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:50:24 [warn] 489#489: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:50:54 [warn] 495#495: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:51:24 [warn] 501#501: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:51:54 [warn] 507#507: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:52:24 [warn] 513#513: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:52:55 [warn] 519#519: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:53:25 [warn] 525#525: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:53:55 [warn] 531#531: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:54:25 [warn] 537#537: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:54:55 [warn] 543#543: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:55:25 [warn] 549#549: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:55:55 [warn] 555#555: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:56:25 [warn] 561#561: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:56:55 [emerg] 567#567: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:57:25 [emerg] 573#573: cannot load certificate "/etc/ssl/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/ssl/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 20:58:00 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:58:05 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:58:35 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:59:05 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 20:59:35 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:00:05 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:00:35 [warn] 54#54: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:01:05 [warn] 60#60: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:01:35 [warn] 66#66: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:02:05 [warn] 72#72: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:02:35 [warn] 78#78: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:03:05 [warn] 84#84: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:03:35 [warn] 90#90: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:04:05 [warn] 96#96: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:04:35 [warn] 102#102: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:05:05 [warn] 107#107: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:05:35 [warn] 113#113: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:06:05 [warn] 119#119: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:06:36 [warn] 125#125: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:07:06 [warn] 130#130: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:07:36 [warn] 136#136: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:08:06 [warn] 142#142: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:08:36 [warn] 148#148: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:09:06 [warn] 154#154: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:09:36 [warn] 160#160: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:10:06 [warn] 166#166: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:10:36 [warn] 172#172: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:11:06 [warn] 178#178: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:11:36 [warn] 184#184: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:12:06 [warn] 190#190: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:12:36 [warn] 196#196: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:13:06 [warn] 202#202: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:13:36 [warn] 208#208: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:14:06 [warn] 214#214: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:14:36 [warn] 220#220: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:15:06 [warn] 226#226: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:21:20 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:22 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:23 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:24 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:25 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:27 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:31 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:38 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:21:51 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:22:17 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:23:09 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:23:09 [emerg] 1#1: mkdir() "/var/cache/nginx/client_temp" failed (30: Read-only file system)
+2025/09/21 21:24:09 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:24:09 [emerg] 1#1: mkdir() "/var/cache/nginx/client_temp" failed (30: Read-only file system)
+2025/09/21 21:25:10 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:25:10 [emerg] 1#1: mkdir() "/var/cache/nginx/client_temp" failed (30: Read-only file system)
+2025/09/21 21:26:10 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:26:10 [emerg] 1#1: mkdir() "/var/cache/nginx/client_temp" failed (30: Read-only file system)
+2025/09/21 21:27:11 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:27:11 [emerg] 1#1: mkdir() "/var/cache/nginx/client_temp" failed (30: Read-only file system)
+2025/09/21 21:28:57 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:28:57 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:28:59 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:28:59 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:29:00 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:29:00 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:29:01 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:29:01 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:29:02 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:29:02 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:29:04 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:29:04 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:29:08 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:29:08 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:29:15 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:29:15 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:30:33 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:34 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:34 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:35 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:37 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:39 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:43 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:30:50 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:31:03 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:31:29 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:32:21 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:33:22 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:34:22 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:35:23 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:36:24 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:37:24 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:38:25 [emerg] 1#1: cannot load certificate key "/etc/ssl/privkey.pem": BIO_new_file() failed (SSL: error:8000000D:system library::Permission denied:calling fopen(/etc/ssl/privkey.pem, r) error:10080002:BIO routines::system lib)
+2025/09/21 21:39:25 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:39:25 [emerg] 1#1: open() "/var/run/nginx.pid" failed (30: Read-only file system)
+2025/09/21 21:41:00 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:41:05 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:41:07 [warn] 21#21: *7 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/pong_logo.png HTTP/2.0", upstream: "http://172.19.0.4:3000/assets/pong_logo.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 21:41:17 [warn] 21#21: *11 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/pong_logo.png HTTP/2.0", upstream: "http://172.19.0.4:3000/assets/pong_logo.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 21:41:35 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:42:05 [warn] 33#33: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:42:35 [warn] 39#39: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:43:05 [warn] 45#45: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:43:35 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:44:05 [warn] 57#57: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:44:35 [warn] 63#63: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:45:06 [warn] 69#69: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:45:36 [warn] 75#75: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:46:06 [warn] 81#81: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:46:36 [warn] 87#87: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:47:06 [warn] 93#93: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:47:36 [warn] 99#99: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:48:06 [warn] 105#105: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:48:36 [warn] 111#111: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:48:36 [warn] 111#111: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 21:48:50 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:48:50 [warn] 1#1: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 21:48:56 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:48:56 [warn] 23#23: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 21:49:26 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 21:49:26 [warn] 35#35: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 21:56:12 [error] 21#21: *16 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.19.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.19.0.3:9000/api/health", host: "localhost"
+2025/09/21 22:00:23 [warn] 52#52: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:145
+2025/09/21 22:00:23 [warn] 52#52: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:162
+2025/09/21 22:00:23 [warn] 52#52: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:181
+2025/09/21 22:00:59 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:145
+2025/09/21 22:00:59 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:162
+2025/09/21 22:00:59 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:181
+2025/09/21 22:01:04 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:145
+2025/09/21 22:01:04 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:162
+2025/09/21 22:01:04 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:181
+2025/09/21 22:01:34 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:145
+2025/09/21 22:01:34 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:162
+2025/09/21 22:01:34 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:181
+2025/09/21 22:01:43 [error] 21#21: *8 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 22:02:04 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:145
+2025/09/21 22:02:04 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:162
+2025/09/21 22:02:04 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:181
+2025/09/21 22:02:27 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:02:27 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:02:27 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:02:32 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:02:32 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:02:32 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:03:02 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:03:02 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:03:02 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:03:32 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:03:32 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:03:32 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:04:02 [warn] 42#42: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:04:02 [warn] 42#42: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:04:02 [warn] 42#42: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:04:32 [warn] 48#48: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:04:32 [warn] 48#48: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:04:32 [warn] 48#48: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:05:02 [warn] 54#54: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:05:02 [warn] 54#54: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:05:02 [warn] 54#54: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:05:32 [warn] 60#60: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:146
+2025/09/21 22:05:32 [warn] 60#60: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:05:32 [warn] 60#60: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:182
+2025/09/21 22:06:02 [warn] 66#66: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:06:02 [warn] 66#66: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:06:02 [warn] 66#66: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:06:34 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:06:34 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:06:34 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:06:39 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:06:39 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:06:39 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:07:09 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:07:09 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:07:09 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:07:39 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:07:39 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:07:39 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:08:09 [warn] 41#41: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:08:09 [warn] 41#41: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:08:09 [warn] 41#41: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:08:39 [warn] 47#47: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:150
+2025/09/21 22:08:39 [warn] 47#47: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:167
+2025/09/21 22:08:39 [warn] 47#47: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:186
+2025/09/21 22:09:09 [warn] 59#59: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:151
+2025/09/21 22:09:09 [warn] 59#59: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:168
+2025/09/21 22:09:09 [warn] 59#59: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:187
+2025/09/21 22:09:39 [warn] 65#65: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:151
+2025/09/21 22:09:39 [warn] 65#65: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:168
+2025/09/21 22:09:39 [warn] 65#65: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:187
+2025/09/21 22:10:09 [warn] 71#71: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:151
+2025/09/21 22:10:09 [warn] 71#71: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:168
+2025/09/21 22:10:09 [warn] 71#71: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:187
+2025/09/21 22:10:20 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:151
+2025/09/21 22:10:20 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:168
+2025/09/21 22:10:20 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:187
+2025/09/21 22:10:25 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:151
+2025/09/21 22:10:25 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:168
+2025/09/21 22:10:25 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:187
+2025/09/21 22:10:55 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:151
+2025/09/21 22:10:55 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:168
+2025/09/21 22:10:55 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:187
+2025/09/21 22:11:25 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:12:03 [warn] 1#1: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:12:07 [warn] 23#23: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:12:38 [warn] 29#29: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:13:08 [warn] 35#35: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:13:38 [warn] 41#41: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:14:08 [warn] 46#46: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:14:38 [warn] 52#52: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:15:08 [warn] 58#58: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:15:38 [warn] 64#64: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:16:08 [warn] 71#71: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:16:38 [warn] 77#77: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:17:08 [warn] 83#83: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:17:38 [warn] 90#90: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:18:08 [warn] 96#96: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:18:38 [warn] 102#102: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:163
+2025/09/21 22:19:08 [warn] 108#108: duplicate MIME type "text/html" in /etc/nginx/conf.d/default.conf:164
+2025/09/21 22:28:51 [warn] 22#22: *260 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.19.0.4:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 22:28:52 [warn] 22#22: *258 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/pong_logo.png HTTP/2.0", upstream: "http://172.19.0.4:3000/assets/pong_logo.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/register"
+2025/09/21 22:32:06 [warn] 22#22: *366 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/3/00/0000000003 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.19.0.4:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"

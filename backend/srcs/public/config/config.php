@@ -2,7 +2,7 @@
 
 function databaseConnection(): SQLite3 
 {
-    $dbpath = "/tmp/database.sqlite";
+    $dbpath = __DIR__ . "/../database/database.sqlite";
     $database = new SQLite3($dbpath, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
     $database->exec("PRAGMA foreign_keys = ON;");
     initDatabaseTables($database);

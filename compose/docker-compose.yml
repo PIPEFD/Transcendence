@@ -1,19 +1,22 @@
 name: transcendence
 
 services:
+  # Servicios principales
   nginx:
     image: nginx:alpine
     container_name: transcendence-nginx
+    user: root
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../nginx/conf.d:/etc/nginx/conf.d:ro
-      - ../config/ssl:/etc/ssl:ro
+      - ../config/ssl:/etc/ssl:rw
       - ../config/auth:/etc/nginx/auth:ro
       - ../logs/nginx:/var/log/nginx
       - ../backend/srcs/public:/var/www/html:ro
+      - nginx_cache:/var/cache/nginx
     command: nginx -g "daemon off;"
     networks: [default, monitoring]
     healthcheck:
@@ -27,10 +30,19 @@ services:
         condition: service_healthy
       frontend:
         condition: service_healthy
-      prometheus:
-        condition: service_healthy
-      grafana:
-        condition: service_healthy
+    # Mejoras de seguridad
+    # read_only: true  # Comentado temporalmente para solucionar problema de permisos
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
 
   backend:
     build:
@@ -47,6 +59,8 @@ services:
       - APP_DEBUG=${APP_DEBUG:-true}
       - DB_DATABASE=/var/www/database/database.sqlite
       - APP_KEY=${APP_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION:-86400}
     healthcheck:
       test: ["CMD", "php-fpm", "-t"]
       interval: 30s
@@ -54,6 +68,19 @@ services:
       retries: 3
       start_period: 20s
     networks: [default, monitoring]
+    # Ejecutar como usuario root para resolver problemas de permisos
+    user: root
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
 
   frontend:
     build:
@@ -72,14 +99,41 @@ services:
       retries: 3
       start_period: 15s
     networks: [default]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
 
+  game-ws:
+    build:
+      context: ../game-ws
+      dockerfile: ../docker/game-ws/Dockerfile
+    container_name: transcendence-game-ws
+    volumes:
+      - ../game-ws:/app
+    ports:
+      - "${GAME_WS_PORT:-8081}:8080"
+    networks: [default]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
+
+  # Servicios de monitorización
   prometheus:
     image: prom/prometheus:latest
     container_name: transcendence-prometheus
     volumes:
       - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ../monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
-    command: ['--config.file=/etc/prometheus/prometheus.yml']
+      - prometheus_data:/prometheus
+    command: ['--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.path=/prometheus', '--web.console.libraries=/usr/share/prometheus/console_libraries', '--web.console.templates=/usr/share/prometheus/consoles', '--web.external-url=https://localhost/prometheus']
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     healthcheck:
@@ -89,6 +143,14 @@ services:
       retries: 3
       start_period: 30s
     networks: [monitoring]
+    # Mejoras de seguridad
+    user: "nobody"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
@@ -96,16 +158,28 @@ services:
     volumes:
       - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
       - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
     ports:
       - "${GRAFANA_PORT:-3001}:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_SECURITY_DISABLE_GRAVATAR=true
+      - GF_USERS_ALLOW_SIGN_UP=false
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+    networks: [monitoring]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -118,16 +192,20 @@ services:
       - /dev/disk/:/dev/disk:ro
     ports:
       - "${CADVISOR_PORT:-8080}:8080"
+    command:
+      - '--url_base_prefix=/cadvisor'
     networks: [monitoring]
     privileged: true
     devices:
       - /dev/kmsg
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080 || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+    # Reinicio automático
+    restart: unless-stopped
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -135,6 +213,12 @@ services:
     expose:
       - "9100"
     networks: [monitoring]
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Reinicio automático
+    restart: unless-stopped
 
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:latest
@@ -146,6 +230,12 @@ services:
     networks: [monitoring]
     depends_on:
       - nginx
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Reinicio automático
+    restart: unless-stopped
 
   php-fpm-exporter:
     image: ghcr.io/hipages/php-fpm_exporter:latest
@@ -157,7 +247,74 @@ services:
     networks: [monitoring]
     depends_on:
       - backend
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Reinicio automático
+    restart: unless-stopped
 
+  # Firewall de aplicaciones web (WAF) - Opcional
+  waf:
+    build:
+      context: ../waf
+      dockerfile: Dockerfile
+      args:
+        PARANOIA_LEVEL: ${PARANOIA_LEVEL:-1}
+    container_name: transcendence-waf
+    ports:
+      - "8000:80"
+      - "8443:443"
+    volumes:
+      - ../waf/logs:/var/log/modsec:rw
+    depends_on:
+      - nginx
+    networks: [default, monitoring]
+    environment:
+      - TZ=UTC
+    profiles: ["waf"]  # Solo se inicia con --profile waf
+    # Reinicio automático
+    restart: unless-stopped
+
+  # Servicio de pruebas - Opcional
+  tester:
+    build: 
+      context: ../tests
+      dockerfile: Dockerfile
+    container_name: transcendence-tester
+    depends_on:
+      - nginx
+      - backend
+      - game-ws
+      - prometheus
+      - grafana
+    networks:
+      - default
+      - monitoring
+    environment:
+      BASE_URL: http://nginx:80
+      WS_URL: ws://nginx/ws
+      PROM_URL: http://prometheus:9090
+      GRAFANA_URL: http://grafana:3000
+      GRAFANA_USER: admin
+      GRAFANA_PASS: ${GRAFANA_ADMIN_PASSWORD:-admin}
+    profiles: ["test"]  # Solo se inicia con --profile test
+    # No reinicio automático para pruebas
+    restart: "no"
+
+# Redes definidas
 networks:
   default:
+    driver: bridge
   monitoring:
+    driver: bridge
+    internal: false  # Cambiar a false para permitir acceso desde fuera
+
+# Volúmenes persistentes
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  nginx_cache:
+    driver: local
