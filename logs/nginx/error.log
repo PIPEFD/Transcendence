@@ -3063,3 +3063,80 @@
 2025/09/21 00:30:11 [warn] 1#1: duplicate value "TLSv1.3" in /etc/nginx/conf.d/app-secure.conf:24
 2025/09/21 00:30:11 [emerg] 1#1: "ssl_prefer_server_ciphers" directive is duplicate in /etc/nginx/conf.d/app-secure.conf:25
 2025/09/21 01:32:39 [error] 22#22: *11 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: _, request: "GET / HTTP/1.1", host: "localhost:80", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p.github.dev/"
+2025/09/21 02:23:57 [emerg] 527#527: "location" directive is not allowed here in /etc/nginx/conf.d/monitoring.conf:1
+2025/09/21 02:24:26 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/conf.d/monitoring.conf:1
+2025/09/21 02:29:45 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/conf.d/monitoring.conf:1
+2025/09/21 02:33:19 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/conf.d/monitoring.conf:1
+2025/09/21 02:35:28 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:35:33 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:36:04 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:36:34 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:37:04 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:37:34 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:38:05 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:38:35 [warn] 60#60: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:39:05 [warn] 66#66: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:39:32 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:39:37 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:40:07 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:40:37 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:41:08 [warn] 42#42: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:41:38 [warn] 48#48: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:42:09 [warn] 54#54: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:42:39 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:43:09 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:43:39 [warn] 71#71: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:44:09 [warn] 77#77: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:44:39 [warn] 83#83: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:45:09 [warn] 89#89: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:45:39 [warn] 95#95: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:46:09 [warn] 101#101: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:46:40 [warn] 107#107: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:47:10 [warn] 113#113: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:47:40 [warn] 119#119: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:48:10 [warn] 125#125: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:48:40 [warn] 131#131: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:49:10 [warn] 137#137: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:49:40 [warn] 143#143: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:50:10 [warn] 149#149: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:50:41 [warn] 154#154: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:51:11 [warn] 160#160: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:51:41 [warn] 166#166: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:52:11 [warn] 173#173: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:52:41 [warn] 179#179: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:53:11 [warn] 185#185: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:53:41 [warn] 191#191: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:54:11 [warn] 197#197: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:54:41 [warn] 203#203: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:55:11 [warn] 209#209: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:55:41 [warn] 215#215: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:56:11 [warn] 221#221: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:56:41 [warn] 227#227: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:57:11 [warn] 233#233: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:57:41 [warn] 239#239: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:58:11 [warn] 245#245: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:58:41 [warn] 251#251: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:59:11 [warn] 257#257: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 02:59:41 [warn] 263#263: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:00:11 [warn] 268#268: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:00:41 [warn] 274#274: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:01:11 [warn] 280#280: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:01:42 [warn] 286#286: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:02:12 [warn] 292#292: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:02:42 [warn] 298#298: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:03:12 [warn] 304#304: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:03:42 [warn] 310#310: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:04:12 [warn] 316#316: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:04:42 [warn] 322#322: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:05:12 [warn] 328#328: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:05:42 [warn] 334#334: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:06:12 [warn] 340#340: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:06:42 [warn] 346#346: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:07:12 [warn] 352#352: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:07:42 [warn] 358#358: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:08:12 [warn] 364#364: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:08:42 [warn] 370#370: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:09:12 [warn] 376#376: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:09:42 [warn] 382#382: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:10:12 [warn] 388#388: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 03:10:42 [warn] 394#394: conflicting server name "_" on 0.0.0.0:80, ignored
