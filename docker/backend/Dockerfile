@@ -6,7 +6,8 @@ RUN apk add --no-cache \
     git \
     zip \
     unzip \
-    sqlite-dev
+    sqlite-dev \
+    curl
 
 # Instalar extensiones PHP necesarias
 RUN docker-php-ext-install pdo pdo_mysql pdo_sqlite
@@ -28,6 +29,13 @@ COPY . .
 
 # Generar autoloader optimizado
 RUN composer dump-autoload --optimize
+
+# Configure PHP-FPM
+RUN echo -e "[global]\npid = /run/php-fpm.pid\nerror_log = /proc/self/fd/2\nlog_level = notice" > /usr/local/etc/php-fpm.d/www.conf && \
+    echo -e "\n[www]\nuser = www-data\ngroup = www-data\nlisten = 9000\npm = dynamic\npm.max_children = 5\npm.start_servers = 2\npm.min_spare_servers = 1\npm.max_spare_servers = 3" >> /usr/local/etc/php-fpm.d/www.conf && \
+    echo -e "\npm.status_path = /status\nping.path = /ping\nping.response = pong" >> /usr/local/etc/php-fpm.d/www.conf && \
+    echo -e "\naccess.log = /proc/self/fd/2\naccess.format = \"%R - %u %t \\\"%m %r\\\" %s\"" >> /usr/local/etc/php-fpm.d/www.conf && \
+    echo -e "\nphp_flag[display_errors] = on\nphp_admin_value[error_log] = /proc/self/fd/2\nphp_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
 
 EXPOSE 9000
 CMD ["php-fpm", "-F"]

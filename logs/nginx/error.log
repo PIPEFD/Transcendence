@@ -3140,3 +3140,1144 @@
 2025/09/21 03:09:42 [warn] 382#382: conflicting server name "_" on 0.0.0.0:80, ignored
 2025/09/21 03:10:12 [warn] 388#388: conflicting server name "_" on 0.0.0.0:80, ignored
 2025/09/21 03:10:42 [warn] 394#394: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:06:39 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:06:44 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:07:14 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:07:44 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:08:14 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:08:44 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:09:14 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:09:45 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:10:15 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:10:45 [warn] 71#71: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:11:15 [warn] 77#77: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:11:45 [warn] 83#83: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:12:15 [warn] 89#89: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:12:45 [warn] 95#95: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:13:15 [warn] 101#101: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:13:45 [warn] 107#107: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:14:15 [warn] 113#113: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:14:45 [warn] 119#119: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:15:15 [warn] 125#125: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:15:45 [warn] 131#131: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:16:15 [warn] 137#137: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:16:45 [warn] 143#143: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:17:15 [warn] 149#149: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:17:45 [warn] 155#155: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:18:15 [warn] 161#161: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:18:45 [warn] 167#167: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:19:15 [warn] 173#173: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:19:45 [warn] 179#179: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:20:16 [warn] 185#185: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:20:46 [warn] 191#191: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:21:16 [warn] 197#197: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:21:46 [warn] 203#203: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:22:16 [warn] 209#209: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:22:46 [warn] 215#215: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:23:16 [warn] 221#221: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:23:46 [warn] 227#227: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:24:16 [warn] 233#233: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:24:46 [warn] 239#239: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:25:33 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:25:38 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:26:09 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:26:39 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:27:09 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:27:39 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:28:09 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:28:39 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:29:09 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:29:39 [warn] 70#70: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:30:09 [warn] 76#76: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:30:39 [warn] 82#82: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:31:09 [warn] 88#88: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:31:39 [warn] 94#94: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:32:09 [warn] 100#100: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:32:39 [warn] 106#106: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:33:09 [warn] 112#112: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:33:39 [warn] 118#118: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:34:09 [warn] 124#124: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:34:39 [warn] 130#130: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:35:09 [warn] 136#136: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:35:39 [warn] 141#141: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:36:10 [warn] 147#147: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:36:40 [warn] 153#153: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:37:10 [warn] 159#159: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:37:40 [warn] 165#165: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:38:10 [warn] 171#171: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:38:40 [warn] 177#177: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:39:10 [warn] 183#183: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:39:40 [warn] 189#189: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:40:10 [warn] 195#195: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:40:40 [warn] 201#201: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:41:10 [warn] 207#207: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:41:40 [warn] 213#213: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:42:21 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:42:26 [warn] 22#22: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:42:58 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:43:28 [warn] 34#34: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:43:58 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:44:28 [warn] 46#46: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:44:59 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:45:34 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:45:39 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:46:10 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:46:40 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:47:10 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:47:40 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:48:18 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:48:23 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:48:53 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:49:23 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:49:53 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:50:24 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:50:54 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:51:34 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:51:38 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:52:09 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:52:39 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:53:09 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:53:39 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:54:09 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:54:39 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:55:09 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:55:39 [warn] 71#71: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:56:09 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:56:09 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:56:09 [warn] 77#77: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:57:07 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:57:07 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:57:07 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:57:12 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:57:12 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:57:12 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:57:42 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:57:42 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:57:42 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:57:58 [error] 21#21: *10 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/ HTTP/2.0", upstream: "http://172.18.0.2:9000/api/", host: "localhost"
+2025/09/21 14:58:12 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:58:12 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:58:12 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:58:42 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:58:42 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:58:42 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:59:12 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:59:12 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:59:12 [warn] 46#46: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 14:59:42 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 14:59:42 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 14:59:42 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:00:13 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:00:13 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:00:13 [warn] 58#58: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:00:52 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:00:52 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:00:52 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:00:57 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:00:57 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:00:57 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:01:28 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:01:28 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:01:28 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:01:53 [warn] 21#21: *5 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 15:01:56 [warn] 21#21: *13 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/pong_logo.png HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/pong_logo.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/register"
+2025/09/21 15:01:58 [warn] 34#34: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:01:58 [warn] 34#34: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:01:58 [warn] 34#34: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:02:19 [warn] 21#21: *7 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/3/00/0000000003 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 15:02:27 [warn] 21#21: *21 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/4/00/0000000004 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 15:02:28 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:02:28 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:02:28 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:02:58 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:02:58 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:02:58 [warn] 46#46: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:03:28 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:03:28 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:03:28 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:03:29 [error] 22#22: *94 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/ HTTP/2.0", upstream: "http://172.18.0.4:9000/api/", host: "localhost"
+2025/09/21 15:03:58 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:03:58 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:03:58 [warn] 58#58: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:04:28 [warn] 64#64: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:04:28 [warn] 64#64: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:04:28 [warn] 64#64: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:04:58 [warn] 70#70: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:04:58 [warn] 70#70: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:04:58 [warn] 70#70: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:05:28 [warn] 76#76: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:05:28 [warn] 76#76: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:05:28 [warn] 76#76: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:05:58 [warn] 82#82: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:05:58 [warn] 82#82: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:05:58 [warn] 82#82: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:06:28 [warn] 88#88: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:06:28 [warn] 88#88: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:06:28 [warn] 88#88: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:06:59 [warn] 94#94: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:06:59 [warn] 94#94: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:06:59 [warn] 94#94: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:07:29 [warn] 100#100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:07:29 [warn] 100#100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:07:29 [warn] 100#100: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:07:59 [warn] 106#106: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:07:59 [warn] 106#106: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:07:59 [warn] 106#106: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:08:29 [warn] 112#112: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:08:29 [warn] 112#112: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:08:29 [warn] 112#112: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:08:59 [warn] 118#118: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:08:59 [warn] 118#118: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:08:59 [warn] 118#118: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:09:29 [warn] 124#124: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:09:29 [warn] 124#124: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:09:29 [warn] 124#124: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:09:59 [warn] 130#130: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:09:59 [warn] 130#130: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:09:59 [warn] 130#130: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:10:29 [warn] 136#136: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:10:29 [warn] 136#136: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:10:29 [warn] 136#136: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:10:59 [warn] 143#143: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:10:59 [warn] 143#143: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:10:59 [warn] 143#143: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:11:29 [warn] 149#149: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:11:29 [warn] 149#149: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:11:29 [warn] 149#149: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:11:59 [warn] 155#155: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:11:59 [warn] 155#155: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:11:59 [warn] 155#155: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:12:29 [warn] 161#161: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:12:29 [warn] 161#161: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:12:29 [warn] 161#161: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:12:59 [warn] 167#167: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:12:59 [warn] 167#167: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:12:59 [warn] 167#167: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:13:29 [warn] 173#173: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:13:29 [warn] 173#173: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:13:29 [warn] 173#173: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:13:59 [warn] 179#179: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:13:59 [warn] 179#179: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:13:59 [warn] 179#179: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:14:29 [warn] 185#185: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:14:29 [warn] 185#185: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:14:29 [warn] 185#185: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:14:59 [warn] 191#191: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:14:59 [warn] 191#191: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:14:59 [warn] 191#191: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:15:29 [warn] 197#197: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:15:29 [warn] 197#197: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:15:29 [warn] 197#197: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:15:59 [warn] 203#203: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:15:59 [warn] 203#203: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:15:59 [warn] 203#203: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:16:29 [warn] 209#209: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:16:29 [warn] 209#209: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:16:29 [warn] 209#209: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:17:00 [warn] 215#215: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:17:00 [warn] 215#215: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:17:00 [warn] 215#215: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:17:30 [warn] 221#221: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:17:30 [warn] 221#221: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:17:30 [warn] 221#221: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:18:00 [warn] 227#227: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:18:00 [warn] 227#227: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:18:00 [warn] 227#227: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:18:30 [warn] 233#233: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:18:30 [warn] 233#233: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:18:30 [warn] 233#233: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:19:00 [warn] 239#239: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:19:00 [warn] 239#239: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:19:00 [warn] 239#239: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:19:30 [warn] 245#245: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:19:30 [warn] 245#245: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:19:30 [warn] 245#245: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:20:00 [warn] 251#251: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:20:00 [warn] 251#251: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:20:00 [warn] 251#251: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:20:30 [warn] 257#257: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:20:30 [warn] 257#257: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:20:30 [warn] 257#257: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:21:00 [warn] 263#263: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:21:00 [warn] 263#263: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:21:00 [warn] 263#263: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:21:30 [warn] 269#269: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:21:30 [warn] 269#269: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:21:30 [warn] 269#269: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:22:00 [warn] 275#275: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:22:00 [warn] 275#275: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:22:00 [warn] 275#275: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:22:30 [warn] 281#281: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:22:30 [warn] 281#281: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:22:30 [warn] 281#281: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:23:00 [warn] 287#287: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:23:00 [warn] 287#287: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:23:00 [warn] 287#287: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:23:30 [warn] 293#293: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:23:30 [warn] 293#293: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:23:30 [warn] 293#293: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:24:00 [warn] 299#299: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:24:00 [warn] 299#299: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:24:00 [warn] 299#299: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:24:30 [warn] 305#305: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:24:30 [warn] 305#305: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:24:30 [warn] 305#305: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:25:00 [warn] 311#311: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:25:00 [warn] 311#311: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:25:00 [warn] 311#311: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:25:30 [warn] 317#317: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:25:30 [warn] 317#317: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:25:30 [warn] 317#317: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:26:00 [warn] 323#323: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:26:00 [warn] 323#323: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:26:00 [warn] 323#323: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:26:30 [warn] 329#329: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:26:30 [warn] 329#329: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:26:30 [warn] 329#329: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:27:00 [warn] 335#335: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:27:00 [warn] 335#335: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:27:00 [warn] 335#335: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:27:30 [warn] 341#341: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:27:30 [warn] 341#341: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:27:30 [warn] 341#341: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:28:00 [warn] 347#347: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:28:00 [warn] 347#347: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:28:00 [warn] 347#347: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:28:31 [warn] 353#353: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:28:31 [warn] 353#353: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:28:31 [warn] 353#353: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:29:01 [warn] 359#359: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:29:01 [warn] 359#359: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:29:01 [warn] 359#359: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:29:31 [warn] 365#365: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:29:31 [warn] 365#365: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:29:31 [warn] 365#365: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:30:01 [warn] 371#371: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:30:01 [warn] 371#371: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:30:01 [warn] 371#371: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:30:31 [warn] 377#377: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:30:31 [warn] 377#377: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:30:31 [warn] 377#377: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:31:01 [warn] 383#383: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:31:01 [warn] 383#383: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:31:01 [warn] 383#383: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:31:31 [warn] 389#389: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:31:31 [warn] 389#389: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:31:31 [warn] 389#389: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:32:01 [warn] 395#395: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:32:01 [warn] 395#395: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:32:01 [warn] 395#395: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:32:31 [warn] 401#401: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:32:31 [warn] 401#401: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:32:31 [warn] 401#401: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:33:01 [warn] 407#407: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:33:01 [warn] 407#407: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:33:01 [warn] 407#407: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:33:31 [warn] 413#413: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:33:31 [warn] 413#413: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:33:31 [warn] 413#413: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:34:01 [warn] 419#419: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:34:01 [warn] 419#419: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:34:01 [warn] 419#419: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:34:31 [warn] 425#425: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:34:31 [warn] 425#425: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:34:31 [warn] 425#425: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:35:01 [warn] 431#431: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:35:01 [warn] 431#431: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:35:01 [warn] 431#431: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:35:31 [warn] 437#437: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:35:31 [warn] 437#437: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:35:31 [warn] 437#437: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:36:01 [warn] 443#443: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:36:01 [warn] 443#443: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:36:01 [warn] 443#443: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 15:36:31 [warn] 449#449: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 15:36:31 [warn] 449#449: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 15:36:31 [warn] 449#449: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:08:58 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:08:58 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:08:58 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:09:03 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:09:03 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:09:03 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:09:14 [warn] 21#21: *5 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 16:09:34 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:09:34 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:09:34 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:10:04 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:10:04 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:10:04 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:10:34 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:10:34 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:10:34 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:11:05 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:11:05 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:11:05 [warn] 46#46: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:11:35 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:11:35 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:11:35 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:12:05 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:12:05 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:12:05 [warn] 58#58: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:12:35 [warn] 64#64: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:12:35 [warn] 64#64: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:12:35 [warn] 64#64: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:13:05 [warn] 70#70: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:13:05 [warn] 70#70: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:13:05 [warn] 70#70: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:13:35 [warn] 76#76: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:13:35 [warn] 76#76: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:13:35 [warn] 76#76: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:14:05 [warn] 82#82: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:14:05 [warn] 82#82: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:14:05 [warn] 82#82: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:14:35 [warn] 88#88: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:14:35 [warn] 88#88: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:14:35 [warn] 88#88: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:15:05 [warn] 94#94: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:15:05 [warn] 94#94: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:15:05 [warn] 94#94: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:15:35 [warn] 100#100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:15:35 [warn] 100#100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:15:35 [warn] 100#100: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:16:05 [warn] 106#106: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:16:05 [warn] 106#106: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:16:05 [warn] 106#106: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:16:35 [warn] 112#112: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:16:35 [warn] 112#112: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:16:35 [warn] 112#112: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:17:05 [warn] 118#118: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:17:05 [warn] 118#118: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:17:05 [warn] 118#118: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:17:35 [warn] 124#124: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:17:35 [warn] 124#124: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:17:35 [warn] 124#124: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:18:05 [warn] 130#130: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:18:05 [warn] 130#130: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:18:05 [warn] 130#130: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:18:35 [warn] 136#136: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:18:35 [warn] 136#136: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:18:35 [warn] 136#136: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:19:05 [warn] 142#142: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:19:05 [warn] 142#142: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:19:05 [warn] 142#142: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:19:18 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:19:18 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:19:18 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:19:23 [warn] 22#22: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:19:23 [warn] 22#22: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:19:23 [warn] 22#22: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:19:53 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:19:53 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:19:53 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:20:23 [warn] 34#34: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:20:23 [warn] 34#34: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:20:23 [warn] 34#34: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:20:53 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:20:53 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:20:53 [warn] 40#40: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:21:04 [warn] 20#20: *8 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 16:21:23 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:21:23 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:21:23 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:21:53 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:21:53 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:21:53 [warn] 58#58: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:22:23 [warn] 64#64: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:22:23 [warn] 64#64: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:22:23 [warn] 64#64: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:22:53 [warn] 70#70: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:22:53 [warn] 70#70: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:22:53 [warn] 70#70: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:23:23 [warn] 76#76: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:23:23 [warn] 76#76: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:23:23 [warn] 76#76: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:23:53 [warn] 83#83: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:23:53 [warn] 83#83: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:23:53 [warn] 83#83: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:24:23 [warn] 89#89: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:24:23 [warn] 89#89: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:24:23 [warn] 89#89: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:24:53 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:24:53 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:24:53 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:24:58 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:24:58 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:24:58 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:25:09 [warn] 21#21: *15 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 16:25:28 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:25:28 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:25:28 [warn] 28#28: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:25:58 [warn] 34#34: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:25:58 [warn] 34#34: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:25:58 [warn] 34#34: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:26:21 [error] 21#21: *53 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:26:21 [error] 21#21: *63 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:26:28 [warn] 39#39: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:26:28 [warn] 39#39: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:26:28 [warn] 39#39: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:26:58 [warn] 45#45: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:26:58 [warn] 45#45: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:26:58 [warn] 45#45: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:27:28 [warn] 51#51: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:27:28 [warn] 51#51: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:27:28 [emerg] 51#51: "limit_req_zone" directive is not allowed here in /etc/nginx/conf.d/default.conf:37
+2025/09/21 16:27:58 [warn] 57#57: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:27:58 [warn] 57#57: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:27:58 [emerg] 57#57: "limit_req_zone" directive is not allowed here in /etc/nginx/conf.d/default.conf:37
+2025/09/21 16:28:13 [error] 22#22: *86 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:28:14 [error] 22#22: *96 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:28:28 [warn] 63#63: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:28:28 [warn] 63#63: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:28:28 [emerg] 63#63: "limit_req_zone" directive is not allowed here in /etc/nginx/conf.d/default.conf:37
+2025/09/21 16:28:58 [warn] 69#69: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:28:58 [warn] 69#69: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:28:58 [warn] 69#69: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:29:28 [warn] 75#75: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:29:28 [warn] 75#75: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:29:28 [warn] 75#75: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:29:58 [warn] 81#81: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:29:58 [warn] 81#81: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:29:58 [warn] 81#81: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:30:28 [warn] 87#87: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:30:28 [warn] 87#87: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:30:28 [warn] 87#87: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:30:43 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:30:43 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:30:43 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:30:48 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:30:48 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:30:48 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:31:18 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:31:18 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:31:18 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:31:48 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:31:48 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:31:48 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:31:51 [error] 21#21: *4 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *8 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "POST /api/auth/login.php HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login.php", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *13 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *15 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *17 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *19 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *21 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *23 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *25 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *27 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *29 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:31:51 [error] 22#22: *31 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:32:18 [warn] 41#41: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:32:18 [warn] 41#41: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:32:18 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:32:48 [warn] 47#47: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:32:48 [warn] 47#47: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:32:48 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:33:19 [warn] 53#53: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:33:19 [warn] 53#53: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:33:19 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:33:49 [warn] 59#59: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:33:49 [warn] 59#59: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:33:49 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:34:08 [warn] 22#22: *36 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: _, request: "GET /assets/pong_logo.png HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/pong_logo.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/register"
+2025/09/21 16:34:19 [warn] 65#65: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:34:19 [warn] 65#65: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:34:19 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:34:41 [error] 21#21: *45 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /api/health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health", host: "localhost"
+2025/09/21 16:34:49 [warn] 71#71: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:34:49 [warn] 71#71: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:34:49 [warn] 71#71: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:34:55 [error] 21#21: *47 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *49 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *51 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *53 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *55 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *57 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", upstream: "http://172.18.0.4:9000/api/auth/login", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *59 limiting requests, excess: 5.510 by zone "auth_limit", client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *60 limiting requests, excess: 5.455 by zone "auth_limit", client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *61 limiting requests, excess: 5.405 by zone "auth_limit", client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *62 limiting requests, excess: 5.340 by zone "auth_limit", client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", host: "localhost"
+2025/09/21 16:34:55 [error] 21#21: *63 limiting requests, excess: 5.280 by zone "auth_limit", client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", host: "localhost"
+2025/09/21 16:34:56 [error] 21#21: *64 limiting requests, excess: 5.230 by zone "auth_limit", client: 172.18.0.1, server: _, request: "HEAD /api/auth/login HTTP/2.0", host: "localhost"
+2025/09/21 16:35:19 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:35:19 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:35:19 [warn] 77#77: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:35:49 [warn] 83#83: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:35:49 [warn] 83#83: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:35:49 [warn] 83#83: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:36:19 [warn] 89#89: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:36:19 [warn] 89#89: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:36:19 [warn] 89#89: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:36:49 [warn] 95#95: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:36:49 [warn] 95#95: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:36:49 [warn] 95#95: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:37:19 [warn] 101#101: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:37:19 [warn] 101#101: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:37:19 [warn] 101#101: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:37:40 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:37:40 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:37:40 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:37:45 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:37:45 [warn] 23#23: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:37:45 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:37:53 [error] 22#22: *1 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health.php", host: "localhost"
+2025/09/21 16:38:15 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:38:15 [warn] 29#29: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:38:15 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:38:18 [error] 22#22: *9 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health.php", host: "localhost"
+2025/09/21 16:38:45 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:38:45 [warn] 35#35: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:38:45 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:39:15 [warn] 41#41: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:39:15 [warn] 41#41: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:39:15 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:39:45 [warn] 47#47: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:39:45 [warn] 47#47: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:39:45 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:40:15 [warn] 53#53: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:40:15 [warn] 53#53: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:40:15 [warn] 53#53: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:40:46 [warn] 59#59: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:40:46 [warn] 59#59: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:40:46 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:41:16 [warn] 65#65: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:41:16 [warn] 65#65: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:41:16 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 16:41:46 [warn] 71#71: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:41:46 [warn] 71#71: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:41:46 [emerg] 71#71: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:42:16 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:42:16 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:42:16 [emerg] 77#77: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:42:30 [error] 22#22: *13 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: _, request: "GET / HTTP/2.0", upstream: "http://172.18.0.2:3000/", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p.github.dev/"
+2025/09/21 16:42:46 [warn] 82#82: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:42:46 [warn] 82#82: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:42:46 [emerg] 82#82: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:43:16 [warn] 88#88: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:43:16 [warn] 88#88: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:43:16 [emerg] 88#88: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:43:46 [warn] 94#94: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:43:46 [warn] 94#94: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:43:46 [emerg] 94#94: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:44:16 [warn] 100#100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:44:16 [warn] 100#100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:44:16 [emerg] 100#100: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:44:46 [warn] 106#106: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:44:46 [warn] 106#106: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:44:46 [emerg] 106#106: host not found in upstream "backend" in /etc/nginx/conf.d/default.conf:73
+2025/09/21 16:45:10 [error] 22#22: *15 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health.php", host: "localhost"
+2025/09/21 16:45:17 [warn] 112#112: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:45:17 [warn] 112#112: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:45:17 [emerg] 112#112: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:119
+2025/09/21 16:45:17 [error] 22#22: *17 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health.php", host: "localhost"
+2025/09/21 16:45:24 [error] 22#22: *19 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health.php", host: "localhost"
+2025/09/21 16:45:47 [warn] 118#118: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:45:47 [warn] 118#118: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:45:47 [emerg] 118#118: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:119
+2025/09/21 16:45:56 [error] 22#22: *21 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: _, request: "GET / HTTP/2.0", upstream: "http://172.18.0.2:3000/", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p.github.dev/"
+2025/09/21 16:46:10 [error] 22#22: *23 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: _, request: "GET /test.html HTTP/2.0", upstream: "http://172.18.0.2:3000/test.html", host: "localhost:443"
+2025/09/21 16:46:17 [warn] 124#124: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:46:17 [warn] 124#124: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:46:17 [emerg] 124#124: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:119
+2025/09/21 16:46:47 [warn] 130#130: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:46:47 [warn] 130#130: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:46:47 [emerg] 130#130: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:119
+2025/09/21 16:47:01 [error] 22#22: *25 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: _, request: "GET /test.html HTTP/2.0", upstream: "http://172.18.0.2:3000/test.html", host: "localhost:443"
+2025/09/21 16:47:06 [error] 22#22: *27 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.18.0.1, server: _, request: "GET /health HTTP/2.0", upstream: "http://172.18.0.4:9000/api/health.php", host: "localhost"
+2025/09/21 16:47:17 [warn] 136#136: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:47:17 [warn] 136#136: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:47:17 [emerg] 136#136: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:119
+2025/09/21 16:47:27 [warn] 142#142: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:11
+2025/09/21 16:47:27 [warn] 142#142: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/default.conf:12
+2025/09/21 16:47:27 [emerg] 142#142: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:118
+2025/09/21 16:47:47 [emerg] 148#148: host not found in upstream "grafana" in /etc/nginx/conf.d/default.conf:119
+2025/09/21 16:47:50 [error] 22#22: *25 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: _, request: "GET /assets/avatar10.png HTTP/2.0", upstream: "http://172.18.0.2:3000/assets/avatar10.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 17:27:33 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/default.conf:55
+2025/09/21 17:53:27 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/default.conf:55
+2025/09/21 17:55:15 [emerg] 1#1: upstream "grafana" may not have port 3000 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:24:08 [emerg] 1#1: upstream "grafana" may not have port 3000 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:25:08 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:25:57 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:26:18 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:26:51 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:28:03 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:29:42 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:30:26 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:31:16 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:32:36 [emerg] 1#1: upstream "grafana" may not have port 3001 in /etc/nginx/conf.d/monitoring.conf:15
+2025/09/21 18:34:15 [emerg] 1#1: cannot load certificate "/etc/nginx/certs/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/nginx/certs/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 18:36:13 [emerg] 1#1: unexpected "}" in /etc/nginx/conf.d/grafana.conf:31
+2025/09/21 18:37:00 [emerg] 1#1: cannot load certificate "/etc/nginx/certs/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/nginx/certs/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 18:39:18 [emerg] 1#1: BIO_new_file("/etc/nginx/certs/dhparam.pem") failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/nginx/certs/dhparam.pem, r) error:10000080:BIO routines::no such file)
+2025/09/21 18:40:20 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:40:20 [warn] 1#1: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:40:20 [warn] 1#1: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:40:20 [warn] 1#1: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:40:20 [warn] 1#1: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:40:25 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:40:25 [warn] 23#23: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:40:25 [warn] 23#23: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:40:25 [warn] 23#23: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:40:25 [warn] 23#23: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:40:30 [warn] 22#22: *7 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/background1.mp4 HTTP/2.0", upstream: "http://172.19.0.3:3000/assets/background1.mp4", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 18:40:32 [warn] 22#22: *38 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 172.19.0.1, server: _, request: "GET /assets/pong_logo.png HTTP/2.0", upstream: "http://172.19.0.3:3000/assets/pong_logo.png", host: "localhost:443", referrer: "https://potential-space-fishstick-7qrx4p4jj62ww7p-443.app.github.dev/"
+2025/09/21 18:40:55 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:40:55 [warn] 29#29: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:40:55 [warn] 29#29: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:40:55 [warn] 29#29: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:40:55 [warn] 29#29: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:41:25 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:41:25 [warn] 35#35: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:41:25 [warn] 35#35: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:41:25 [warn] 35#35: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:41:25 [warn] 35#35: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:41:55 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:41:55 [warn] 41#41: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:41:55 [warn] 41#41: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:41:55 [warn] 41#41: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:41:55 [warn] 41#41: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:42:25 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:42:25 [warn] 47#47: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:42:25 [warn] 47#47: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:42:25 [warn] 47#47: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:42:25 [warn] 47#47: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:42:55 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:42:55 [warn] 52#52: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:42:55 [warn] 52#52: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:42:55 [warn] 52#52: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:42:55 [warn] 52#52: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:43:26 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:43:26 [warn] 59#59: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:43:26 [warn] 59#59: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:43:26 [warn] 59#59: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:43:26 [warn] 59#59: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:43:56 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:43:56 [warn] 65#65: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:43:56 [warn] 65#65: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:43:56 [warn] 65#65: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:43:56 [warn] 65#65: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:44:26 [warn] 71#71: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:44:26 [warn] 71#71: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:44:26 [warn] 71#71: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:44:26 [warn] 71#71: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:44:26 [warn] 71#71: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:44:56 [warn] 77#77: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:44:56 [warn] 77#77: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:44:56 [warn] 77#77: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:44:56 [warn] 77#77: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:44:56 [warn] 77#77: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:45:26 [warn] 83#83: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:45:26 [warn] 83#83: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:45:26 [warn] 83#83: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:45:26 [warn] 83#83: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:45:26 [warn] 83#83: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:45:56 [warn] 89#89: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:45:56 [warn] 89#89: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:45:56 [warn] 89#89: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:45:56 [warn] 89#89: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:45:56 [warn] 89#89: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:46:26 [warn] 95#95: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:46:26 [warn] 95#95: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:46:26 [warn] 95#95: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:46:26 [warn] 95#95: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:46:26 [warn] 95#95: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:46:56 [warn] 102#102: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:46:56 [warn] 102#102: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:46:56 [warn] 102#102: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:46:56 [warn] 102#102: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:46:56 [warn] 102#102: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:47:26 [warn] 108#108: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:47:26 [warn] 108#108: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:47:26 [warn] 108#108: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:47:26 [warn] 108#108: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:47:26 [warn] 108#108: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:47:56 [warn] 114#114: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:47:56 [warn] 114#114: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:47:56 [warn] 114#114: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:47:56 [warn] 114#114: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:47:56 [warn] 114#114: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:48:26 [warn] 120#120: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:48:26 [warn] 120#120: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:48:26 [warn] 120#120: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:48:26 [warn] 120#120: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:48:26 [warn] 120#120: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:48:56 [warn] 126#126: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:48:56 [warn] 126#126: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:48:56 [warn] 126#126: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:48:56 [warn] 126#126: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:48:56 [warn] 126#126: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:49:26 [warn] 132#132: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:49:26 [warn] 132#132: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:49:26 [warn] 132#132: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:49:26 [warn] 132#132: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:49:26 [warn] 132#132: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:49:56 [warn] 139#139: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:49:56 [warn] 139#139: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:49:56 [warn] 139#139: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:49:56 [warn] 139#139: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:49:56 [warn] 139#139: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:50:26 [warn] 145#145: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:50:26 [warn] 145#145: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:50:26 [warn] 145#145: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:50:26 [warn] 145#145: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:50:26 [warn] 145#145: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:50:56 [warn] 151#151: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:50:56 [warn] 151#151: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:50:56 [warn] 151#151: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:50:56 [warn] 151#151: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:50:56 [warn] 151#151: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:51:26 [warn] 157#157: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:51:26 [warn] 157#157: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:51:26 [warn] 157#157: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:51:26 [warn] 157#157: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:51:26 [warn] 157#157: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:51:56 [warn] 163#163: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:51:56 [warn] 163#163: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:51:56 [warn] 163#163: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:51:56 [warn] 163#163: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:51:56 [warn] 163#163: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:52:27 [warn] 168#168: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:52:27 [warn] 168#168: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:52:27 [warn] 168#168: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:52:27 [warn] 168#168: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:52:27 [warn] 168#168: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:52:57 [warn] 174#174: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:52:57 [warn] 174#174: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:52:57 [warn] 174#174: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:52:57 [warn] 174#174: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:52:57 [warn] 174#174: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:53:27 [warn] 180#180: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:53:27 [warn] 180#180: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:53:27 [warn] 180#180: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:53:27 [warn] 180#180: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:53:27 [warn] 180#180: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:53:57 [warn] 187#187: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:53:57 [warn] 187#187: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:53:57 [warn] 187#187: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:53:57 [warn] 187#187: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:53:57 [warn] 187#187: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:54:27 [warn] 193#193: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:54:27 [warn] 193#193: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:54:27 [warn] 193#193: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:54:27 [warn] 193#193: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:54:27 [warn] 193#193: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:54:57 [warn] 199#199: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:54:57 [warn] 199#199: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:54:57 [warn] 199#199: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:54:57 [warn] 199#199: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:54:57 [warn] 199#199: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:55:27 [warn] 205#205: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:55:27 [warn] 205#205: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:55:27 [warn] 205#205: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:55:27 [warn] 205#205: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:55:27 [warn] 205#205: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:55:57 [warn] 211#211: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:55:57 [warn] 211#211: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:55:57 [warn] 211#211: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:55:57 [warn] 211#211: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:55:57 [warn] 211#211: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:56:27 [warn] 217#217: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:56:27 [warn] 217#217: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:56:27 [warn] 217#217: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:56:27 [warn] 217#217: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:56:27 [warn] 217#217: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:56:57 [warn] 223#223: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:56:57 [warn] 223#223: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:56:57 [warn] 223#223: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:56:57 [warn] 223#223: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:56:57 [warn] 223#223: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:57:27 [warn] 229#229: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:57:27 [warn] 229#229: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:57:27 [warn] 229#229: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:57:27 [warn] 229#229: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:57:27 [warn] 229#229: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:57:57 [warn] 235#235: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:57:57 [warn] 235#235: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:57:57 [warn] 235#235: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:57:57 [warn] 235#235: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:57:57 [warn] 235#235: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:58:27 [warn] 241#241: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:58:27 [warn] 241#241: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:58:27 [warn] 241#241: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:58:27 [warn] 241#241: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:58:27 [warn] 241#241: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:58:57 [warn] 247#247: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:58:57 [warn] 247#247: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:58:57 [warn] 247#247: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:58:57 [warn] 247#247: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:58:57 [warn] 247#247: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:59:27 [warn] 252#252: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:59:27 [warn] 252#252: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:59:27 [warn] 252#252: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:59:27 [warn] 252#252: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:59:27 [warn] 252#252: conflicting server name "_" on [::]:443, ignored
+2025/09/21 18:59:57 [warn] 258#258: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:59:57 [warn] 258#258: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 18:59:57 [warn] 258#258: conflicting server name "_" on [::]:80, ignored
+2025/09/21 18:59:57 [warn] 258#258: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 18:59:57 [warn] 258#258: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:00:27 [warn] 264#264: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:00:27 [warn] 264#264: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:00:27 [warn] 264#264: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:00:27 [warn] 264#264: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:00:27 [warn] 264#264: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:00:57 [warn] 270#270: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:00:57 [warn] 270#270: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:00:57 [warn] 270#270: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:00:57 [warn] 270#270: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:00:57 [warn] 270#270: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:01:28 [warn] 276#276: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:01:28 [warn] 276#276: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:01:28 [warn] 276#276: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:01:28 [warn] 276#276: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:01:28 [warn] 276#276: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:01:58 [warn] 282#282: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:01:58 [warn] 282#282: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:01:58 [warn] 282#282: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:01:58 [warn] 282#282: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:01:58 [warn] 282#282: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:02:28 [warn] 288#288: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:02:28 [warn] 288#288: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:02:28 [warn] 288#288: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:02:28 [warn] 288#288: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:02:28 [warn] 288#288: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:02:58 [warn] 294#294: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:02:58 [warn] 294#294: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:02:58 [warn] 294#294: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:02:58 [warn] 294#294: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:02:58 [warn] 294#294: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:03:28 [warn] 300#300: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:03:28 [warn] 300#300: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:03:28 [warn] 300#300: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:03:28 [warn] 300#300: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:03:28 [warn] 300#300: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:03:58 [warn] 306#306: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:03:58 [warn] 306#306: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:03:58 [warn] 306#306: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:03:58 [warn] 306#306: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:03:58 [warn] 306#306: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:04:28 [warn] 312#312: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:04:28 [warn] 312#312: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:04:28 [warn] 312#312: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:04:28 [warn] 312#312: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:04:28 [warn] 312#312: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:04:58 [warn] 318#318: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:04:58 [warn] 318#318: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:04:58 [warn] 318#318: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:04:58 [warn] 318#318: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:04:58 [warn] 318#318: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:05:28 [warn] 324#324: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:05:28 [warn] 324#324: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:05:28 [warn] 324#324: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:05:28 [warn] 324#324: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:05:28 [warn] 324#324: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:05:58 [warn] 330#330: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:05:58 [warn] 330#330: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:05:58 [warn] 330#330: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:05:58 [warn] 330#330: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:05:58 [warn] 330#330: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:06:28 [warn] 336#336: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:06:28 [warn] 336#336: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:06:28 [warn] 336#336: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:06:28 [warn] 336#336: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:06:28 [warn] 336#336: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:06:58 [warn] 342#342: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:06:58 [warn] 342#342: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:06:58 [warn] 342#342: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:06:58 [warn] 342#342: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:06:58 [warn] 342#342: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:07:28 [warn] 348#348: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:07:28 [warn] 348#348: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:07:28 [warn] 348#348: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:07:28 [warn] 348#348: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:07:28 [warn] 348#348: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:07:58 [warn] 354#354: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:07:58 [warn] 354#354: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:07:58 [warn] 354#354: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:07:58 [warn] 354#354: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:07:58 [warn] 354#354: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:08:28 [warn] 360#360: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:08:28 [warn] 360#360: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:08:28 [warn] 360#360: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:08:28 [warn] 360#360: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:08:28 [warn] 360#360: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:08:58 [warn] 366#366: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:08:58 [warn] 366#366: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:08:58 [warn] 366#366: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:08:58 [warn] 366#366: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:08:58 [warn] 366#366: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:09:28 [warn] 372#372: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:09:28 [warn] 372#372: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:09:28 [warn] 372#372: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:09:28 [warn] 372#372: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:09:28 [warn] 372#372: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:09:58 [warn] 378#378: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:09:58 [warn] 378#378: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:09:58 [warn] 378#378: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:09:58 [warn] 378#378: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:09:58 [warn] 378#378: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:10:28 [warn] 384#384: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:10:28 [warn] 384#384: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:10:28 [warn] 384#384: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:10:28 [warn] 384#384: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:10:28 [warn] 384#384: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:10:59 [warn] 390#390: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:10:59 [warn] 390#390: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:10:59 [warn] 390#390: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:10:59 [warn] 390#390: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:10:59 [warn] 390#390: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:11:29 [warn] 396#396: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:11:29 [warn] 396#396: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:11:29 [warn] 396#396: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:11:29 [warn] 396#396: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:11:29 [warn] 396#396: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:11:59 [warn] 402#402: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:11:59 [warn] 402#402: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:11:59 [warn] 402#402: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:11:59 [warn] 402#402: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:11:59 [warn] 402#402: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:12:29 [warn] 408#408: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:12:29 [warn] 408#408: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:12:29 [warn] 408#408: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:12:29 [warn] 408#408: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:12:29 [warn] 408#408: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:12:59 [warn] 414#414: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:12:59 [warn] 414#414: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:12:59 [warn] 414#414: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:12:59 [warn] 414#414: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:12:59 [warn] 414#414: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:13:29 [warn] 420#420: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:13:29 [warn] 420#420: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:13:29 [warn] 420#420: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:13:29 [warn] 420#420: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:13:29 [warn] 420#420: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:13:59 [warn] 426#426: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:13:59 [warn] 426#426: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:13:59 [warn] 426#426: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:13:59 [warn] 426#426: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:13:59 [warn] 426#426: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:14:29 [warn] 432#432: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:14:29 [warn] 432#432: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:14:29 [warn] 432#432: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:14:29 [warn] 432#432: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:14:29 [warn] 432#432: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:14:59 [warn] 439#439: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:14:59 [warn] 439#439: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:14:59 [warn] 439#439: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:14:59 [warn] 439#439: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:14:59 [warn] 439#439: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:15:29 [warn] 445#445: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:15:29 [warn] 445#445: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:15:29 [warn] 445#445: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:15:29 [warn] 445#445: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:15:29 [warn] 445#445: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:15:59 [warn] 452#452: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:15:59 [warn] 452#452: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:15:59 [warn] 452#452: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:15:59 [warn] 452#452: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:15:59 [warn] 452#452: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:16:29 [warn] 458#458: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:16:29 [warn] 458#458: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:16:29 [warn] 458#458: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:16:29 [warn] 458#458: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:16:29 [warn] 458#458: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:16:59 [warn] 464#464: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:16:59 [warn] 464#464: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:16:59 [warn] 464#464: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:16:59 [warn] 464#464: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:16:59 [warn] 464#464: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:17:29 [warn] 469#469: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:17:29 [warn] 469#469: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:17:29 [warn] 469#469: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:17:29 [warn] 469#469: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:17:29 [warn] 469#469: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:17:59 [warn] 475#475: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:17:59 [warn] 475#475: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:17:59 [warn] 475#475: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:17:59 [warn] 475#475: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:17:59 [warn] 475#475: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:18:29 [warn] 481#481: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:18:29 [warn] 481#481: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:18:29 [warn] 481#481: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:18:29 [warn] 481#481: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:18:29 [warn] 481#481: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:18:59 [warn] 487#487: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:18:59 [warn] 487#487: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:18:59 [warn] 487#487: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:18:59 [warn] 487#487: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:18:59 [warn] 487#487: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:19:29 [warn] 493#493: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:19:29 [warn] 493#493: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:19:29 [warn] 493#493: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:19:29 [warn] 493#493: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:19:29 [warn] 493#493: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:20:00 [warn] 499#499: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:20:00 [warn] 499#499: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:20:00 [warn] 499#499: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:20:00 [warn] 499#499: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:20:00 [warn] 499#499: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:20:30 [warn] 505#505: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:20:30 [warn] 505#505: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:20:30 [warn] 505#505: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:20:30 [warn] 505#505: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:20:30 [warn] 505#505: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:21:00 [warn] 511#511: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:21:00 [warn] 511#511: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:21:00 [warn] 511#511: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:21:00 [warn] 511#511: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:21:00 [warn] 511#511: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:21:30 [warn] 517#517: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:21:30 [warn] 517#517: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:21:30 [warn] 517#517: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:21:30 [warn] 517#517: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:21:30 [warn] 517#517: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:22:00 [warn] 524#524: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:22:00 [warn] 524#524: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:22:00 [warn] 524#524: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:22:00 [warn] 524#524: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:22:00 [warn] 524#524: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:22:30 [warn] 530#530: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:22:30 [warn] 530#530: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:22:30 [warn] 530#530: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:22:30 [warn] 530#530: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:22:30 [warn] 530#530: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:23:00 [warn] 536#536: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:23:00 [warn] 536#536: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:23:00 [warn] 536#536: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:23:00 [warn] 536#536: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:23:00 [warn] 536#536: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:23:30 [warn] 542#542: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:23:30 [warn] 542#542: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:23:30 [warn] 542#542: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:23:30 [warn] 542#542: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:23:30 [warn] 542#542: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:24:00 [warn] 548#548: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:24:00 [warn] 548#548: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:24:00 [warn] 548#548: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:24:00 [warn] 548#548: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:24:00 [warn] 548#548: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:24:30 [warn] 554#554: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:24:30 [warn] 554#554: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:24:30 [warn] 554#554: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:24:30 [warn] 554#554: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:24:30 [warn] 554#554: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:25:00 [warn] 560#560: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:25:00 [warn] 560#560: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:25:00 [warn] 560#560: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:25:00 [warn] 560#560: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:25:00 [warn] 560#560: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:25:30 [warn] 566#566: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:25:30 [warn] 566#566: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:25:30 [warn] 566#566: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:25:30 [warn] 566#566: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:25:30 [warn] 566#566: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:26:01 [warn] 572#572: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:26:01 [warn] 572#572: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:26:01 [warn] 572#572: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:26:01 [warn] 572#572: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:26:01 [warn] 572#572: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on 0.0.0.0:80, ignored
+2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on [::]:80, ignored
+2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on 0.0.0.0:443, ignored
+2025/09/21 19:26:31 [warn] 578#578: conflicting server name "_" on [::]:443, ignored
+2025/09/21 19:27:02 [emerg] 584#584: host not found in upstream "cadvisor" in /etc/nginx/conf.d/monitoring.conf:30

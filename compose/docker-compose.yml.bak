@@ -5,8 +5,8 @@ services:
     image: nginx:alpine
     container_name: transcendence-nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../nginx/conf.d:/etc/nginx/conf.d:ro
@@ -63,8 +63,8 @@ services:
     volumes:
       - ../frontend:/app
       - /app/node_modules
-    ports:
-      - "${FRONTEND_PORT:-3000}:3000"
+    expose:
+      - "3000"
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
       interval: 30s
@@ -73,6 +73,14 @@ services:
       start_period: 15s
     networks: [default]
 
+  # game-ws:
+  #   build:
+  #     context: ../game-ws
+  #   container_name: transcendence-game-ws
+  #   expose:
+  #     - "8080"     # WebSocket interno
+  #   networks: [default]
+
   prometheus:
     image: prom/prometheus:latest
     container_name: transcendence-prometheus
@@ -80,8 +88,9 @@ services:
       - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ../monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
     command: ['--config.file=/etc/prometheus/prometheus.yml']
-    ports:
-      - "${PROMETHEUS_PORT:-9090}:9090"
+    # sin puertos publicados; Nginx hará proxy a /prometheus/
+    expose:
+      - "9090"
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
       interval: 30s
@@ -95,39 +104,32 @@ services:
     container_name: transcendence-grafana
     volumes:
       - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
-      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
-    ports:
-      - "${GRAFANA_PORT:-3001}:3000"
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - ../scripts/certs:/etc/grafana/certs:ro
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
-    healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: transcendence-cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_ROOT_URL=https://%(domain)s/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_SERVER_PROTOCOL=https
+      - GF_SERVER_CERT_FILE=/etc/grafana/certs/fullchain.pem
+      - GF_SERVER_CERT_KEY=/etc/grafana/certs/privkey.pem
+    # sin puertos publicados; Nginx hará proxy a /grafana/
+    expose:
+      - "3001"
     ports:
-      - "${CADVISOR_PORT:-8080}:8080"
-    networks: [monitoring]
-    privileged: true
-    devices:
-      - /dev/kmsg
+      - "${GRAFANA_PORT:-3001}:3001"
+    environment:
+      - GF_SERVER_HTTP_PORT=3001
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080 || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3001/api/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    networks: [monitoring]
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -136,28 +138,77 @@ services:
       - "9100"
     networks: [monitoring]
 
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: transcendence-cadvisor
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /:/rootfs:ro
+    expose:
+      - "8080"
+    networks: [monitoring]
+
+    
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:latest
     container_name: transcendence-nginx-exporter
-    command:
-      - -nginx.scrape-uri=http://nginx:80/stub_status
+    command: ['--nginx.scrape-uri=http://nginx:8080/stub_status']
     expose:
       - "9113"
+    depends_on: [nginx]
     networks: [monitoring]
-    depends_on:
-      - nginx
 
   php-fpm-exporter:
     image: ghcr.io/hipages/php-fpm_exporter:latest
     container_name: transcendence-php-fpm-exporter
-    command:
-      - --phpfpm.scrape-uri=tcp://backend:9000/status
+    environment:
+      - PHP_FPM_SCRAPE_URI=tcp://backend:9000/status
     expose:
       - "9253"
+    depends_on: [backend]
     networks: [monitoring]
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:    9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.0
+    volumes:
+      - ./elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ./logs:/var/log:ro
     depends_on:
-      - backend
+      elasticsearch:
+        condition: service_healthy
+    ports:
+      - "5044:5044"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+volumes:
+  elasticsearch_data: {}
 
 networks:
-  default:
-  monitoring:
+  default: {}
+  monitoring: {}
