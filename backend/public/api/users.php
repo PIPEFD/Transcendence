@@ -9,6 +9,7 @@ $queryId = $context['queryId'];
 switch ($requestMethod) {
     case 'POST':
         createUser($context); // no pide auth
+		break;
     case 'GET':
         if ($queryId) {
             userDataById($context); // no pide auth
@@ -16,10 +17,13 @@ switch ($requestMethod) {
         else {
             userList($context); // no pide auth
         }
+		break;
     case 'PATCH':
         editUserData($context); // pide auth
-    case 'DELETE':
+		break;
+	case 'DELETE':
         deleteUser($context); // pide auth
+		break;
     default:
         response(405, 'unauthorized method');
 }
