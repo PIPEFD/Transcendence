@@ -20,7 +20,7 @@ WORKDIR /var/www/html
 # copiamos entrypoint.sh, nos damos permisos de ejecución y lo ejecutamos
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Copiar archivos del proyecto
 COPY composer.* ./
