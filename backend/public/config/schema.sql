@@ -57,14 +57,24 @@ CREATE TABLE IF NOT EXISTS ranking (
 
 -- ranking tabla
 
-CREATE TABLE IF NOT EXISTS chat (
+CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
     content TEXT NOT NULL,
-    sent_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
+    message_type TEXT NOT NULL DEFAULT 'text', -- Tipos: 'text', 'game_invite', 'system_notification'
+    is_read INTEGER NOT NULL DEFAULT 0, -- Booleano (0 = no leído, 1 = leído)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS blocked_users (
+    blocker_id INTEGER NOT NULL, -- Quien realiza el bloqueo
+    blocked_id INTEGER NOT NULL, -- Quien es bloqueado
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (blocker_id, blocked_id), -- define una sola clave primaria que utiliza la combinación de los valores de ambas columnas.
+    FOREIGN KEY (blocker_id) REFERENCES users(id),
+    FOREIGN KEY (blocked_id) REFERENCES users(id)
+);
 -- gestion de chat
