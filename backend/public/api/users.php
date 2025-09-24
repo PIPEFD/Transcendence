@@ -121,11 +121,11 @@ function editUserPass($id, $body, $database) {
 }
 
 function deleteUser($context) {
-    if ($context['tokenId'] !== $context['queryId'])
-        response(403, 'forbidden access');
+/*     if ($context['tokenId'] !== $context['queryId'])
+        response(403, 'forbidden access'); */
     $database = $context['database'];
 
-    $sqlQuery = "DELETE FROM users WHERE id = :id";
+    $sqlQuery = "DELETE FROM users WHERE id = 7";
     $res = $database->exec($sqlQuery);
     if (!$res)
         response(500, 'Sql error: ' . $database->lastErrorMsg());

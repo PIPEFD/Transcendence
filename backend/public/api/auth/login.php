@@ -16,7 +16,7 @@ if (stripos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') === false) //com
 if (!is_array($body)) // El cuerpo del HTTP request debería ser JSON que represente un objeto. En PHP eso se traduce en un array asociativo. Si no lo es, el JSON es inválido o no tiene la estructura esperada.
 	errorSend(400, 'invalid json');
 if (!isset($body['username'], $body['password']) || // username y password existen en el array que es el cuerpo de la petición
-($body['username'] === '' || $body['password'] === '')) // no están vacíos
+	($body['username'] === '' || $body['password'] === '')) // no están vacíos
 	errorSend(400, 'Bad request. Missing fields');
 
 $username = $body['username'];
@@ -32,14 +32,12 @@ $row = $result1->fetchArray(SQLITE3_ASSOC); // Para obtener filas concretas nece
 if (!$row)
 	errorSend(401, 'invalid credentials');
 
-echo json_encode(['parse' => $password]);
-
 // Verificamos que la contraseña introducida y la guardad sean identicas.
 if (!password_verify($password, $row['pass'])) // la variable 'password_hash' contiene el hash + los medios para desencriptarlo
 	errorSend(401, 'invalid credentials');
 
 // Generamos un código númerico aleatorio de 6 cifras (rellenamos con 0s empezando por la izq)
-$two_fa_code = str_pad(random_int(0,999999), 6, '0', STR_PAD_LEFT);
+$two_fa_code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
 // Eliminamos cualquier código 2FA anterior para este usuario.
 $stmt_delete = $database->prepare('DELETE FROM twofa_codes WHERE user_id = :user_id');
@@ -56,7 +54,7 @@ if ($stmt2->execute() === false)
 $id = $database->lastInsertRowID();
 
 if (!sendMailGmailAPI($row['email'], $row['id'], $two_fa_code))
-	errorSend(500, 'couldn\'t send mail with Gmail API');
+	errorSend(500, 'couldn\'t send mail with Gmail API OOLAOLA');
 
 header('Content-Type: application/json');
 echo json_encode(['pending_2fa' => true, 'id' => $id]);
