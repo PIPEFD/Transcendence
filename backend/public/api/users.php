@@ -62,14 +62,20 @@ function userDataById($context) {
 function createUser($context) {
     $database = $context['database'];
     $body = $context['body'];
-    
+
     $username = getAndCheck($body, 'username');
     $email = getAndCheck($body, 'email');
-    //var_dump($email);
     $pass = getAndCheck($body, 'password');
     $passwordHash = password_hash($pass, PASSWORD_DEFAULT);
-    $sqlQuery = "INSERT INTO users (username, email, pass) VALUES ('$username', '$email', '$passwordHash')";
-    $res = $database->exec($sqlQuery);
+
+    $sqlQuery = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
+	$stmt = $database->prepare($sqlQuery);
+	if (!$stmt)
+		response(500, 'Sql error preparing stmt: ' . $database->lastErrorMsg());
+	$stmt->bindValue(':username', $username, SQLITE3_TEXT);
+	$stmt->bindValue(':email', $email, SQLITE3_TEXT);
+	$stmt->bindValue(':pass', $passwordHash, SQLITE3_TEXT);
+	$res = $stmt->execute();
     if (!$res) {
         response(500, 'Sql error: ' . $database->lastErrorMsg());
     }

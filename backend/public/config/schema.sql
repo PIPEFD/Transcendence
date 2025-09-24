@@ -10,14 +10,14 @@ CREATE TABLE IF NOT EXISTS users (
     last_login TEXT 
 );
 
--- tabla de usuarios
+-- tabla de usuarios time_to_expire_mins => temporalmente 500
 
 CREATE TABLE IF NOT EXISTS twofa_codes (
 		id INTEGER PRIMARY KEY AUTOINCREMENT, 
 		user_id INTEGER NOT NULL, 
 		code TEXT NOT NULL, 
 		created_at TEXT DEFAULT CURRENT_TIMESTAMP, 
-		time_to_expire_mins INTEGER DEFAULT 5, 
+		time_to_expire_mins INTEGER DEFAULT 500,
 		attempts_left INTEGER DEFAULT 3, 
 		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

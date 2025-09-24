@@ -32,6 +32,8 @@ $row = $result1->fetchArray(SQLITE3_ASSOC); // Para obtener filas concretas nece
 if (!$row)
 	errorSend(401, 'invalid credentials');
 
+echo json_encode(['parse' => $password]);
+
 // Verificamos que la contraseña introducida y la guardad sean identicas.
 if (!password_verify($password, $row['pass'])) // la variable 'password_hash' contiene el hash + los medios para desencriptarlo
 	errorSend(401, 'invalid credentials');

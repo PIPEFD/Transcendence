@@ -15,7 +15,7 @@ function gmailClient(): Google\Client
 	//de forma automática y sin intervención del usuario, lo intercambie por un nuevo access_token cada vez que el antiguo caduque.
 	//La alternativa, el acceso online, se tiene que renovar cada hora.
 
-    $tokenPath = __DIR__ . '/../../../../config/google_token.json';
+    $tokenPath = __DIR__ . '/../../../config/google_token.json';
     if (!file_exists($tokenPath))
 		throw new Exception('Falta google_token.json. Ejecuta el script de setup para generarlo.'); 
 

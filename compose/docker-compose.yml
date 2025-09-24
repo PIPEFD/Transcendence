@@ -47,6 +47,7 @@ services:
       - APP_DEBUG=${APP_DEBUG:-true}
       - DB_DATABASE=/var/www/database/database.sqlite
       - APP_KEY=${APP_KEY}
+      - JWTsecretKey=${JWTsecretKey}
     healthcheck:
       test: ["CMD", "php-fpm", "-t"]
       interval: 30s
