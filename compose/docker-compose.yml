@@ -6,13 +6,13 @@ services:
     container_name: transcendence-nginx
     ports:
       - "${NGINX_HTTP_PORT:-8085}:80"
-      - "${NGINX_HTTPS_PORT:-8443}:443"
+      - "${NGINX_HTTPS_PORT:-8445}:443"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../nginx/conf.d:/etc/nginx/conf.d:ro
       - ../scripts/certs:/etc/nginx/certs:ro
       - ../logs/nginx:/var/log/nginx
-      - ../backend/srcs/public:/var/www/html:ro
+      - ../backend/public:/var/www/html/public
     command: nginx -g "daemon off;"
     networks: [default, monitoring]
     healthcheck:
@@ -37,8 +37,9 @@ services:
       dockerfile: ../docker/backend/Dockerfile
     container_name: transcendence-backend
     volumes:
-      - ../backend/srcs/public:/var/www/html
-      - ../backend/srcs/database:/var/www/database
+      - ../backend/public:/var/www/html/public
+      - ../backend/database:/var/www/html/database
+      - ../backend/vendor:/var/www/html/vendor
     expose:
       - "${BACKEND_PORT:-9000}"
     environment:
@@ -46,6 +47,7 @@ services:
       - APP_DEBUG=${APP_DEBUG:-true}
       - DB_DATABASE=/var/www/database/database.sqlite
       - APP_KEY=${APP_KEY}
+      - JWTsecretKey=${JWTsecretKey}
     healthcheck:
       test: ["CMD", "php-fpm", "-t"]
       interval: 30s

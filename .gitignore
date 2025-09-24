@@ -1,0 +1,3 @@
+compose/.env
+backend/secrets/google_oauth_client.json
+backend/public/config/google_token.json
