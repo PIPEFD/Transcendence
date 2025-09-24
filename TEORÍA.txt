@@ -1,7 +1,0 @@
-1. Modificar el Código del Frontend
-
-En su código JavaScript del frontend, todas las llamadas a la API deben hacerse a rutas relativas, no a un dominio y puerto absolutos. El navegador las enviará automáticamente al servidor del que se cargó la página (que será NGINX).
-
-    Incorrecto: fetch('http://localhost:8085/api/users')
-
-    Correcto: fetch('/api/users')
