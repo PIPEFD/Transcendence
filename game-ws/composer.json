@@ -1,6 +1,0 @@
-{
-  "name": "ft/game-ws",
-  "require": {
-    "cboden/ratchet": "^0.4"
-  }
-}
