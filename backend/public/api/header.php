@@ -36,19 +36,17 @@ $context =
     'authToken' => $authToken
 ];
 
-function response($status, $data) 
+function errorSend(int $errorCode, string $errorMsg, ?string $detailsMsg = null): void
 {
-    if ($status == 200)
-        echo json_encode(['success' => $data]);
-	else
-	{
-        http_response_code($status);
-        echo json_encode(['error' => $data]);
-    }
-    exit;
+	http_response_code($errorCode); //obtiene o establece el código de estado de la respuesta HTTP, si le pasas un numero entero establece la respuesta a ese número, si no le pasas ningún argumento te devuelve el code actual
+	$response = ['error' => $errorMsg]; //inicia response y le asigna su primera pareja
+	if ($detailsMsg)
+		$response['details'] = $detailsMsg; //añade una nueva entrada al array response
+	echo json_encode($response);
+	exit;
 }
 
-// response(400, 'bad request'); -> si falla
+// errorSend(400, 'bad request'); -> si falla
 function checkData($data): bool
 {
 	if (!isset($data) || !$data)
@@ -56,7 +54,7 @@ function checkData($data): bool
 	return true;
 }
 
-// response(400, 'bad request'); -> si falla
+// errorSend(400, 'bad request'); -> si falla
 function checkIfIdExists($id, $database, $tableName='users'): bool
 {
 	if (!is_numeric($id))
@@ -79,7 +77,7 @@ function getDecodedJWT(?string $authToken): ?object // ? -> la función tambíen
 		return null;
 	$secretKey = getenv('JWTsecretKey'); // necesitamos la clave que usamos para generar el token para decodificarlo, hay que incluirla en el .env del directorio de docker-compose.
 	if ($secretKey === false)
-		response (500, "FATAL: JWT_SECRET_KEY no está configurada en el entorno.");
+		errorSend(500, "FATAL: JWT_SECRET_KEY no está configurada en el entorno.");
 	try
 	{
 		$decodedToken = Firebase\JWT\JWT::decode($jwt, new Firebase\JWT\Key($secretKey, 'HS256')); //HS256 => el algoritmo que usamos para crear el token

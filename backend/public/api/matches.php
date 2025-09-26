@@ -1,6 +1,6 @@
 <?php
 
-require_once '../utils/init.php';
+require_once __DIR__ . '/header.php';
 
 $requiredMethod = $context['requestMethod'];
 $queryId = $context['queryId'];
@@ -11,7 +11,7 @@ switch  ($requiredMethod) {
     case 'GET':
         searchPlayers($context);
     default:
-        response(405, 'unauthorized');
+        errorSend(405, 'unauthorized');
 }
 
 /* HOLA la idea es tener la funcion searchPlayers() la cual recibe el
@@ -20,7 +20,7 @@ o para un torneo) el formato es player_id: y player_search: x,  */
 
 function searchPlayers($context) {
     if (!$context['auth'])
-        response(403, 'forbidden');
+        errorSend(403, 'forbidden');
 
     $database = $context['database'];
     $playerId = getAndCheck($context['body']['player_id']);
@@ -28,7 +28,7 @@ function searchPlayers($context) {
 
     $playerElo = $database->query_single("SELECT elo FROM users WHERE id = '$playerId'");
     if (!$playerElo)
-        response(404, 'player not found');
+        errorSend(404, 'player not found');
     $sqlQuery = "SELECT id, elo, ABS(elo - '$playerElo') AS diff
     FROM users WHERE id != '$playerId' ORDER BY diff ASC LIMIT '$limit'";
     $res = $database->query($sqlQuery);
@@ -42,7 +42,7 @@ function searchPlayers($context) {
 
 function updateElo($context) {
     if (!$context['auth'])
-        response(403, 'forbidden');
+        errorSend(403, 'forbidden');
 
     $database = $context['database'];
     $winnerId = getAndCheck($context['body']['winner_id']);
@@ -60,7 +60,7 @@ function updateElo($context) {
     $losRes = $database->exec($sqlQuery);
     
     if (!$winRes || !$losRes)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
+        errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
     echo json_encode(['success' => 'elo updated']);
     exit ;
 }

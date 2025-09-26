@@ -1,12 +1,12 @@
 <?php
 
-require_once '../utils/init.php';
+require_once __DIR__ . '/header.php';
 
 $requiredMethod = $context['requestMethod'];
 $queryId = $context['queryId'];
 
 if ($requiredMethod !== 'GET')
-    response(405, 'unauthorized');
+    errorSend(405, 'unauthorized');
 
 if (!$queryId)
     globalRankingList($context);
@@ -14,7 +14,7 @@ friendsRankingList($context);
 
 function globalRankingList($context) {
     if (!$context['auth'])
-        response(403, 'forbidden access');
+        errorSend(403, 'forbidden access');
     
     $database = $context['database'];
     $sqlQuery = "SELECT u.id, u.username, u.elo FROM users u INNER JOIN friends f 
@@ -22,7 +22,7 @@ function globalRankingList($context) {
         AND u.id != $id ORDER BY u.elo DESC";
     $res = $database->query($sqlQuery);
     if (!$res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
+        errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
     $data = [];
     while ($row = $res->fetchArray(SQLITE3_ASSOC))
         $data[] = $row;
@@ -32,13 +32,13 @@ function globalRankingList($context) {
 
 function friendsRankingList($context) {
     if (!$context['auth'])
-        response(403, 'forbidden access');
+        errorSend(403, 'forbidden access');
     
     $database = $context['database'];
     $sqlQuery = "SELECT id, username, elo FROM users ORDER BY elo DESC";
     $res = $database->query($sqlQuery);
     if (!$res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
+        errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
     $data = [];
     while ($row = $res->fetchArray(SQLITE3_ASSOC))
         $data[] = $row;

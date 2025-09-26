@@ -1,6 +1,6 @@
 <?php
 
-require_once '../utils/init.php';
+require_once __DIR__ . '/header.php';
 
 $requestMethod = $context['requestMethod'];
 $queryId = $context['queryId'];
@@ -13,23 +13,23 @@ switch ($requestMethod) {
     case 'PATCH':
         acceptDeclineRequest($context);
     default:
-        response(405, 'unauthorized method');
+        errorSend(405, 'unauthorized method');
 }
 
 function sendFriendRequest($context) {
     if (!$context['auth'])
-        response(403, 'forbidden access');
+        errorSend(403, 'forbidden access');
 
     $database = $context['database'];
     $senderId = getAndCheck($context['body']['sender_id']);
     $receiverId = getAndCheck($context['body']['receiver_id']);
     if (!checkIfExist($receiverId, $database) || !checkIfExist($senderId, $database))
-        response(404, 'sender/receiver id not found');
+        errorSend(404, 'sender/receiver id not found');
 
     $sqlQuery = "INSERT INTO friend_request (sender_id, receiver_id, status) VALUES ('$senderId', '$receiverId', 'pending')";
     $res = $database->exec($sqlQuery);
     if (!$res)
-        response(500, "Sql error: " . $database->lastErrorMsg());
+        errorSend(500, "Sql error: " . $database->lastErrorMsg());
 
     echo json_encode(['success' => 'friend request sent']);
     exit ;
@@ -37,7 +37,7 @@ function sendFriendRequest($context) {
 
 function requestListId($context) {
     if (!$context['auth'] || $context['queryId'] !== $context['tokenId'])
-        response(403, 'forbidden access');
+        errorSend(403, 'forbidden access');
 
     $database = $context['database'];
     $id = $context['tokenId'];
@@ -45,7 +45,7 @@ function requestListId($context) {
     $res = $database->query($sqlQuery);
 
     if (!$res)
-        response(500, "Sql error: " . $database->lastErrorMsg());
+        errorSend(500, "Sql error: " . $database->lastErrorMsg());
     $content = [];
     while ($row = $res->fetchArray(SQLITE3_ASSOC))
         $content[] = $row;
@@ -56,7 +56,7 @@ function requestListId($context) {
 
 function acceptDeclineRequest($context) {
     if (!$context['auth'])
-        response(403, 'forbidden access');
+        errorSend(403, 'forbidden access');
 
     $database = $context['database'];
     $senderId = getAndCheck($context['body']['sender_id']);
@@ -64,18 +64,18 @@ function acceptDeclineRequest($context) {
     $action = getAndCheck($context['body']['action']);
 
     if (!checkIfExist($receiverId, $database) || !checkIfExist($senderId, $database))
-        response(404, 'sender/receiver id not found');
+        errorSend(404, 'sender/receiver id not found');
 
     $checkRequest = "SELECT * FROM friend_request WHERE sender_id = '$senderId' AND receiver_id = '$receiverId'";
     $res = $database->query($checkRequest);
     if (!$res->fetchArray(SQLITE3_ASSOC))
-        response(404, 'friend request not found');
+        errorSend(404, 'friend request not found');
     
     if ($action === 'accept')
         accept($database, $senderId, $receiverId);
     else if ($action === 'decline')
         decline($database, $senderId, $receiverId);
-    response(400, 'bad request in action');
+    errorSend(400, 'bad request in action');
 }
 
 function accept($database, $senderId, $receiverId) {
@@ -84,7 +84,7 @@ function accept($database, $senderId, $receiverId) {
     $res00 = $database->exec($sqlQuery00);
     $res01 = $database->exec($sqlQuery01);
     if (!$res00 || !$res01)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
+        errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
     echo json_encode(['success' => 'new friend added']);
     exit ;
 }
@@ -93,7 +93,7 @@ function decline($database, $senderId, $receiverId) {
     $sqlQuery = "DELETE FROM friend_request WHERE sender_id = '$senderId' AND receiver_id = '$receiverId'";
     $res = $database->exec($sqlQuery);
     if (!$res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
+        errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
     echo json_encode(['success' => 'friend request declined']);
     exit ;
 }

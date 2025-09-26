@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/header_auth.php';
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+require_once __DIR__ . '/header.php';
+require_once(__DIR__ . '/../../vendor/autoload.php');
 
 $database = connectDatabase();	// Abre o crea el archivo de base de datos SQLite y devuelve un objeto conexión listo para usar. tipo del objeto: SQLite3
 $requestMethod = $_SERVER['REQUEST_METHOD'];	// Lee el método HTTP de la petición actual (GET, POST, PATCH, DELETE).
