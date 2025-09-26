@@ -19,22 +19,8 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 $database = connectDatabase();
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];
-$bodyArray = json_decode(file_get_contents('php://input'), true);
+$body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
-
-$authToken = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-
-// $auth = checkAuthorization($authToken);
-// $idFromAuth = extractIdFromAuth($authToken, $auth);
-
-$context = 
-[
-    'database' => $database,
-    'requestMethod' => $requestMethod,
-    'body' => $bodyArray,
-	'queryId' => $queryId,
-    'authToken' => $authToken
-];
 
 function errorSend(int $errorCode, string $errorMsg, ?string $detailsMsg = null): void
 {
@@ -46,33 +32,27 @@ function errorSend(int $errorCode, string $errorMsg, ?string $detailsMsg = null)
 	exit;
 }
 
-// errorSend(400, 'bad request'); -> si falla
-function checkData($data): bool
-{
-	if (!isset($data) || !$data)
-		return false;
+function checkBodyData(array $body, string ...$keys): bool // ... (operador variadic) -> agrupa una cantidad variable de argumentos en un array
+{ // necesitamos pasarle el body completo porque no podemos pasarle cada body[key] por separado antes de comprobar si existen
+	foreach ($keys as $key)
+		if (!isset($body[$key]) || !$body[$key]) // !isset() comprueba si no éxiste o es null, ! comprueba si es "falsy" (null, false, "", \O, etc.)
+			return false;
 	return true;
 }
 
-// errorSend(400, 'bad request'); -> si falla
-function checkIfIdExists($id, $database, $tableName='users'): bool
+function checkIfUsersIdExists(int $id, ?SQLite3 $database): bool // si a $id se le pasa un valor que puede ser convertido a entero ("123"), PHP lo convertirá automáticamente
 {
-	if (!is_numeric($id))
-		return false;
-	$stmt = $database->prepare("SELECT 1 FROM :tableName WHERE id = :id LIMIT 1");
-	$stmt->bindValue(':tableName', $tableName);
-	$stmt->bindValue(':id', $id);
+	$stmt = $database->prepare("SELECT 1 FROM users WHERE id = :id LIMIT 1");
+	$stmt->bindValue(':id', $id, SQLITE3_NUM);
 	$res = $stmt->execute();
 	if (!$res || !$res->fetchArray()) // $res se evalua como true a menos que haya un error, incluso si no encuentra el Id. fetchArray() devuelve un array si encontró una fila
 		return false;
 	return true;
 }
 
-function getDecodedJWT(?string $authToken): ?object // ? -> la función tambíen recibe & devuelve un valor nulo
+function getDecodedJWT(string $JWT): ?object // ? -> la función tambíen recibe & devuelve un valor nulo
 {
-	if (!$authToken)
-		return null;
-	list($jwt) = sscanf($authToken, 'Bearer %s'); // sscanf() busca Bearer seguido de un string en $authToken. Devuelve un array con todas las coincidencias.
+	list($jwt) = sscanf($JWT, 'Bearer %s'); // sscanf() busca Bearer seguido de un string en $authToken. Devuelve un array con todas las coincidencias.
 	if (!$jwt) // list asigna los elementos del array a las variables que le pasamos como argumentos, en este caso solo $jwt
 		return null;
 	$secretKey = getenv('JWTsecretKey'); // necesitamos la clave que usamos para generar el token para decodificarlo, hay que incluirla en el .env del directorio de docker-compose.
@@ -90,11 +70,18 @@ function getDecodedJWT(?string $authToken): ?object // ? -> la función tambíen
 	}
 }
 
-function extractUserIdFromJWT(?object $decodedToken): ?int 
+function checkJWT(int $id): bool
 {
-    if ($decodedToken === null)
-		return null;
-	return ($decodedToken->data->userId);
+	$JWT = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+	if (!$JWT)
+		return false;
+	$decodedJWT = getDecodedJWT($JWT);
+	if (!$decodedJWT)
+		return false;
+	$idJWT = $decodedJWT->data->userId;
+	if ($id !== $idJWT)
+		return false;
+	return true;
 }
 
 ?>

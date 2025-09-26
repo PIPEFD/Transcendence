@@ -15,12 +15,12 @@ if (stripos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') === false) //com
 	errorSend(415, 'unsupported media type'); // stripos() => STRing Insensitive POSition => Devuelve la posición de una subcadena en otra, sin distinguir mayúsculas/minúsculas. Si no encuentra la subcadena devuelve 'false'.
 if (!is_array($body)) // El cuerpo del HTTP request debería ser JSON que represente un objeto. En PHP eso se traduce en un array asociativo. Si no lo es, el JSON es inválido o no tiene la estructura esperada.
 	errorSend(400, 'invalid json');
-if (!isset($body['username'], $body['password']) || // username y password existen en el array que es el cuerpo de la petición
-	($body['username'] === '' || $body['password'] === '')) // no están vacíos
+if (!isset($body['username'], $body['pass']) || // username y pass existen en el array que es el cuerpo de la petición
+	($body['username'] === '' || $body['pass'] === '')) // no están vacíos
 	errorSend(400, 'Bad request. Missing fields');
 
 $username = $body['username'];
-$password = $body['password'];
+$pass = $body['pass'];
 
 // Preparamos una statement (stmt1) para realizar un query a la tabla 'users'. necesitamos id, el hash y el mail. 
 $stmt1 = $database->prepare("SELECT id, pass, email FROM users WHERE username = :username");
