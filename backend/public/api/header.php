@@ -2,9 +2,7 @@
 
 header('Content-Type: application/json'); // Indica al navegador/cliente que la respuesta será texto en formato JSON.
 
-header('Access-Control-Allow-Origin: *'); // Permite que cualquier (*) dominio ("origen"), distinto al del servidor, pueda solicitar y acceder a los recursos de tu API. Sin esta cabecera, los navegadores bloquearían por defecto las peticiones AJAX provenientes de un dominio diferente por razones de seguridad.
-// AJAX: es un conjunto de técnicas de desarrollo web que permiten a una aplicación web comunicarse con un servidor en segundo plano sin interferir con el estado de la página actual. Permite que partes específicas de una página web se actualicen con nueva información del servidor sin necesidad de recargar la página por completo.
-// Ejemplo: mientras el cliente navega en mi web se comunica con una web de terceros para actualizar mis precios, por defecto el navegador bloquea esta clase de acción
+header('Access-Control-Allow-Origin: *'); // Permite que cualquier (*) dominio ("origen"), distinto al del servidor, pueda solicitar y acceder a los recursos de tu API. Sin esta cabecera, los navegadores bloquearían por defecto las peticiones AJAX provenientes de un dominio diferente por razones de seguridad. // AJAX: es un conjunto de técnicas de desarrollo web que permiten a una aplicación web comunicarse con un servidor en segundo plano sin interferir con el estado de la página actual. Permite que partes específicas de una página web se actualicen con nueva información del servidor sin necesidad de recargar la página por completo. // Ejemplo: mientras el cliente navega en mi web se comunica con una web de terceros para actualizar mis precios, por defecto el navegador bloquea esta clase de acción
 header('Access-Control-Allow-Methods: GET, POST, DELETE, PATCH'); // Indica al navegador qué métodos HTTP (además de los métodos simples como GET o HEAD) están permitidos al realizar una solicitud desde un origen externo (la web de terceros del ejemplo).
 header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Se permite que la solicitud del cliente externo contenga las cabeceras Content-Type y Authorization (comúnmente usada para enviar credenciales de autenticación, como tokens).
 
@@ -12,20 +10,23 @@ ini_set('display_errors', 1); // Activa mostrar errores en pantalla para este pr
 ini_set('display_startup_errors', 1); // Muestra errores que ocurren al arrancar PHP o extensiones antes de ejecutar el script.
 error_reporting(E_ALL);
 
-require_once __DIR__ . 'utils.php';
-require_once __DIR__ . '../config/config.php';
+require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$database = connectDatabase();
-
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-$body = json_decode(file_get_contents('php://input'), true);
-$queryId = $_GET['id'] ?? null;
-
-function errorSend(int $errorCode, string $errorMsg, ?string $detailsMsg = null): void
+function successSend(string|array $msg, int $code = 200, ?string $detailsMsg = null): void
 {
-	http_response_code($errorCode); //obtiene o establece el código de estado de la respuesta HTTP, si le pasas un numero entero establece la respuesta a ese número, si no le pasas ningún argumento te devuelve el code actual
-	$response = ['error' => $errorMsg]; //inicia response y le asigna su primera pareja
+	http_response_code($code);
+	$response = ['success' => $msg];
+	if ($detailsMsg)
+		$response['details'] = $detailsMsg;
+	echo json_encode($response);
+	exit;
+}
+
+function errorSend(int $code, string $msg, ?string $detailsMsg = null): void
+{
+	http_response_code($code); //obtiene o establece el código de estado de la respuesta HTTP, si le pasas un numero entero establece la respuesta a ese número, si no le pasas ningún argumento te devuelve el code actual
+	$response = ['error' => $msg]; //inicia response y le asigna su primera pareja
 	if ($detailsMsg)
 		$response['details'] = $detailsMsg; //añade una nueva entrada al array response
 	echo json_encode($response);
@@ -35,8 +36,10 @@ function errorSend(int $errorCode, string $errorMsg, ?string $detailsMsg = null)
 function checkBodyData(array $body, string ...$keys): bool // ... (operador variadic) -> agrupa una cantidad variable de argumentos en un array
 { // necesitamos pasarle el body completo porque no podemos pasarle cada body[key] por separado antes de comprobar si existen
 	foreach ($keys as $key)
+	{
 		if (!isset($body[$key]) || !$body[$key]) // !isset() comprueba si no éxiste o es null, ! comprueba si es "falsy" (null, false, "", \O, etc.)
 			return false;
+	}
 	return true;
 }
 
@@ -46,6 +49,20 @@ function checkIfUsersIdExists(int $id, ?SQLite3 $database): bool // si a $id se 
 	$stmt->bindValue(':id', $id, SQLITE3_NUM);
 	$res = $stmt->execute();
 	if (!$res || !$res->fetchArray()) // $res se evalua como true a menos que haya un error, incluso si no encuentra el Id. fetchArray() devuelve un array si encontró una fila
+		return false;
+	return true;
+}
+
+function checkJWT(int $id): bool
+{
+	$JWT = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+	if (!$JWT)
+		return false;
+	$decodedJWT = getDecodedJWT($JWT);
+	if (!$decodedJWT)
+		return false;
+	$idJWT = $decodedJWT->data->userId;
+	if ($id !== $idJWT)
 		return false;
 	return true;
 }
@@ -68,20 +85,6 @@ function getDecodedJWT(string $JWT): ?object // ? -> la función tambíen recibe
 		error_log("Couldn't decodify JWT -> " . $e->getMessage());
 		return null;
 	}
-}
-
-function checkJWT(int $id): bool
-{
-	$JWT = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-	if (!$JWT)
-		return false;
-	$decodedJWT = getDecodedJWT($JWT);
-	if (!$decodedJWT)
-		return false;
-	$idJWT = $decodedJWT->data->userId;
-	if ($id !== $idJWT)
-		return false;
-	return true;
 }
 
 ?>

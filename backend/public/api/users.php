@@ -3,7 +3,6 @@
 require_once __DIR__ . '/header.php';
 
 $database = connectDatabase();
-
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
@@ -13,16 +12,20 @@ switch ($requestMethod)
 	case 'POST':
 		createUser($body, $database);
 		break;
-	case 'GET':gi
+	case 'GET':
 		if ($queryId)
 			userDataById($database, $queryId);
 		else
 			userList($database);
 		break;
 	case 'PATCH':
-		editUserData($tokenId, $queryId, $body, $database);
+		if (!checkJWT($queryId))
+			errorSend(403, 'forbidden access');
+		editUserData($queryId, $body, $database);
 		break;
 	case 'DELETE':
+		if (!checkJWT($queryId))
+			errorSend(403, 'forbidden access');
 		deleteUser($queryId, $database);
 		break;
 	default:
@@ -32,13 +35,13 @@ switch ($requestMethod)
 
 function createUser(array $body, SQLite3 $database): void
 {
-	if (!checkBodyData($body, 'username', 'email', 'pass'))
+	if (!checkBodyData($body, 'username', 'email', 'password'))
 		errorSend(400, 'bad request');
 	$username = $body['username'];
 	$email = $body['email'];
-	$pass = $body['pass'];
+	$password = $body['password'];
 
-	$passHash = password_hash($pass, PASSWORD_DEFAULT);
+	$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
 	$sqlQuery = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
 	$stmt = $database->prepare($sqlQuery);
@@ -47,26 +50,28 @@ function createUser(array $body, SQLite3 $database): void
 
 	$stmt->bindValue(':username', $username, SQLITE3_TEXT);
 	$stmt->bindValue(':email', $email, SQLITE3_TEXT);
-	$stmt->bindValue(':pass', $passHash, SQLITE3_TEXT);
+	$stmt->bindValue(':pass', $passwordHash, SQLITE3_TEXT);
 
 	$res = $stmt->execute();
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
 	else
-		echo json_encode(['success' => 'new user created']);
+		successSend('Created', 201, 'new UserID: ' . $database->lastInsertRowID());
 }
 
 function userDataById(SQLite3 $database, int $queryId): void
 {
-	$sqlQuery = "SELECT username, email, elo FROM users WHERE id = ':queryId'";
+	$sqlQuery = "SELECT username, email, elo FROM users WHERE id = :queryId";
 	$stmt = $database->prepare($sqlQuery);
 	$stmt->bindValue(':queryId', $queryId);
 	$res = $stmt->execute();
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
-	if (!$res->fetchArray(SQLITE3_ASSOC))
+	$userData = $res->fetchArray(SQLITE3_ASSOC); 
+	if (!$userData)
 		errorSend(404, 'user not found');
-	echo json_encode($res->fetchArray(SQLITE3_ASSOC));
+	else
+		successSend($userData);
 }
 
 function userList(SQLite3 $database): void
@@ -79,29 +84,45 @@ function userList(SQLite3 $database): void
 	$data = [];
 	while ($row = $res->fetchArray(SQLITE3_ASSOC)) // fetchArray tiene un indice interno que aumenta con cada llamada
 		$data[] = $row;
-
-	echo json_encode($data);
+	successSend($data);
 }
 
 function editUserData(int $queryId, array $body, SQLite3 $database): void
 {
-	if (checkJWT($queryId))
-		errorSend(403, 'forbidden access');
-
-	if (checkBodyData($body, 'pass'))
+	$database->exec('BEGIN'); // inicia una transacción. Declara un paquete de operaciones SQL, si alguna de ellas falla revierte el paquete completo.
+	
+	try
 	{
-		$newPass = $body['pass'];
-		$newPassHash = password_hash($newPass, PASSWORD_DEFAULT);
-		editUserDataAux($queryId, 'pass', $newPassHash, $database);
+		$success = true;
+		if (checkBodyData($body, 'password'))
+		{
+			$newPassword = $body['password'];
+			$newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+			if (!editUserDataAux($queryId, 'pass', $newPasswordHash, $database))
+				$success = false;
+		}
+		if (checkBodydata($body, 'username'))
+			if (!editUserDataAux($queryId, 'username', $body['username'], $database))
+				$success = false;
+		if (checkBodydata($body, 'email'))
+			if (!editUserDataAux($queryId, 'email', $body['email'], $database))
+				$success = false;
+		if ($success)
+		{
+			$database->exec('COMMIT');
+			successSend('user data modified');
+		}
+		else
+			throw new Exception('One of the update operations failed');
 	}
-	if (checkBodydata($body, 'username'))
-		editUserDataAux($queryId, 'username', $body['username'], $database);
-	if (checkBodydata($body, 'email'))
-		editUserDataAux($queryId, 'email', $body['email'], $database);
-	echo json_encode(['success' => 'user data modified']);
+	catch (Exception $e)
+	{
+		$database->exec('ROLLBACK');
+		errorSend(500, 'Could not update user data', $e->getMessage());
+	}
 }
 
-function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3 $database): void
+function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3 $database): bool
 {
 	switch ($column) 
 	{ // solo podemos insertar con prepare() valores, ni nombres de tablas ni columnas
@@ -119,25 +140,22 @@ function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3
 	$stmt->bindValue(':newValue', $newValue);
 	$stmt->bindValue(':queryId', $queryId);
 	$res = $stmt->execute();
-	if(!$res || !$res->fetchArray())
-		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
+	if(!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no funciona
+		return false;
 	else
-		echo json_encode(['success' => 'password updated']);
+		return true;
 }
 
 function deleteUser(int $queryId, SQLite3 $database) 
 {
-	if (checkJWT($queryId))
-		errorSend(403, 'forbidden access');
-
 	$sqlQuery = "DELETE FROM users WHERE id = :queryId";
 	$stmt =	$database->prepare($sqlQuery);
 	$stmt->bindValue(':queryId', $queryId);
 	$res = $stmt->execute();
-	if (!$res || $res->fetchArray())
+	if (!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no funciona
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
 	else
-		echo json_encode(['success' => 'user deleted']);
+		successSend('user deleted'); // no se pueden imprimir varias cadenas JSON -> solo la función principal echo-ea
 }
 
 ?>
