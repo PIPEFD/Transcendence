@@ -21,8 +21,8 @@ function sendFriendRequest($context) {
         response(403, 'forbidden access');
 
     $database = $context['database'];
-    $senderId = getAndCheck($context['body'], 'sender_id');
-    $receiverId = getAndCheck($context['body'], 'receiver_id');
+    $senderId = getAndCheck($context['body']['sender_id']);
+    $receiverId = getAndCheck($context['body']['receiver_id']);
     if (!checkIfExist($receiverId, $database) || !checkIfExist($senderId, $database))
         response(404, 'sender/receiver id not found');
 
@@ -59,9 +59,9 @@ function acceptDeclineRequest($context) {
         response(403, 'forbidden access');
 
     $database = $context['database'];
-    $senderId = getAndCheck($context['body'], 'sender_id');
-    $receiverId = getAndCheck($context['body'], 'receiver_id');
-    $action = getAndCheck($context['body'], 'action');
+    $senderId = getAndCheck($context['body']['sender_id']);
+    $receiverId = getAndCheck($context['body']['receiver_id']);
+    $action = getAndCheck($context['body']['action']);
 
     if (!checkIfExist($receiverId, $database) || !checkIfExist($senderId, $database))
         response(404, 'sender/receiver id not found');
@@ -98,4 +98,7 @@ function decline($database, $senderId, $receiverId) {
     exit ;
 }
 
+$context["body['sender_id']"];
+
 ?>
+

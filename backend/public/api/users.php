@@ -8,21 +8,21 @@ $queryId = $context['queryId'];
 
 switch ($requestMethod) {
     case 'POST':
-        createUser($context); // no pide auth
+        createUser($context); // NO auth
 		break;
     case 'GET':
         if ($queryId) {
-            userDataById($context); // no pide auth
+            userDataById($context); // NO auth
         }
         else {
-            userList($context); // no pide auth
+            userList($context); // NO auth
         }
 		break;
     case 'PATCH':
-        editUserData($context); // pide auth
+        editUserData($context); // SI auth
 		break;
 	case 'DELETE':
-        deleteUser($context); // pide auth
+        deleteUser($context); // SI auth
 		break;
     default:
         response(405, 'unauthorized method');
@@ -46,8 +46,11 @@ function userList($context) {
 
 function userDataById($context) {
     $database = $context['database'];
-    $queryId = isId($context['queryId']);
-
+	
+    $queryId = $context['queryId'];
+	if (!is_numeric($queryId))
+		response (400, 'bad request');
+	
     $sqlQuery = "SELECT username, email, elo FROM users WHERE id = '$queryId'";
     $res = $database->query($sqlQuery);
     if (!$res)

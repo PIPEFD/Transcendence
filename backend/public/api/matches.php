@@ -23,8 +23,8 @@ function searchPlayers($context) {
         response(403, 'forbidden');
 
     $database = $context['database'];
-    $playerId = getAndCheck($context['body'], 'player_id');
-    $limit = getAndCheck($context['body'], 'player_search');
+    $playerId = getAndCheck($context['body']['player_id']);
+    $limit = getAndCheck($context['body']['player_search']);
 
     $playerElo = $database->query_single("SELECT elo FROM users WHERE id = '$playerId'");
     if (!$playerElo)
@@ -45,8 +45,8 @@ function updateElo($context) {
         response(403, 'forbidden');
 
     $database = $context['database'];
-    $winnerId = getAndCheck($context['body'], 'winner_id');
-    $loserId = getAndCheck($context['body'], 'loser_id');
+    $winnerId = getAndCheck($context['body']['winner_id']);
+    $loserId = getAndCheck($context['body']['loser_id']);
 
     $winnerElo = $database->query_single("SELECT elo FROM users WHERE id = '$winnerId'");
     $loserElo = $database->query_single("SELECT elo FROM users WHERE id = '$loserId'");
@@ -63,6 +63,14 @@ function updateElo($context) {
         response(500, 'Sql error: ' . $database->lastErrorMsg());
     echo json_encode(['success' => 'elo updated']);
     exit ;
+}
+
+function operateElo($oldElo, $oppElo, $score) 
+{
+	$k = 32;
+	$expected = 1 / (1 + pow(10, ($oppElo - $oldElo) / 400));
+	$newElo = $oldElo + $k * ($score - $expected);
+	return (round($newElo));
 }
 
 ?>
