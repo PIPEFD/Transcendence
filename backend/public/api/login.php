@@ -13,15 +13,15 @@ if (!stripos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) // stripos() =
 	errorSend(415, 'unsupported media type');
 if (!is_array($body)) // El cuerpo del HTTP request debería ser JSON que represente un objeto. En PHP eso se traduce en un array asociativo. Si no lo es, el JSON es inválido o no tiene la estructura esperada.
 	errorSend(400, 'invalid json');
-if (!checkBodyData($body, 'username', 'pass'))
+if (!checkBodyData($body, 'username', 'password'))
 	errorSend(400, 'Bad request. Missing fields');
 
 $username = $body['username'];
 $passwordSent = $body['password'];
 
-$stmt_select = $database->prepare("SELECT id, pass, email FROM users WHERE username = :username");
-$stmt_select->bindValue(':username', $username);
-$res1 = $stmt_select->execute(); // Devuelve un objeto de tipo SQLite3Result, ese objeto $res1 es un cursor sobre las filas que devuelve la consulta. Al inicio, el cursor está antes de la primera fila. Cada vez que llamas a fetchArray(), el cursor avanza una fila. Cuando ya no hay filas → devuelve false.
+$sqlQuery = "SELECT user_id, password, email FROM users WHERE username = :username";
+$bind1 = [':username', $username, SQLITE3_TEXT];
+$res1 = doQuery($database, $sqlQuery, $bind1);
 if (!$res1)
 	errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
 $row = $res1->fetchArray(SQLITE3_ASSOC); // Para obtener filas concretas necesitas llamar a fetchArray() sobre $result. $row = $result->fetchArray(SQLITE3_ASSOC); SQLITE3_ASSOC => Indica que queremos la fila como array asociativo.
@@ -29,7 +29,7 @@ if (!$row)
 	errorSend(404, 'username not found');
 
 $user_id = $row['id'];
-$passwordStored = $row['pass'];
+$passwordStored = $row['password'];
 $email = $row['email'];
 
 if (!password_verify($passwordSent, $passwordStored)) // $passwordStored contiene el hash + los medios para desencriptarlo
@@ -48,7 +48,7 @@ $stmt_insert->bindValue(':code', $two_fa_code, SQLITE3_TEXT);
 if ($stmt_insert->execute() === false)
 	errorSend(500, 'couldn`t insert two_fa_code');
 
-if (!sendMailGmailAPI($email, $user_id, $two_fa_code))
+if (!sendMailGmailAPI($user_id, $email, $two_fa_code))
 	errorSend(500, 'couldn\'t send mail with Gmail API');
 
 echo json_encode(['pending_2fa' => true, 'user_id' => $user_id]);

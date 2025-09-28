@@ -43,14 +43,14 @@ function checkBodyData(array $body, string ...$keys): bool // ... (operador vari
 	return true;
 }
 
-function checkIfUsersIdExists(int $id, ?SQLite3 $database): bool // si a $id se le pasa un valor que puede ser convertido a entero ("123"), PHP lo convertirá automáticamente
+function doQuery(SQLite3 $database, string $sqlQuery, array ...$bindings): SQLite3Result|bool
 {
-	$stmt = $database->prepare("SELECT 1 FROM users WHERE id = :id LIMIT 1");
-	$stmt->bindValue(':id', $id, SQLITE3_NUM);
-	$res = $stmt->execute();
-	if (!$res || !$res->fetchArray()) // $res se evalua como true a menos que haya un error, incluso si no encuentra el Id. fetchArray() devuelve un array si encontró una fila
+	$stmt = $database->prepare($sqlQuery);
+	if ($stmt === false)
 		return false;
-	return true;
+	foreach ($bindings as $bind)
+		$stmt->bindValue(...$bind); //...$bind desempaqueta automáticamente los argumentos de $bind
+	return ($stmt->execute());
 }
 
 function checkJWT(int $id): bool

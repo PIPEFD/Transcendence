@@ -30,7 +30,6 @@ switch ($requestMethod)
 		break;
 	default:
 		errorSend(405, 'unauthorized method');
-	exit;
 }
 
 function createUser(array $body, SQLite3 $database): void
@@ -43,16 +42,11 @@ function createUser(array $body, SQLite3 $database): void
 
 	$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-	$sqlQuery = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
-	$stmt = $database->prepare($sqlQuery);
-	if (!$stmt)
-		errorSend(500, 'Sql error preparing stmt: ' . $database->lastErrorMsg());
-
-	$stmt->bindValue(':username', $username, SQLITE3_TEXT);
-	$stmt->bindValue(':email', $email, SQLITE3_TEXT);
-	$stmt->bindValue(':pass', $passwordHash, SQLITE3_TEXT);
-
-	$res = $stmt->execute();
+	$sqlQuery = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+	$bind1 = [':username', $username, SQLITE3_TEXT];
+	$bind2 = [':email', $email, SQLITE3_TEXT];
+	$bind3 = [':password', $passwordHash, SQLITE3_TEXT];
+	$res = doQuery($database, $sqlQuery, $bind1, $bind2, $bind3);
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
 	else
@@ -61,10 +55,9 @@ function createUser(array $body, SQLite3 $database): void
 
 function userDataById(SQLite3 $database, int $queryId): void
 {
-	$sqlQuery = "SELECT username, email, elo FROM users WHERE id = :queryId";
-	$stmt = $database->prepare($sqlQuery);
-	$stmt->bindValue(':queryId', $queryId);
-	$res = $stmt->execute();
+	$sqlQuery = "SELECT username, email, elo FROM users WHERE user_id = :queryId";
+	$bind1 = [':queryId', $queryId, SQLITE3_NUM];
+	$res = doQuery($database, $sqlQuery, $bind1);
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
 	$userData = $res->fetchArray(SQLITE3_ASSOC); 
@@ -76,11 +69,9 @@ function userDataById(SQLite3 $database, int $queryId): void
 
 function userList(SQLite3 $database): void
 {
-	$sqlQuery = "SELECT id, username, elo FROM users";
-	$res = $database->query($sqlQuery);
+	$res = doQuery($database, "SELECT user_id, username, elo FROM users");
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
-
 	$data = [];
 	while ($row = $res->fetchArray(SQLITE3_ASSOC)) // fetchArray tiene un indice interno que aumenta con cada llamada
 		$data[] = $row;
@@ -90,7 +81,6 @@ function userList(SQLite3 $database): void
 function editUserData(int $queryId, array $body, SQLite3 $database): void
 {
 	$database->exec('BEGIN'); // inicia una transacción. Declara un paquete de operaciones SQL, si alguna de ellas falla revierte el paquete completo.
-	
 	try
 	{
 		$success = true;
@@ -98,7 +88,7 @@ function editUserData(int $queryId, array $body, SQLite3 $database): void
 		{
 			$newPassword = $body['password'];
 			$newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-			if (!editUserDataAux($queryId, 'pass', $newPasswordHash, $database))
+			if (!editUserDataAux($queryId, 'password', $newPasswordHash, $database))
 				$success = false;
 		}
 		if (checkBodydata($body, 'username'))
@@ -126,21 +116,20 @@ function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3
 {
 	switch ($column) 
 	{ // solo podemos insertar con prepare() valores, ni nombres de tablas ni columnas
-		case 'pass': 
-			$sqlQuery = "UPDATE users SET pass = :newValue WHERE id = :queryId"; 
+		case 'password': 
+			$sqlQuery = "UPDATE users SET password = :newValue WHERE user_id = :queryId"; 
 			break;
 		case 'username':
-			$sqlQuery = "UPDATE users SET username = :newValue WHERE id = :queryId";
+			$sqlQuery = "UPDATE users SET username = :newValue WHERE user_id = :queryId";
 			break;
 		case 'email':
-			$sqlQuery = "UPDATE users SET email = :newValue WHERE id = :queryId";
+			$sqlQuery = "UPDATE users SET email = :newValue WHERE user_id = :queryId";
 			break;
 	}
-	$stmt = $database->prepare($sqlQuery);
-	$stmt->bindValue(':newValue', $newValue);
-	$stmt->bindValue(':queryId', $queryId);
-	$res = $stmt->execute();
-	if(!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no funciona
+	$bind1 = [':newValue', $newValue, SQLITE3_TEXT];
+	$bind2 = [':queryId', $queryId, SQLITE3_NUM];
+	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
+	if(!$res)
 		return false;
 	else
 		return true;
@@ -148,11 +137,10 @@ function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3
 
 function deleteUser(int $queryId, SQLite3 $database) 
 {
-	$sqlQuery = "DELETE FROM users WHERE id = :queryId";
-	$stmt =	$database->prepare($sqlQuery);
-	$stmt->bindValue(':queryId', $queryId);
-	$res = $stmt->execute();
-	if (!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no funciona
+	$sqlQuery = "DELETE FROM users WHERE user_id = :queryId";
+	$bind1 = [':queryId', $queryId. SQLITE3_NUM];
+	$res = doQuery($database, $sqlQuery, $bind1);
+	if (!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no es necesario
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
 	else
 		successSend('user deleted'); // no se pueden imprimir varias cadenas JSON -> solo la función principal echo-ea

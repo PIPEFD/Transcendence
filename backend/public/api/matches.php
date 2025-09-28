@@ -26,11 +26,11 @@ function searchPlayers($context) {
     $playerId = getAndCheck($context['body']['player_id']);
     $limit = getAndCheck($context['body']['player_search']);
 
-    $playerElo = $database->query_single("SELECT elo FROM users WHERE id = '$playerId'");
+    $playerElo = $database->query_single("SELECT elo FROM users WHERE user_id = '$playerId'");
     if (!$playerElo)
         errorSend(404, 'player not found');
-    $sqlQuery = "SELECT id, elo, ABS(elo - '$playerElo') AS diff
-    FROM users WHERE id != '$playerId' ORDER BY diff ASC LIMIT '$limit'";
+    $sqlQuery = "SELECT user_id, elo, ABS(elo - '$playerElo') AS diff
+    FROM users WHERE user_id != '$playerId' ORDER BY diff ASC LIMIT '$limit'";
     $res = $database->query($sqlQuery);
     
     $data = [];
@@ -48,15 +48,15 @@ function updateElo($context) {
     $winnerId = getAndCheck($context['body']['winner_id']);
     $loserId = getAndCheck($context['body']['loser_id']);
 
-    $winnerElo = $database->query_single("SELECT elo FROM users WHERE id = '$winnerId'");
-    $loserElo = $database->query_single("SELECT elo FROM users WHERE id = '$loserId'");
+    $winnerElo = $database->query_single("SELECT elo FROM users WHERE user_id = '$winnerId'");
+    $loserElo = $database->query_single("SELECT elo FROM users WHERE user_id = '$loserId'");
 
     $newWinnerElo = operateElo($winnerElo, $loserElo, 1);
     $newLoserElo = operateElo($loserElo, $winnerElo, 0);
 
-    $sqlQuery = "UPDATE users SET elo = '$newWinnerElo' WHERE id = '$winnerId'";
+    $sqlQuery = "UPDATE users SET elo = '$newWinnerElo' WHERE user_id = '$winnerId'";
     $winRes = $database->exec($sqlQuery);
-    $sqlQuery = "UPDATE users SET elo = '$newLoserElo' WHERE id = '$loserId'";
+    $sqlQuery = "UPDATE users SET elo = '$newLoserElo' WHERE user_id = '$loserId'";
     $losRes = $database->exec($sqlQuery);
     
     if (!$winRes || !$losRes)
