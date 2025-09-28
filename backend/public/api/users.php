@@ -138,7 +138,7 @@ function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3
 function deleteUser(int $queryId, SQLite3 $database) 
 {
 	$sqlQuery = "DELETE FROM users WHERE user_id = :queryId";
-	$bind1 = [':queryId', $queryId. SQLITE3_INTEGER];
+	$bind1 = [':queryId', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1);
 	if (!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no es necesario
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());

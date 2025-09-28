@@ -28,7 +28,7 @@ switch ($requestMethod)
 
 function getFriendList(SQLite3 $database, int $queryId): void 
 {
-	$sqlQuery = "SELECT user_id, username, email FROM users WHERE id IN
+	$sqlQuery = "SELECT user_id, username, email FROM users WHERE user_id IN
 	(SELECT friend_id FROM friends WHERE user_id = :user_id)";
 	$bind1 = [':user_id', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1);

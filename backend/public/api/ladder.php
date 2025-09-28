@@ -22,8 +22,8 @@ if ($queryId) // selecciona las estadisticas de los amigos del usuario seleccion
 }
 else // selecciona las estadisticas de todos los usuarios
 {
-	$sqlQuery = "SELECT user_id, username, elo FROM users ORDER BY elo DESC
-	AND SELECT games_played, games_win, games_lose FROM ranking";
+	$sqlQuery = "SELECT u.user_id, u.username, u.elo, r.games_played, r.games_win, r.games_lose INNER JOIN
+	ranking r ON u.user_id = r.user_id ORDER BY u.elo DESC";
 	$res = doQuery($database, $sqlQuery);
 }
 

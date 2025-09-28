@@ -97,8 +97,8 @@ function accept(SQLite3 $database, int $sender_id, int $receiver_id): void
 		$res00 = doQuery($database, $sqlQuery00, $bind01, $bind02);
 
 		$sqlQuery01 = "INSERT INTO friends (user_id, friend_id) VALUES (:receiver_id, :sender_id)";
-		$bind11 = [':sender_id', $sender_id, SQLITE3_INTEGER];
 		$bind12 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
+		$bind11 = [':sender_id', $sender_id, SQLITE3_INTEGER];
 		$res01 = doQuery($database, $sqlQuery01, $bind11, $bind12);
 
 		$sqlQuery02 = "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";

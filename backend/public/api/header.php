@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json'); // Indica al navegador/cliente que la respuesta será texto en formato JSON.
 
-header('Access-Control-Allow-Origin: *'); // Permite que cualquier (*) dominio ("origen"), distinto al del servidor, pueda solicitar y acceder a los recursos de tu API. Sin esta cabecera, los navegadores bloquearían por defecto las peticiones AJAX provenientes de un dominio diferente por razones de seguridad. // AJAX: es un conjunto de técnicas de desarrollo web que permiten a una aplicación web comunicarse con un servidor en segundo plano sin interferir con el estado de la página actual. Permite que partes específicas de una página web se actualicen con nueva información del servidor sin necesidad de recargar la página por completo. // Ejemplo: mientras el cliente navega en mi web se comunica con una web de terceros para actualizar mis precios, por defecto el navegador bloquea esta clase de acción
+header('Access-Control-Allow-Origin: http://localhost:8085'); // Permite que cualquier (*) dominio ("origen"), distinto al del servidor, pueda solicitar y acceder a los recursos de tu API. Sin esta cabecera, los navegadores bloquearían por defecto las peticiones AJAX provenientes de un dominio diferente por razones de seguridad. // AJAX: es un conjunto de técnicas de desarrollo web que permiten a una aplicación web comunicarse con un servidor en segundo plano sin interferir con el estado de la página actual. Permite que partes específicas de una página web se actualicen con nueva información del servidor sin necesidad de recargar la página por completo. // Ejemplo: mientras el cliente navega en mi web se comunica con una web de terceros para actualizar mis precios, por defecto el navegador bloquea esta clase de acción
 header('Access-Control-Allow-Methods: GET, POST, DELETE, PATCH'); // Indica al navegador qué métodos HTTP (además de los métodos simples como GET o HEAD) están permitidos al realizar una solicitud desde un origen externo (la web de terceros del ejemplo).
 header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Se permite que la solicitud del cliente externo contenga las cabeceras Content-Type y Authorization (comúnmente usada para enviar credenciales de autenticación, como tokens).
 
@@ -38,6 +38,10 @@ function checkBodyData(array $body, string ...$keys): bool // ... (operador vari
 	foreach ($keys as $key)
 	{
 		if (!isset($body[$key]) || !$body[$key]) // !isset() comprueba si no éxiste o es null, ! comprueba si es "falsy" (null, false, "", \O, etc.)
+			return false;
+		if (stripos($key, '_id') !== false && !is_numeric($body[$key])) // stripos puede devolver 0 si la subcadena está al principio, lo cual es un resultado válido.
+			return false;
+		if (stripos($key, 'email') !== false && !filter_var($body[$key], FILTER_VALIDATE_EMAIL))
 			return false;
 	}
 	return true;

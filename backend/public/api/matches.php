@@ -5,17 +5,27 @@ require_once __DIR__ . '/header.php';
 $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
+$queryId = $_GET['id'] ?? null;
 
-if ($requestMethod !== 'POST') 
-	errorSend(405, 'unauthorized method');
-if (!checkBodyData($body, 'win_id', 'loser_id'))
-	errorSend(400, 'bad request');
-$winner_id = $body['winner_id'];
-$loser_id = $body['loser_id'];
-if (!(checkJWT($winner_id) || checkJWT($loser_id)))
-	errorSend(403, 'forbidden access');
-
-updateElo($database, $winner_id, $loser_id);
+switch ($requestMethod)
+{
+	case 'POST':
+		if (!checkBodyData($body, 'win_id', 'loser_id'))
+			errorSend(400, 'bad request');
+		$winner_id = $body['winner_id'];
+		$loser_id = $body['loser_id'];
+		if (!(checkJWT($winner_id) || checkJWT($loser_id)))
+			errorSend(403, 'forbidden access');
+		updateElo($database, $winner_id, $loser_id);
+		break;
+	case 'GET':
+		if (!checkJWT($queryId))
+			errorSend(403, 'forbidden access');
+		findMatch($database, $queryId);
+		break;
+	default:
+		errorSend(405, 'unauthorized method');
+}
 
 function updateElo(SQLite3 $database, int $win_id, int $ls_id): void
 {
@@ -36,7 +46,7 @@ function updateElo(SQLite3 $database, int $win_id, int $ls_id): void
 	catch (Exception $e)
 	{
 		$database->exec('ROLLBACK');
-		errorSend(500, 'couldn\'t update elo');
+		errorSend(500, 'couldn\'t update elo', $e->getMessage());
 	}
 }
 
@@ -90,30 +100,30 @@ function updateEloAux(SQLite3 $database, int $user_id, int $newElo, bool $win): 
 		throw new Exception ('SQL error ' . $database->lastErrorMsg());
 }
 
-?>
+function findMatch(SQLite3 $database, int $queryId)
+{
+	$sqlQ = "SELECT user_id, elo, username FROM users WHERE user_id = :user_id";
+	$bind = [':user_id', $queryId, SQLITE3_INTEGER];
+	$res = doQuery($database, $sqlQ, $bind);
+	if (!$res)
+		errorSend(500, 'SQL error -> ' . $database->lastErrorMsg());
+	$row = $res->fetchArray(SQLITE3_ASSOC);
+	if (!$row)
+		errorSend(404, 'Player not found');
+	$currentElo = $row['elo'];
 
-<!-- HOLA la idea es tener la funcion searchPlayers() la cual recibe el -->
-<!-- numero de jugadores que se buscan (variable para un solo partido -->
-<!-- o para un torneo) el formato es player_id: y player_search: x,   -->
-<!-- function searchPlayers($context)   -->
-<!-- {  -->
-<!-- 	if (!$context['auth'])  -->
-<!-- 		errorSend(403, 'forbidden');  -->
-<!--   -->
-<!-- 	$database = $context['database'];  -->
-<!-- 	$playerId = getAndCheck($context['body']['player_id']);  -->
-<!-- 	$limit = getAndCheck($context['body']['player_search']);  -->
-<!--   -->
-<!-- 	$playerElo = $database->query_single("SELECT elo FROM users WHERE user_id = '$playerId'");  -->
-<!-- 	if (!$playerElo)  -->
-<!-- 		errorSend(404, 'player not found');  -->
-<!-- 	$sqlQuery = "SELECT user_id, elo, ABS(elo - '$playerElo') AS diff  -->
-<!-- 	FROM users WHERE user_id != '$playerId' ORDER BY diff ASC LIMIT '$limit'";  -->
-<!-- 	$res = $database->query($sqlQuery);  -->
-<!-- 		  -->
-<!-- 	$data = [];  -->
-<!-- 	while ($row = $res->fetchArray(SQLITE3_ASSOC))  -->
-<!-- 		$data[] = $row;  -->
-<!-- 	echo json_encode($data, JSON_PRETTY_PRINT);  -->
-<!-- 	exit ;  -->
-<!-- }  -->
+	$sqlQ = "SELECT user_id, elo, ABS(elo - :currentElo) AS elo_diff FROM users
+	WHERE user_id != :user_id ORDER BY elo_diff ASC LIMIT 1";
+	$bind1 = [':currentElo', $currentElo, SQLITE3_INTEGER]; 
+	$bind2 = [':user_id', $queryId, SQLITE3_INTEGER];
+	$res = doQuery($database, $sqlQ, $bind1, $bind2);
+	if (!$res)
+		errorSend(500, 'SQL error -> ' . $database->lastErrorMsg());
+	$nextRival = $res->fetchArray();
+	if (!$nextRival)
+		errorSend(404, 'no rival found');
+	else
+		successSend('rival found', 200, "user_id -> $nextRival");
+}
+
+?>
