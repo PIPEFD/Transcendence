@@ -1,8 +1,4 @@
-PRAGMA foreign_keys = ON; -- activa la validación de las restricciones de clave externa.
--- Por defecto, para mantener la compatibilidad con versiones anteriores, SQLite no valida las claves externas. 
--- Esto significa que aunque definas FOREIGN KEY en tus tablas, SQLite las ignorará y te permitirá, por ejemplo, insertar un user_id en la tabla ranking que no existe en la tabla users.
-
--- tabla de usuarios
+PRAGMA foreign_keys = ON; -- activa la validación de las restricciones de clave externa. -- Por defecto, para mantener la compatibilidad con versiones anteriores, SQLite no valida las claves externas. -- Esto significa que aunque definas FOREIGN KEY en tus tablas, SQLite las ignorará y te permitirá, por ejemplo, insertar un user_id en la tabla ranking que no existe en la tabla users.
 
 CREATE TABLE IF NOT EXISTS users 
 (
@@ -15,8 +11,6 @@ CREATE TABLE IF NOT EXISTS users
 	last_login TEXT 
 );
 
--- tabla de autorizacion time_to_expire_mins => temporalmente 500
-
 CREATE TABLE IF NOT EXISTS twofa_codes 
 (
 	id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -27,8 +21,6 @@ CREATE TABLE IF NOT EXISTS twofa_codes
 	attempts_left INTEGER DEFAULT 3, 
 	FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
-
--- solicitudes de amistad
 
 CREATE TABLE IF NOT EXISTS friend_request 
 (
@@ -41,8 +33,6 @@ CREATE TABLE IF NOT EXISTS friend_request
 	FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
--- tabla de amigos
-
 CREATE TABLE IF NOT EXISTS friends 
 (
 	user_id INTEGER NOT NULL,
@@ -51,8 +41,6 @@ CREATE TABLE IF NOT EXISTS friends
 	FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
 	FOREIGN KEY (friend_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
-
--- ranking tabla
 
 CREATE TABLE IF NOT EXISTS ranking 
 (

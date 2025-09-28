@@ -20,7 +20,7 @@ $code = $body['code'];
 $user_id = $body['id'];
 
 $stmt_select = 'SELECT user_id, code, created_at, time_to_expire_mins, attempts_left FROM twofa_codes WHERE user_id = :user_id';
-$bind1 = [':user_id', $user_id, SQLITE3_NUM];
+$bind1 = [':user_id', $user_id, SQLITE3_INTEGER];
 $result_select = doQuery($database, $stmt_select, $bind1);
 if (!$result_select)
 	errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
@@ -63,7 +63,7 @@ successSend('Login successful.', 200, $jwt);
 function delete_row(SQLite3 $database, int $user_id): void
 {
 	$stmt_delete = $database->prepare('DELETE FROM twofa_codes WHERE user_id = :user_id');
-	$stmt_delete->bindValue(':user_id', $user_id, SQLITE3_NUM);
+	$stmt_delete->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 	if (!$stmt_delete->execute())
 		errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
 }
@@ -71,8 +71,8 @@ function delete_row(SQLite3 $database, int $user_id): void
 function decrease_attempts_left(SQLite3 $database, int $user_id, int $attempts_left): void
 {
 	$stmt_update = $database->prepare('UPDATE twofa_codes SET attempts_left = :attempts WHERE user_id = :user_id');
-	$stmt_update->bindValue(':user_id', $user_id, SQLITE3_NUM);
-	$stmt_update->bindValue(':attempts', $attempts_left - 1, SQLITE3_NUM);
+	$stmt_update->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+	$stmt_update->bindValue(':attempts', $attempts_left - 1, SQLITE3_INTEGER);
 	if (!$stmt_update->execute())
 		errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
 }

@@ -33,8 +33,8 @@ function errorSend(int $code, string $msg, ?string $detailsMsg = null): void
 	exit;
 }
 
-function checkBodyData(array $body, string ...$keys): bool // ... (operador variadic) -> agrupa una cantidad variable de argumentos en un array
-{ // necesitamos pasarle el body completo porque no podemos pasarle cada body[key] por separado antes de comprobar si existen
+function checkBodyData(array $body, string ...$keys): bool // ... (operador variadic) -> agrupa una cantidad variable de argumentos en un array // necesitamos pasarle el body completo porque no podemos pasarle cada body[key] por separado antes de comprobar si existen
+{
 	foreach ($keys as $key)
 	{
 		if (!isset($body[$key]) || !$body[$key]) // !isset() comprueba si no éxiste o es null, ! comprueba si es "falsy" (null, false, "", \O, etc.)

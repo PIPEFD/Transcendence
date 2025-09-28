@@ -30,7 +30,7 @@ function getFriendList(SQLite3 $database, int $queryId): void
 {
 	$sqlQuery = "SELECT user_id, username, email FROM users WHERE id IN
 	(SELECT friend_id FROM friends WHERE user_id = :user_id)";
-	$bind1 = [':user_id', $queryId, SQLITE3_NUM];
+	$bind1 = [':user_id', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1);
 	if (!$res)
 		errorSend(500, "Sql error: " . $database->lastErrorMsg());
@@ -48,8 +48,8 @@ function deleteFriend(SQLite3 $database, array $body, int $user_id): void
 
 	$sqlQuery = "DELETE FROM friends WHERE user_id = :user_id AND friend_id = :friend_id OR
 	user_id = :friend_id AND friend_id = :user_id";
-	$bind1 = [':user_id', $user_id, SQLITE3_NUM];
-	$bind2 = [':friend_id', $friend_id, SQLITE3_NUM];
+	$bind1 = [':user_id', $user_id, SQLITE3_INTEGER];
+	$bind2 = [':friend_id', $friend_id, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
 	if (!$res)
 		errorSend(500, "Sql error: " . $database->lastErrorMsg());

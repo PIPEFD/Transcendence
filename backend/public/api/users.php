@@ -56,7 +56,7 @@ function createUser(array $body, SQLite3 $database): void
 function userDataById(SQLite3 $database, int $queryId): void
 {
 	$sqlQuery = "SELECT username, email, elo FROM users WHERE user_id = :queryId";
-	$bind1 = [':queryId', $queryId, SQLITE3_NUM];
+	$bind1 = [':queryId', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1);
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
@@ -127,7 +127,7 @@ function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3
 			break;
 	}
 	$bind1 = [':newValue', $newValue, SQLITE3_TEXT];
-	$bind2 = [':queryId', $queryId, SQLITE3_NUM];
+	$bind2 = [':queryId', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
 	if(!$res)
 		return false;
@@ -138,7 +138,7 @@ function editUserDataAux(int $queryId, string $column, string $newValue, SQLite3
 function deleteUser(int $queryId, SQLite3 $database) 
 {
 	$sqlQuery = "DELETE FROM users WHERE user_id = :queryId";
-	$bind1 = [':queryId', $queryId. SQLITE3_NUM];
+	$bind1 = [':queryId', $queryId. SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1);
 	if (!$res) // los execute() de UPDATE y DELETE no devuelven lineas -> fetchArray() no es necesario
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());

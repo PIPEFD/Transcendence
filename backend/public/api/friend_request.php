@@ -41,8 +41,8 @@ function sendFriendRequest(array $body, SQLite3 $database, int $sender_id): void
 	$receiver_id = $body['receiver_id'];
 
 	$sqlQuery = "INSERT INTO friend_request (sender_id, receiver_id) VALUES (:sender_id, :receiver_id)";
-	$bind1 = [':sender_id', $sender_id, SQLITE3_NUM];
-	$bind2 = [':receiver_id', $receiver_id, SQLITE3_NUM];
+	$bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+	$bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
 	if (!$res)
 		errorSend(500, "Sql error: " . $database->lastErrorMsg());
@@ -53,7 +53,7 @@ function sendFriendRequest(array $body, SQLite3 $database, int $sender_id): void
 function requestListId(int $queryId, SQLite3 $database): void
 {
 	$sqlQuery = "SELECT sender_id, created_at FROM friend_request WHERE receiver_id = :receiver_id";
-	$bind1 = [':receiver_id', $queryId, SQLITE3_NUM];
+	$bind1 = [':receiver_id', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1);
 	if (!$res)
 		errorSend(500, "Sql error: " . $database->lastErrorMsg());
@@ -71,8 +71,8 @@ function acceptDeclineRequest(array $body, SQLite3 $database, int $receiver_id):
 	$action = $body['action'];
 
 	$sqlQuery = "SELECT * FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
-	$bind1 = [':sender_id', $sender_id, SQLITE3_NUM];
-	$bind2 = [':receiver_id', $receiver_id, SQLITE3_NUM];
+	$bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+	$bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
@@ -92,18 +92,18 @@ function accept(SQLite3 $database, int $sender_id, int $receiver_id): void
 	{
 		$success = true;
 		$sqlQuery00 = "INSERT INTO friends (user_id, friend_id) VALUES (:sender_id, :receiver_id)";
-		$bind01 = [':sender_id', $sender_id, SQLITE3_NUM];
-		$bind02 = [':receiver_id', $receiver_id, SQLITE3_NUM];
+		$bind01 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+		$bind02 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 		$res00 = doQuery($database, $sqlQuery00, $bind01, $bind02);
 
 		$sqlQuery01 = "INSERT INTO friends (user_id, friend_id) VALUES (:receiver_id, :sender_id)";
-		$bind11 = [':sender_id', $sender_id, SQLITE3_NUM];
-		$bind12 = [':receiver_id', $receiver_id, SQLITE3_NUM];
+		$bind11 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+		$bind12 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 		$res01 = doQuery($database, $sqlQuery01, $bind11, $bind12);
 
 		$sqlQuery02 = "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
-		$bind21 = [':sender_id', $sender_id, SQLITE3_NUM];
-		$bind22 = [':receiver_id', $receiver_id, SQLITE3_NUM];
+		$bind21 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+		$bind22 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 		$res02 = doQuery($database, $sqlQuery02, $bind21, $bind22);
 
 		if (!$res00 || !$res01 || !$res02)
@@ -126,8 +126,8 @@ function accept(SQLite3 $database, int $sender_id, int $receiver_id): void
 function decline(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
 	$sqlQuery = "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
-	$bind1 = [':sender_id', $sender_id, SQLITE3_NUM];
-	$bind2 = [':receiver_id', $receiver_id, SQLITE3_NUM];
+	$bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+	$bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
 	if (!$res)
 		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
