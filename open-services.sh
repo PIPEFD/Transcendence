@@ -89,22 +89,25 @@ check_services() {
     echo ""
     
     # Frontend
-    show_service "Frontend" "Interfaz principal de la aplicación" "http://localhost:3000" "https://localhost/" "$debug"
+    show_service "Frontend" "Interfaz principal de la aplicación" "http://localhost:9280" "https://localhost/" "$debug"
     
     # Backend API
     show_service "Backend API" "API para la aplicación Transcendence" "https://localhost/api/health.php" "" "$debug"
     
     # Prometheus
-    show_service "Prometheus" "Sistema de monitorización y alertas" "http://localhost:9090" "https://localhost/prometheus/" "$debug"
+    show_service "Prometheus" "Sistema de monitorización y alertas" "http://localhost:9581" "https://localhost/prometheus/" "$debug"
     
     # Grafana
-    show_service "Grafana" "Visualización de métricas y análisis" "http://localhost:3001" "https://localhost/grafana" "$debug"
+    show_service "Grafana" "Visualización de métricas y análisis" "http://localhost:9582" "https://localhost/grafana" "$debug"
     
     # cAdvisor
-    show_service "cAdvisor" "Métricas de contenedores Docker" "http://localhost:8080/cadvisor/" "https://localhost/cadvisor/" "$debug"
+    show_service "cAdvisor" "Métricas de contenedores Docker" "http://localhost:9583/cadvisor/" "https://localhost/cadvisor/" "$debug"
     
     # Websocket
-    show_service "WebSocket Game" "Servidor WebSocket para el juego" "http://localhost:8081" "" "$debug"
+    show_service "WebSocket Game" "Servidor WebSocket para el juego" "http://localhost:9480" "" "$debug"
+    
+    # Weave Scope
+    show_service "Weave Scope" "Visualización de topología" "http://localhost:9584" "https://localhost/scope/" "$debug"
 }
 
 # Comprobación de argumentos
@@ -120,46 +123,51 @@ fi
 
 # Menú principal
 echo "SERVICIOS DISPONIBLES:"
-echo "1) Frontend - Interfaz principal (Puerto 3000)"
+echo "1) Frontend - Interfaz principal (Puerto 9280)"
 echo "2) Backend API - Endpoints de la API"
-echo "3) Prometheus - Monitorización (Puerto 9090)"
-echo "4) Grafana - Dashboards (Puerto 3001)"
-echo "5) cAdvisor - Métricas de contenedores (Puerto 8080)"
+echo "3) Prometheus - Monitorización (Puerto 9581)"
+echo "4) Grafana - Dashboards (Puerto 9582)"
+echo "5) cAdvisor - Métricas de contenedores (Puerto 9583)"
 echo "6) Dashboard de Monitoreo"
-echo "7) Comprobar y abrir todos los servicios"
+echo "7) Weave Scope - Visualización de topología (Puerto 9584)"
+echo "8) Comprobar y abrir todos los servicios"
 echo "0) Salir"
 echo ""
 read -p "Selecciona una opción (0-7): " option
 
 case $option in
     1)
-        open_url "http://localhost:3000"
+        open_url "http://localhost:9280"
         ;;
     2)
         open_url "https://localhost/api/health.php"
         ;;
     3)
-        open_url "http://localhost:9090"
+        open_url "http://localhost:9581"
         ;;
     4)
-        open_url "http://localhost:3001"
+        open_url "http://localhost:9582"
         ;;
     5)
-        open_url "http://localhost:8080/cadvisor/"
+        open_url "http://localhost:9583/cadvisor/"
         ;;
     6)
         open_url "https://localhost/dashboard.html"
         ;;
     7)
+        open_url "http://localhost:9584"
+        ;;
+    8)
         check_services
         echo "¿Deseas abrir todos los servicios disponibles? (s/n): "
         read -p "" confirm
         if [ "$confirm" = "s" ] || [ "$confirm" = "S" ]; then
-            open_url "http://localhost:3000"
+            open_url "http://localhost:9280"
             open_url "https://localhost/api/health.php"
-            open_url "http://localhost:9090"
-            open_url "http://localhost:3001"
-            open_url "http://localhost:8080/cadvisor/"
+            open_url "http://localhost:9581"
+            open_url "http://localhost:9582"
+            open_url "http://localhost:9583/cadvisor/"
+            open_url "http://localhost:9584"
             open_url "https://localhost/dashboard.html"
         fi
         ;;

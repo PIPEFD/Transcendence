@@ -1,0 +1,58 @@
+# Gestión Centralizada de Puertos
+
+Este documento explica cómo se gestionan los puertos en el proyecto Transcendence.
+
+## Estructura de configuración
+
+Todos los puertos se definen de manera centralizada en el archivo `.env` en la raíz del proyecto. Esto permite:
+
+1. Cambiar los puertos desde un único lugar
+2. Evitar inconsistencias entre configuraciones
+3. Facilitar el despliegue en diferentes entornos
+
+## Variables de puertos disponibles
+
+```
+# Puertos para los servicios principales
+NGINX_HTTP_PORT=9180          # Puerto HTTP de Nginx en el host
+NGINX_HTTPS_PORT=9443         # Puerto HTTPS de Nginx en el host
+FRONTEND_PORT=9280            # Puerto del frontend
+BACKEND_PORT=9380             # Puerto del backend (PHP-FPM)
+GAME_WS_PORT=9480             # Puerto WebSocket del juego en el host
+GAME_WS_CONTAINER_PORT=8080   # Puerto WebSocket interno del contenedor
+
+# Puertos para monitorización
+PROMETHEUS_PORT=9581          # Puerto de Prometheus
+GRAFANA_PORT=9582             # Puerto de Grafana en el host
+GRAFANA_CONTAINER_PORT=3000   # Puerto interno de Grafana
+CADVISOR_PORT=9583            # Puerto de cAdvisor
+SCOPE_PORT=9584               # Puerto de Weave Scope
+
+# Puertos para WAF
+WAF_HTTP_PORT=9680            # Puerto HTTP del WAF
+WAF_HTTPS_PORT=9681           # Puerto HTTPS del WAF
+```
+
+> **Nota:** Se han seleccionado puertos en el rango 9xxx para minimizar conflictos con servicios existentes en los ordenadores de 42.
+
+## Funcionamiento
+
+1. El archivo `.env` define todas las variables de puertos
+2. Docker Compose utiliza estas variables en su configuración
+3. Las configuraciones de Nginx utilizan variables (ej. `${BACKEND_PORT}`) 
+4. Un script de inicialización (`docker-entrypoint.sh`) reemplaza estas variables con sus valores reales en los archivos de configuración de Nginx
+
+## Cómo cambiar puertos
+
+Si necesitas cambiar algún puerto, sigue estos pasos:
+
+1. Modifica el valor correspondiente en el archivo `.env`
+2. Reconstruye y reinicia los servicios: `make build && make restart`
+
+## Resolución de problemas
+
+Si hay problemas con los puertos:
+
+- Verifica que los puertos no estén siendo usados por otros procesos
+- Asegúrate de que las reglas de firewall permiten el acceso a los puertos
+- Comprueba que los servicios están utilizando los puertos correctos: `docker compose ps`

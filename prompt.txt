@@ -1,0 +1,135 @@
+You are Copilot assisting on the “Transcendence” stack. Before writing code, ask yourself structured questions about the user’s intent and our design. Then produce the files. Use the checklist below.
+
+CONTEXT SNAPSHOT (from the conversation)
+- Single public edge: hardened NGINX reverse proxy.
+- Internal services: frontend (static), backend (PHP-FPM), game-ws (Node WS).
+- Arbitrary host ports via .env (works on GitHub Codespaces, 42 campus PCs, any laptop).
+- Compose profiles: dev, monitoring, elk, edge (Cloudflare Tunnel), debug (optional).
+- Observability: Prometheus + exporters + Grafana + Weave Scope.
+- Logging: ELK (Elasticsearch + Logstash + Kibana + Filebeat) with normalized NGINX JSON and fallbacks.
+- Security: non-root, cap_drop ALL, read_only FS, tmpfs /tmp, no-new-privileges, loopback bindings, secrets via files.
+- Cloudflare Tunnel: publish nginx:443 without opening host ports.
+- Makefile must control profiles and print assigned ports.
+
+.GIVEN ENV (use these keys; do not hardcode elsewhere)
+ENV=development
+APP_DEBUG=true
+NGINX_HTTP_PORT=9180
+NGINX_HTTPS_PORT=9443
+DEV_FRONTEND_PORT=9280
+DEV_BACKEND_PORT=9380
+DEV_GAME_WS_PORT=9480
+FRONTEND_PORT=3000
+BACKEND_PORT=9000
+GAME_WS_PORT=8081
+GAME_WS_CONTAINER_PORT=8080
+PROMETHEUS_PORT=9190
+GRAFANA_PORT=9191
+CADVISOR_PORT=9192
+NODE_EXPORTER_PORT=9193
+NGINX_EXPORTER_PORT=9194
+PHP_FPM_EXPORTER_PORT=9195
+# ELK (add if missing)
+ELASTICSEARCH_PORT=9196
+KIBANA_PORT=9197
+LOGSTASH_BEATS_PORT=5044
+LOGSTASH_HTTP_PORT=9198
+
+SELF-QUESTIONS (answer briefly in comments at the top of each generated file)
+1) Ports & exposure:
+   - Is only NGINX exposed by default on 127.0.0.1:${NGINX_HTTP_PORT}/${NGINX_HTTPS_PORT}?
+   - Are dev-only ports exposed only under profile "dev"?
+   - Are monitoring/ELK ports loopback-only and only when profiles are enabled?
+2) Networks & routing:
+   - Do services use separate networks: internal, monitoring, edge?
+   - Does NGINX route: "/" -> frontend:${FRONTEND_PORT}, "/api/" -> php-fpm:9000 (FastCGI), "/ws" -> game-ws:${GAME_WS_PORT} with Upgrade headers?
+3) Security/hardening:
+   - Are containers non-root where feasible, with cap_drop ALL, read_only, tmpfs /tmp, and no-new-privileges?
+   - Are TLS, HSTS, CSP, and standard security headers configured on the proxy?
+4) Observability & logs:
+   - Are Prometheus targets and exporters wired?
+   - Are NGINX access logs JSON; is Filebeat shipping to Logstash; are pipelines normalizing and routing to indices?
+5) Cloudflare:
+   - Does the "edge" profile remove host port exposure and use cloudflared to publish nginx:443?
+6) Makefile & DX:
+   - Can I run `make up` and `make up PROFILES="dev,monitoring,elk,edge"`?
+   - Do `make ports` and `make status` report dynamic bindings reliably?
+
+DELIVERABLES (create all with comments explaining reasoning)
+- compose/docker-compose.yml  (with profiles: dev, monitoring, elk, edge)
+- nginx/Dockerfile
+- nginx/nginx.conf
+- nginx/conf.d/{proxy.conf,security.conf,status.conf}
+- frontend/Dockerfile
+- frontend/nginx.conf   (static SPA server on ${FRONTEND_PORT})
+- backend/Dockerfile
+- backend/php-fpm.d/zzz-pool.conf
+- backend/php/conf.d/{prod.ini,opcache.ini}
+- game-ws/Dockerfile
+- game-ws/app/server.js  (listen ${GAME_WS_CONTAINER_PORT}, healthz)
+- monitoring/prometheus.yml
+- monitoring/grafana/provisioning/{datasources/datasource.yml,dashboards/*.json}
+- exporters (nginx-exporter, php-fpm-exporter) wired in compose
+- weave/scope.htpasswd (placeholder; real secret via Docker secrets)
+- elk/elasticsearch/Dockerfile + config
+- elk/logstash/{Dockerfile,config/logstash.yml,pipeline/{nginx.conf,php.conf,app.conf}}
+- elk/filebeat/{Dockerfile,filebeat.yml}
+- elk/kibana/{Dockerfile,config/kibana.yml,provisioning/*}
+- cloudflared/config.yml (template)
+- scripts/{mkcert.sh,wait-for.sh}
+- Makefile
+- README.md (run modes, profiles, troubleshooting)
+
+COMPOSE KEY RULES
+- NGINX ports:
+  ports:
+    - "127.0.0.1:${NGINX_HTTP_PORT:-0}:80"
+    - "127.0.0.1:${NGINX_HTTPS_PORT:-0}:443"
+- Dev-only exposure (profile "dev"):
+  frontend:
+    profiles: ["dev"]
+    ports: ["127.0.0.1:${DEV_FRONTEND_PORT:-0}:${FRONTEND_PORT}"]
+  game-ws:
+    profiles: ["dev"]
+    ports: ["127.0.0.1:${DEV_GAME_WS_PORT:-0}:${GAME_WS_PORT}"]
+  # backend remains FastCGI-only (no HTTP port)
+- Monitoring (profile "monitoring"): prometheus/grafana/exporters/scope; loopback ports optional.
+- ELK (profile "elk"): elasticsearch/logstash/kibana/filebeat; loopback ports optional.
+- Edge (profile "edge"): cloudflared without host ports; maps public routes to nginx:443 (and optionally Grafana/Kibana via CF Access).
+
+NGINX ROUTING & SECURITY (implement in configs)
+- proxy `/` -> frontend; `/api/` -> php-fpm (FastCGI params set correctly); `/ws` -> game-ws with Upgrade headers and timeouts suited for WS.
+- Security headers: HSTS, minimal CSP, X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy same-origin, Permissions-Policy minimal.
+- Access log JSON; error log warn.
+- Self-signed TLS via scripts/mkcert.sh if no certs/keys detected.
+
+ELK PIPELINES (Logstash)
+- nginx.conf: try JSON decode; fallback grok; enrich geoip/user_agent; index logs-nginx-%{+YYYY.MM.DD}.
+- php.conf: grok PHP-FPM patterns; index logs-php-%{+YYYY.MM.DD}.
+- app.conf: parse JSON app logs; index logs-app-%{+YYYY.MM.DD}.
+- ILM (optional JSON) for 30d retention.
+
+MAKEFILE TARGETS (support COMPOSE_PROFILES)
+- up / down / restart / rebuild / ps / logs / ports / status
+- up-dev, up-monitoring, up-elk, up-edge, up-all (wrappers passing PROFILES)
+- ports uses `docker compose port` to print effective host ports.
+
+ACCEPTANCE TESTS (generate bash script or README steps)
+- curl -I http://127.0.0.1:${NGINX_HTTP_PORT}/ -> 200
+- curl -I http://127.0.0.1:${NGINX_HTTP_PORT}/api/health -> 200
+- WebSocket upgrade 101 on /ws via curl -i -N with Upgrade headers
+- If monitoring enabled: /-/ready on Prometheus, /login on Grafana
+- If ELK enabled: ES cluster health green/yellow; Logstash pipelines present; Kibana status green; indices logs-nginx-* created after traffic
+
+CONSTRAINTS
+- No hardcoded host ports inside containers. Only .env drives host exposure.
+- Containers unprivileged with hardening flags where feasible.
+- Prefer loopback `127.0.0.1` for all published ports.
+- Keep backend HTTP closed; use FastCGI via NGINX.
+- Comments at top of each file briefly answer the SELF-QUESTIONS.
+
+ACTION
+1) Write/modify all deliverables above, adhering to ENV and profiles.
+2) Include concise comments answering the SELF-QUESTIONS per file.
+3) Ensure `docker compose -f compose/docker-compose.yml --env-file .env up -d` works with and without profiles.
+4) Provide a short “What changed & why” summary in README.

@@ -1,12 +1,4 @@
 <?php
-<<<<<<< HEAD:backend/srcs/public/api/test.php
-header('Content-Type: application/json');
-echo json_encode([
-    'status' => 'success',
-    'message' => 'API test successful',
-    'timestamp' => time()
-]);
-=======
 // Desactiva los warnings para una salida JSON limpia
 error_reporting(0);
 
@@ -27,4 +19,3 @@ $response = [
 
 // Imprime el array codificado en formato JSON
 echo json_encode($response, JSON_PRETTY_PRINT);
->>>>>>> main:backend/public/api/test.php

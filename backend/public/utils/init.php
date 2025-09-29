@@ -5,7 +5,6 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET, POST, DELETE, PATCH');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-require_once "database.php";
 require 'utils.php';
 require '../config/config.php';
 $database = connectDatabase();

@@ -1,0 +1,15 @@
+[
+  "test_connectivity.py::test_service_ports_reachable",
+  "test_integration.py::test_backend_database_connection",
+  "test_integration.py::test_end_to_end_flow",
+  "test_integration.py::test_frontend_backend_communication",
+  "test_integration.py::test_game_websocket_connection",
+  "test_integration.py::test_monitoring_integration",
+  "test_integration.py::test_service_startup_time",
+  "test_unit.py::test_config_files_exist",
+  "test_unit.py::test_docker_compose_file",
+  "test_unit.py::test_environment_variables",
+  "test_unit.py::test_init_scripts",
+  "test_unit.py::test_nginx_config",
+  "test_unit.py::test_ssl_certificates"
+]

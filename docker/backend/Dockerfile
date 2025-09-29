@@ -18,13 +18,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Configurar directorio de trabajo
 WORKDIR /var/www/html
 
+# Copiar script de entrypoint para manejar Docker secrets
+COPY docker/backend/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Copiar archivos del proyecto
-COPY composer.* ./
+COPY backend/composer.* ./
 # Instalar dependencias con Composer
 RUN composer install --no-scripts --no-autoloader
 
 # Copiar el resto de los archivos
-COPY . .
+COPY backend/ .
 
 # Generar autoloader optimizado
 RUN composer dump-autoload --optimize
@@ -37,4 +41,5 @@ RUN echo -e "[global]\npid = /run/php-fpm.pid\nerror_log = /proc/self/fd/2\nlog_
     echo -e "\nphp_flag[display_errors] = on\nphp_admin_value[error_log] = /proc/self/fd/2\nphp_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
 
 EXPOSE 9000
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["php-fpm", "-F"]

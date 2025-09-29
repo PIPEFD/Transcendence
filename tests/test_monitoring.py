@@ -19,7 +19,7 @@ def test_prometheus_ready(prom_url):
 @pytest.mark.monitoring
 @pytest.mark.integration
 def test_prometheus_query_up(prom_url):
-    r = requests.get(f"{prom_url}/api/v1/query", params={"query": "up"}, timeout=8)
+    r = requests.get(f"{prom_url}/api/query", params={"query": "up"}, timeout=8)
     any_code(r, [200])
     payload = r.json()
     assert payload.get("status") == "success"
