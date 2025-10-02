@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users
 	elo INTEGER DEFAULT 200,
 	username TEXT UNIQUE NOT NULL,
 	email TEXT UNIQUE NOT NULL,
-	password TEXT NOT NULL,
+	pass password TEXT NOT NULL,
 	created TEXT DEFAULT CURRENT_TIMESTAMP,
 	last_login TEXT 
 );

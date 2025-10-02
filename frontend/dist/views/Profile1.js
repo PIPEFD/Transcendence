@@ -115,8 +115,8 @@ export function Profile1View(app, state) {
         }
         const username = usernameInput.value.trim();
         const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        if (!username || !email || !password) {
+        const pass = passwordInput.value.trim();
+        if (!username || !email || !pass) {
             alert("Todos los campos son obligatorios");
             return;
         }
@@ -124,7 +124,7 @@ export function Profile1View(app, state) {
             const response = yield fetch("http://localhost:8085/api/users.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email, password })
+                body: JSON.stringify({ username, email, pass })
             });
             // Intentamos parsear JSON, pero validamos antes si es correcto
             const text = yield response.text();

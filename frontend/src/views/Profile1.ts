@@ -109,9 +109,9 @@ export function Profile1View(app: HTMLElement, state: any): void {
   
       const username = usernameInput.value.trim();
       const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
+      const pass = passwordInput.value.trim();
   
-      if (!username || !email || !password) {
+      if (!username || !email || !pass) {
         alert("Todos los campos son obligatorios");
         return;
       }
@@ -120,7 +120,7 @@ export function Profile1View(app: HTMLElement, state: any): void {
         const response = await fetch("http://localhost:8085/api/users.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password })
+          body: JSON.stringify({ username, email, pass })
         });
   
         // Intentamos parsear JSON, pero validamos antes si es correcto
