@@ -1,9 +1,0 @@
-{
-  "test_integration.py::test_frontend_backend_communication": true,
-  "test_integration.py::test_backend_database_connection": true,
-  "test_integration.py::test_game_websocket_connection": true,
-  "test_integration.py::test_monitoring_integration": true,
-  "test_integration.py::test_service_startup_time": true,
-  "test_integration.py::test_end_to_end_flow": true,
-  "test_connectivity.py::test_service_ports_reachable": true
-}

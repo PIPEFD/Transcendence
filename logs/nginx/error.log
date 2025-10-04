@@ -3016,3 +3016,235 @@
 2025/09/30 13:52:50 [warn] 28#28: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
 2025/09/30 13:52:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
 2025/09/30 13:53:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:53:20 [warn] 33#33: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:53:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:53:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:53:50 [warn] 40#40: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:53:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:54:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:54:20 [warn] 46#46: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:54:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:54:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:54:50 [warn] 52#52: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:54:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:55:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:55:20 [warn] 58#58: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:55:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:55:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:55:50 [warn] 65#65: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:55:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:56:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:56:21 [warn] 71#71: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:56:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:56:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:56:51 [warn] 77#77: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/conf.d/10-app.conf:2
+2025/09/30 13:56:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:57:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:57:21 [emerg] 83#83: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 13:57:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:57:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:57:51 [emerg] 89#89: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 13:57:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:58:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:58:21 [emerg] 95#95: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 13:58:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:58:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:58:51 [emerg] 101#101: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 13:58:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:59:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:59:21 [emerg] 107#107: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 13:59:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:59:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 13:59:51 [emerg] 113#113: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 13:59:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:00:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:00:21 [emerg] 119#119: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:00:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:00:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:00:51 [emerg] 125#125: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:00:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:01:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:01:21 [emerg] 131#131: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:01:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:01:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:01:51 [emerg] 137#137: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:01:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:02:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:02:21 [emerg] 142#142: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:02:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:02:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:02:51 [emerg] 148#148: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:02:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:03:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:03:21 [emerg] 154#154: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:03:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:03:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:03:51 [emerg] 160#160: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:03:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:04:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:04:21 [emerg] 166#166: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:04:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:04:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:04:51 [emerg] 172#172: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:04:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:05:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:05:21 [emerg] 178#178: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:05:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:05:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:05:51 [emerg] 183#183: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:05:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:06:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:06:21 [emerg] 189#189: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:06:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:06:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:06:51 [emerg] 195#195: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:06:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:07:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:07:21 [emerg] 201#201: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:07:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:07:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:07:51 [emerg] 207#207: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:07:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:08:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:08:21 [emerg] 213#213: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:08:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:08:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:08:51 [emerg] 219#219: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:08:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:09:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:09:22 [emerg] 225#225: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:09:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:09:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:09:52 [emerg] 231#231: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:09:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:10:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:10:22 [emerg] 237#237: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:10:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:10:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:10:52 [emerg] 243#243: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:10:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:11:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:11:22 [emerg] 249#249: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:11:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:11:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:11:52 [emerg] 255#255: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:11:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:12:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:12:22 [emerg] 261#261: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:12:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:12:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:12:52 [emerg] 267#267: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:12:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:13:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:13:22 [emerg] 273#273: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:13:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:13:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:13:52 [emerg] 279#279: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:13:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:14:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:14:22 [emerg] 285#285: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:14:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:14:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:14:52 [emerg] 291#291: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:14:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:15:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:15:22 [emerg] 297#297: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:15:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:15:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:15:52 [emerg] 303#303: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:15:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:16:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:16:22 [emerg] 309#309: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:16:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:16:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:16:52 [emerg] 315#315: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:16:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:17:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:17:22 [emerg] 321#321: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:17:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:17:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:17:52 [emerg] 328#328: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:17:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:18:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:18:22 [emerg] 334#334: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:18:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:18:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:18:52 [emerg] 340#340: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:18:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:19:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:19:22 [emerg] 346#346: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:19:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:19:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:19:52 [emerg] 352#352: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:19:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:20:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:20:22 [emerg] 358#358: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:20:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:20:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:20:52 [emerg] 364#364: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:20:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:21:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:21:22 [emerg] 370#370: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:21:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:21:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:21:52 [emerg] 376#376: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:21:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:22:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:22:23 [emerg] 382#382: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:22:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:22:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:22:53 [emerg] 388#388: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:22:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:23:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:23:23 [emerg] 394#394: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:23:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:23:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:23:53 [emerg] 400#400: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:23:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:24:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:24:23 [emerg] 405#405: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:24:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:24:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:24:53 [emerg] 411#411: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:24:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:25:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:25:23 [emerg] 417#417: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:25:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:25:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:25:53 [emerg] 423#423: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:25:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:26:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:26:23 [emerg] 429#429: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:26:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:26:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:26:53 [emerg] 435#435: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:26:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:27:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:27:23 [emerg] 441#441: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:27:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:27:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:27:53 [emerg] 447#447: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:27:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:28:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:28:23 [emerg] 453#453: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:28:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:28:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:28:53 [emerg] 459#459: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:28:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:29:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:29:23 [emerg] 465#465: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:29:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:29:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:29:53 [emerg] 471#471: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:29:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:30:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:30:23 [emerg] 477#477: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:30:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:30:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:30:53 [emerg] 483#483: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:30:58 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:31:13 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:31:23 [emerg] 489#489: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
+2025/09/30 14:31:28 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:31:43 [error] 21#21: *2 open() "/etc/nginx/html/metrics" failed (2: No such file or directory), client: 172.18.0.4, server: localhost, request: "GET /metrics HTTP/1.1", host: "nginx:8080"
+2025/09/30 14:31:53 [emerg] 495#495: open() "/etc/nginx/snippets/proxy_common.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:53
