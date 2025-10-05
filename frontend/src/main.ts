@@ -138,6 +138,36 @@ window.addEventListener("load", () => {
 
 window.addEventListener("popstate", router);
 
+const clearDbBtn = document.createElement('button');
+clearDbBtn.textContent = "🧹 Borrar toda la base de datos (Test)";
+clearDbBtn.className = `
+  bg-gradient-to-b from-red-500 to-red-700 
+  text-poke-light py-2 px-4 border-3 border-red-900 border-b-red-900 
+  rounded hover:from-red-600 hover:to-red-800 active:animate-press
+  mt-4 mx-auto block
+  shadow-lg
+  text-sm
+`;
+
+clearDbBtn.addEventListener('click', async () => {
+  if (!confirm("⚠️ Esto borrará toda la base de datos. ¿Seguro?")) return;
+
+  try {
+    const response = await fetch("http://localhost:8085/api/delete_all.php", {
+      method: 'POST'
+    });
+
+    const data = await response.json();
+    alert(data.success || data.error);
+  } catch (err) {
+    console.error(err);
+    alert("❌ Error borrando la base de datos");
+  }
+});
+
+// Añadir el botón al final del body o a un contenedor específico
+document.body.appendChild(clearDbBtn);
+
 export {}; // para evitar conflictos TS  
   // tsc && docker build -t pixel-theme . && docker run -p 3000:3000 pixel-theme
   // docker build -t pixel-theme .

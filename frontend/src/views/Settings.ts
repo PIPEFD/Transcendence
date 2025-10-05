@@ -22,7 +22,11 @@ export function SettingsView(app: HTMLElement, state: any): void {
             ${t("changeLanguage")}
         </button>
 
-        <button id="gbcBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded mb-2 w-full hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press active:border-b-red-800">
+        <button id="logoutBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded mb-2 w-full hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press active:border-b-red-800">
+            ${t("Log out")}
+        </button>
+
+        <button id="gbcBtn" class="bg-poke-blue bg-opacity-80 text-poke-light py-2 border-3 border-poke-blue border-b-blue-800 rounded mb-2 w-full hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 active:animate-press active:border-b-blue-800">
             ${t("goBack")}
         </button>
     </div>
@@ -33,4 +37,22 @@ export function SettingsView(app: HTMLElement, state: any): void {
   document.getElementById("cfrBtn")?.addEventListener("click", () => navigate("/chat"));
   document.getElementById("clangBtn")?.addEventListener("click", () => navigate("/language"));
   document.getElementById("gbcBtn")?.addEventListener("click", () => navigate("/"));
+
+  document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+    try {
+      const response = await fetch("http://localhost:8085/api/logout.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      console.log("Logout response:", data);
+
+      // Borrar JWT del localStorage y volver al inicio
+      localStorage.removeItem("JWT");
+      navigate("/register");
+    } catch (err) {
+      console.error("Error during logout:", err);
+      alert("❌ " + (err as Error).message);
+    }
+  });
 }
