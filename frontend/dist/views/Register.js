@@ -13,11 +13,11 @@ export function RegisterView(app, state) {
         <div class="flex justify-center">
         <button id="reg1Button" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded
                 hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 hover:border-b-red-800 active:animate-press active:border-b-red-800">
-                registro
+                ${t("sign_up")}
             </button>
             <button id="regButton" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded
                 hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 hover:border-b-red-800 active:animate-press active:border-b-red-800">
-                ${t("enter")}
+                ${t("log_in")}
             </button>
         </div>
     </div>

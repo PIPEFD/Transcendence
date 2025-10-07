@@ -16,20 +16,20 @@ export function LoginView(app, state) {
       <p class="text-poke-light text-xs">PONG</p>
     </div>
     <div class="bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-4 rounded-lg shadow-lg">
-      <h2 class="text-sm leading-relaxed mb-4">${t("Login")}</h2>
-      <input type="text" id="username" placeholder="${t("username")}"
+      <h2 class="text-sm leading-relaxed mb-4">${t("log_in")}</h2>
+      <input type="text" id="username" placeholder="${t("_username")}"
         class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <input type="password" id="password" placeholder="${t("Password")}"
+      <input type="password" id="password" placeholder="${t("password")}"
         class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
       <div class="flex justify-center gap-4">
         <button id="loginBtn"
           class="bg-poke-blue bg-opacity-80 text-poke-light py-2 border-3 border-poke-blue border-b-blue-800 rounded hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 active:animate-press">
-          ${t("Login")}
+          ${t("log_in")}
         </button>
         <button id="back"
           class="bg-gradient-to-b from-poke-red to-red-700 text-poke-light py-2 border-3 border-poke-red border-b-red-900 rounded 
                  hover:from-red-500 hover:to-red-600 active:animate-press">
-          ${t("Back")}
+          ${t("back")}
         </button>
       </div>
       <div id="loginError" class="text-red-600 text-center mt-3 text-sm"></div>
@@ -45,7 +45,7 @@ export function LoginView(app, state) {
         const username = usernameInput.value.trim();
         const pass = passwordInput.value.trim();
         if (!username || !pass) {
-            errorDiv.textContent = "⚠️ Please fill in all fields";
+            errorDiv.textContent = "Please fill in all fields";
             return;
         }
         try {
@@ -56,6 +56,7 @@ export function LoginView(app, state) {
             });
             const text = yield response.text();
             console.log("Backend returned:", text);
+            console.log("Backend returned:", JSON.stringify({ username, pass }));
             let data;
             try {
                 data = JSON.parse(text);
@@ -63,22 +64,22 @@ export function LoginView(app, state) {
             catch (_a) {
                 throw new Error("Invalid JSON response from backend");
             }
-            // ❌ Aquí comprobamos si hay error y lo mostramos
+            // Aquí comprobamos si hay error y lo mostramos
             if (data.error) {
                 errorDiv.textContent = data.error;
                 return; // ¡detenemos la navegación!
             }
-            // ✅ Si requiere 2FA
+            // Si requiere 2FA
             if (data.pending_2fa) {
                 localStorage.setItem("pendingUserId", data.user_id);
-                navigate("/choose");
+                navigate("/authentication");
             }
             else {
                 navigate("/"); // login exitoso
             }
         }
         catch (err) {
-            console.error("❌ Network or server error:", err);
+            console.error("Network or server error:", err);
             errorDiv.textContent = "Network error. Backend unreachable.";
         }
     }));

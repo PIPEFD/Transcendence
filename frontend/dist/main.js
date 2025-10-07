@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { RegisterView } from "./views/Register.js";
 import { ProfileView } from "./views/Profile.js";
 import { Profile1View } from "./views/Profile1.js";
+import { AuthView } from "./views/Authenticaction.js";
 import { ChooseView } from "./views/Choose.js";
 import { AvatarView } from "./views/Avatar.js";
 import { GameView } from "./views/Game.js";
@@ -23,16 +24,17 @@ import { StatsView } from "./views/Statistics.js";
 import { LanguageView } from "./views/Language.js";
 import { MatchHistoryView } from "./views/MatchHistory.js";
 import { LoginView } from "./views/Login.js";
+import { setLanguage } from "./translations/index.js";
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
 export let currentLang = localStorage.getItem("playerLang") || "en";
-export function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem("playerLang", lang);
-    // re-render current view so any language-aware UI can update
-    router();
-}
+/* export function setLanguage(lang: Lang): void {
+  currentLang = lang;
+  localStorage.setItem("playerLang", lang);
+  // re-render current view so any language-aware UI can update
+  router();
+} */
 // La función navigate ahora debe ser exportada para que las vistas puedan importarla
 export function navigate(path) {
     if (window.location.pathname !== path) {
@@ -55,6 +57,9 @@ function router() {
             break;
         case "/profile1":
             Profile1View(app, state);
+            break;
+        case "/authentication":
+            AuthView(app, state);
             break;
         case "/login":
             LoginView(app, state);
@@ -98,7 +103,7 @@ function updateHeaderFooterVisibility(route) {
     const footer = document.querySelector("footer");
     if (!header || !footer)
         return;
-    const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1"];
+    const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication"];
     if (hiddenRoutes.includes(route)) {
         header.classList.add("hidden");
         footer.classList.add("hidden");
@@ -133,7 +138,7 @@ clearDbBtn.className = `
   text-sm
 `;
 clearDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
-    if (!confirm("⚠️ Esto borrará toda la base de datos. ¿Seguro?"))
+    if (!confirm("Esto borrará toda la base de datos. ¿Seguro?"))
         return;
     try {
         const response = yield fetch("http://localhost:8085/api/delete_all.php", {
@@ -144,11 +149,57 @@ clearDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, fun
     }
     catch (err) {
         console.error(err);
-        alert("❌ Error borrando la base de datos");
+        alert("Error borrando la base de datos");
     }
 }));
+const esDbBtn = document.createElement('button');
+esDbBtn.textContent = "Spanish";
+esDbBtn.className = `
+  bg-gradient-to-b from-blue-500 to-blue-700 
+  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
+  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
+  mt-4 mx-auto block
+  shadow-lg
+  text-sm
+`;
+esDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
+    setLanguage("es");
+}));
+const frDbBtn = document.createElement('button');
+frDbBtn.textContent = "French";
+frDbBtn.className = `
+  bg-gradient-to-b from-blue-500 to-blue-700 
+  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
+  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
+  mt-4 mx-auto block
+  shadow-lg
+  text-sm
+`;
+frDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
+    setLanguage("fr");
+}));
+const enDbBtn = document.createElement('button');
+enDbBtn.textContent = "English";
+enDbBtn.className = `
+  bg-gradient-to-b from-blue-500 to-blue-700 
+  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
+  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
+  mt-4 mx-auto block
+  shadow-lg
+  text-sm
+`;
+enDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
+    setLanguage("en");
+}));
+const langContainer = document.createElement("div");
+langContainer.className = "flex gap-2 justify-center mt-4"; // flex horizontal + espacio entre botones
+// Añadir los botones al contenedor
+langContainer.appendChild(clearDbBtn);
+langContainer.appendChild(esDbBtn);
+langContainer.appendChild(frDbBtn);
+langContainer.appendChild(enDbBtn);
 // Añadir el botón al final del body o a un contenedor específico
-document.body.appendChild(clearDbBtn);
+document.body.appendChild(langContainer);
 // tsc && docker build -t pixel-theme . && docker run -p 3000:3000 pixel-theme
 // docker build -t pixel-theme .
 //  docker run -p 3000:3000 pixel-theme

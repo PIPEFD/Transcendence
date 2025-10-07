@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
-export function Profile1View(app, state) {
+export function AuthView(app, state) {
     var _a;
     app.innerHTML = `
     <div class="text-center mb-4">
@@ -17,49 +17,35 @@ export function Profile1View(app, state) {
       <p class="text-poke-light text-xs">PONG</p>
     </div>
     <div class="bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-4 rounded-lg shadow-lg">
-      <h2 class="text-sm leading-relaxed mb-4">${t("profile")}</h2>
+      <h2 class="text-sm leading-relaxed mb-4">Authentication</h2>
       <p class="text-sm mb-4">
-        ${t("welcome")}, ${state.player.user || t("player")}!
-        ${t("username_info")}
+        ${t("enter_code_mail")}
       </p>
-      <input type="text" id="userEnter" placeholder="${t("enter_username")}"
+      <input type="text" id="mailEnter" placeholder="${t("code")}"
         class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <input type="email" id="mailEnter" placeholder="${t("mail")}"
-        class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <input type="password" id="passEnter" placeholder="${t("password")}"
-        class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <div class="flex justify-center gap-4">
-        <button id="userButton"
+      <div class="flex justify-center">
+        <button id="mailButton"
           class="bg-poke-blue bg-opacity-80 text-poke-light py-2 border-3 border-poke-blue border-b-blue-800 rounded 
                  hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 hover:border-b-blue-800 active:animate-press active:border-b-blue-800">
-          ${t("enter_username")}
-        </button>
-        <button id="back"
-          class="bg-gradient-to-b from-poke-red to-red-700 text-poke-light py-2 border-3 border-poke-red border-b-red-900 rounded 
-                 hover:from-red-500 hover:to-red-600 active:animate-press">
-          ${t("back")}
+          ${t("enter_code")}
         </button>
       </div>
     </div>
   `;
-    const backBtn = document.getElementById("back");
-    backBtn === null || backBtn === void 0 ? void 0 : backBtn.addEventListener("click", () => navigate("/register"));
-    (_a = document.getElementById("userButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-        const usernameInput = document.getElementById("userEnter");
+    (_a = document.getElementById("mailButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         const emailInput = document.getElementById("mailEnter");
-        const passwordInput = document.getElementById("passEnter");
-        const username = usernameInput.value.trim();
-        const email = emailInput.value.trim();
-        const pass = passwordInput.value.trim();
-        if (!username || !email || !pass) {
-            alert("Todos los campos son obligatorios");
+        const code = emailInput.value.trim();
+        const userIdStr = localStorage.getItem("pendingUserId"); // cojo el id del user, pero esta en tipo string
+        const id = userIdStr ? parseInt(userIdStr, 10) : null; // paso a int
+        if (!code) {
+            alert("Introduce el codigo");
             return;
         }
         try {
-            const response = yield fetch("http://localhost:8085/api/users.php", {
+            const response = yield fetch("http://localhost:8085/api/verify_2fa.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email, pass })
+                body: JSON.stringify({ id, code })
             });
             const text = yield response.text();
             let data;
@@ -74,10 +60,9 @@ export function Profile1View(app, state) {
                 alert("Error: " + (data.error || "Bad Request"));
                 return;
             }
-            alert("Usuario creado correctamente");
-            state.player.user = username;
-            localStorage.setItem("player", JSON.stringify(state.player));
-            navigate("/register");
+            alert("Codigo correcto");
+            localStorage.setItem("tokenUser", data.user_id); // Guardo token
+            navigate("/choose");
         }
         catch (err) {
             console.error(err);

@@ -13,21 +13,30 @@ export function Profile1View(app: HTMLElement, state: any): void {
         ${t("welcome")}, ${state.player.user || t("player")}!
         ${t("username_info")}
       </p>
-      <input type="text" id="userEnter" placeholder="${t("new_username")}"
+      <input type="text" id="userEnter" placeholder="${t("enter_username")}"
         class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <input type="email" id="mailEnter" placeholder="Email"
+      <input type="email" id="mailEnter" placeholder="${t("mail")}"
         class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <input type="password" id="passEnter" placeholder="Password"
+      <input type="password" id="passEnter" placeholder="${t("password")}"
         class="border-2 border-pixel-black px-4 py-2 mb-4 w-full" />
-      <div class="flex justify-center">
+      <div class="flex justify-center gap-4">
         <button id="userButton"
           class="bg-poke-blue bg-opacity-80 text-poke-light py-2 border-3 border-poke-blue border-b-blue-800 rounded 
                  hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 hover:border-b-blue-800 active:animate-press active:border-b-blue-800">
-          ${t("enter_user")}
-        </button>   
+          ${t("enter_username")}
+        </button>
+        <button id="back"
+          class="bg-gradient-to-b from-poke-red to-red-700 text-poke-light py-2 border-3 border-poke-red border-b-red-900 rounded 
+                 hover:from-red-500 hover:to-red-600 active:animate-press">
+          ${t("back")}
+        </button>
       </div>
     </div>
   `;
+
+  const backBtn = document.getElementById("back");
+
+  backBtn?.addEventListener("click", () => navigate("/register"));
 
   document.getElementById("userButton")?.addEventListener("click", async () => {
     const usernameInput = document.getElementById("userEnter") as HTMLInputElement;
