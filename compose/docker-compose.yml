@@ -1,0 +1,390 @@
+# Modified docker-compose.yml with 42 campus constraints
+name: transcendence
+
+services:
+  # Main Services
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: transcendence-nginx
+    user: root
+    ports:
+      - "${NGINX_HTTP_PORT:-9180}:80"
+      - "${NGINX_HTTPS_PORT:-9443}:443"
+    labels:
+      - "app=transcendence"
+      - "tier=frontend"
+      - "works-with=backend"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../nginx/snippets:/etc/nginx/snippets:ro
+      - ../config/ssl:/etc/ssl:ro
+      - ../config/auth:/etc/nginx/auth:ro
+      - ../logs/nginx:/var/log/nginx
+      - ../frontend/dist:/usr/share/nginx/html:ro   # SPA
+      - ../frontend/assets:/usr/share/nginx/html/assets:ro   # Assets estáticos (imágenes, videos, etc.)
+      - ../backend/public:/var/www/html/public:ro   # assets públicos del backend (si los sirves)
+
+    env_file:
+      - ../.env
+    secrets:
+      - scope_htpasswd
+    command: nginx -g "daemon off;"
+    networks: [default, monitoring]
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["default"]
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/backend/Dockerfile
+    container_name: transcendence-backend
+    expose:
+      - "${BACKEND_PORT:-9000}"
+    volumes:
+      - ../backend/public:/var/www/html/public
+      - ../backend/database:/var/www/html/database
+    labels:
+      - "app=transcendence"
+      - "tier=api"
+    env_file:
+      - ../.env # Cargar variables de entorno desde el archivo .env
+    secrets:
+      - app_key
+      - jwt_secret
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks: [default, monitoring]
+    # Ejecutar como usuario root para resolver problemas de permisos
+    user: root
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["default", "prod", "dev"]
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: transcendence-frontend
+    expose:
+      - "${FRONTEND_PORT:-3000}"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    labels:
+      - "app=transcendence"
+      - "tier=ui"
+    healthcheck:
+      # test: ["CMD", "wget", "-q", "--spider", "http://localhost:${FRONTEND_PORT:-3000}/health"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:${FRONTEND_PORT:-3000}/ || wget -q --spider http://localhost:${FRONTEND_PORT:-3000}/index.html"]
+
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks: [default]
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["default", "prod", "dev"]
+
+  # game-ws:
+  #   build:
+  #     context: ../game-ws
+  #     dockerfile: ../docker/game-ws/Dockerfile
+  #   container_name: transcendence-game-ws
+  #   expose:
+  #     - "${GAME_WS_CONTAINER_PORT:-9999}"
+  #   volumes:
+  #     - ../game-ws:/app
+  #   labels:
+  #     - "app=transcendence"
+  #     - "tier=websocket"
+  #   healthcheck:
+  #     test: ["CMD", "wget", "-q", "--spider", "http://localhost:${GAME_WS_CONTAINER_PORT:-9999}/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 15s
+  #   networks: [default]
+  #   # Mejoras de seguridad
+  #   cap_drop:
+  #     - ALL
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   # Reinicio automático
+  #   restart: unless-stopped
+  #   profiles: ["default", "prod", "dev"]
+
+  # Servicios de monitorización - All made to listen on only
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: transcendence-prometheus
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    expose:
+      - "9090"
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    # Simpler healthcheck
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9090/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks: [monitoring]
+    # Mejoras de seguridad
+    user: "nobody"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["default", "monitoring", "prod"]
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: transcendence-grafana
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
+    environment:
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_SECURITY_DISABLE_GRAVATAR=true
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ADMIN_USER__FILE=/run/sec9443ts/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks: [monitoring]
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    # Mejoras de seguridad
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["dev", "prod"]
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: transcendence-cadvisor
+    security_opt:
+      - apparmor:unconfined
+    ports:
+      - "${CADVISOR_PORT:-9192}:8080"
+    command:
+      - '--url_base_prefix=/cadvisor'
+      - '--housekeeping_interval=10s'
+      - '--docker_only=true'
+      - '--disable_metrics=disk,diskIO,network,tcp,udp,percpu,sched,process'
+    networks: [monitoring]
+    # Simplified volumes for dev container environment
+    volumes:
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080}/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["default", "monitoring", "prod"]
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: transcendence-node-exporter
+    command:
+      - '--web.listen-address=:9100'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+      - "9100"
+    networks: [monitoring]
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["default", "monitoring", "prod"]
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: transcendence-nginx-exporter
+    command:
+      - -nginx.scrape-uri=http://nginx:8080/nginx_status
+    expose:
+      - "9113"
+    networks: [monitoring]
+    depends_on:
+      nginx:
+        condition: service_started
+        required: false
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["dev", "prod"]
+
+  php-fpm-exporter:
+    image: ghcr.io/hipages/php-fpm_exporter:latest
+    container_name: transcendence-php-fpm-exporter
+    command:
+      - server
+      - --phpfpm.scrape-uri=tcp://backend:9000/status
+      - --phpfpm.fix-process-count=true
+    expose:
+      - "9253"
+    networks: [monitoring]
+    depends_on:
+      backend:
+        condition: service_started
+        required: false
+    # Mejoras de seguridad
+    read_only: true
+    cap_drop:
+      - ALL
+    # Reinicio automático
+    restart: unless-stopped
+    profiles: ["dev", "prod"]
+
+# Development Services (directly exposed ports)
+
+
+# Weave Scope - Visualización de la infraestructura
+  # scope:
+  #   image: weaveworks/scope:1.13.2
+  #   container_name: transcendence-scope
+  #   # 🔑 Permisos y visibilidad
+  #   privileged: true          # acceso a /proc, netns, conntrack
+  #   # pid: "host"               # ve los PIDs reales del host
+  #   # network_mode: "host"      # ve todas las conexiones de red
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - /var/run/scope/plugins:/var/run/scope/plugins
+  #   env_file:
+  #     - ../.env
+  #   command:
+  #     - "--probe.docker=true"
+  #     - "--weave=false"
+  #   # UI en 4040 del host; si estás en un server remoto, publícalo detrás de Nginx/Access
+  #   # ports:
+  #     # - "${SCOPE_PORT:-9584}:4040"ç
+  #   expose:
+  #     - "4040"
+  #   networks: [monitoring]
+  #   profiles: ["admin"]
+
+  scope:
+    image: weaveworks/scope:1.13.2
+    container_name: transcendence-scope
+    # 🔑 Permisos y visibilidad
+    privileged: true          # acceso a /proc, netns, conntrack
+    pid: "host"               # ve los PIDs reales del host
+    network_mode: "host"      # ve todas las conexiones de red
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/scope/plugins:/var/run/scope/plugins
+    command:
+      - "--probe.docker=true"
+      - "--weave=false"
+    # UI en 4040 del host; si estás en un server remoto, publícalo detrás de Nginx/Access
+    ports:
+      - "127.0.0.1:${SCOPE_PORT:-9584}:4040"
+    restart: unless-stopped
+    profiles: ["monitoring","dev"]
+
+# Redes definidas
+networks:
+  default:
+    driver: bridge
+  monitoring:
+    driver: bridge
+
+# Volúmenes persistentes
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+# Secretos centralizados
+secrets:
+  app_key:
+    file: ../config/secrets/app_key.secret
+  jwt_secret:
+    file: ../config/secrets/jwt_secret.secret
+  grafana_admin_user:
+    file: ../config/secrets/grafana_admin_user.secret
+  grafana_admin_password:
+    file: ../config/secrets/grafana_admin_password.secret
+  scope_htpasswd:
+    file: ../config/secrets/scope_htpasswd.secret
