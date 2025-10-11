@@ -25,6 +25,7 @@ import { LanguageView } from "./views/Language.js";
 import { MatchHistoryView } from "./views/MatchHistory.js";
 import { LoginView } from "./views/Login.js";
 import { setLanguage } from "./translations/index.js";
+import { MenuView } from "./views/Menu.js";
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
@@ -63,6 +64,9 @@ function router() {
             break;
         case "/login":
             LoginView(app, state);
+            break;
+        case "/menu":
+            MenuView(app, state);
             break;
         case "/choose":
             ChooseView(app, state);

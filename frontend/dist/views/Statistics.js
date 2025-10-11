@@ -56,6 +56,6 @@ export function StatsView(app, state) {
       </div>
     </div>
   `;
-    (_a = document.getElementById("goBackBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/"));
+    (_a = document.getElementById("goBackBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/menu"));
     (_b = document.getElementById("matchHistoryBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/match-history"));
 }
