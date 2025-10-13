@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users
     email TEXT NOT NULL,
     pass TEXT NOT NULL,
     created TEXT DEFAULT CURRENT_TIMESTAMP,
+    avatar_url TEXT DEFAULT NULL,
     last_login TEXT
 );
 

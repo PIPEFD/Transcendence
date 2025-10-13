@@ -10,16 +10,16 @@ $queryId = $_GET['id'] ?? null;
 switch ($requestMethod) 
 {
 	case 'GET':
-		/*if (!checkJWT($queryId))
-			errorSend(403, 'forbidden access');*/
+		if (!checkJWT($queryId))
+			errorSend(403, 'forbidden access');
 		getFriendList($database, $queryId);
 		break;
 	case 'POST':
 		if (!checkBodyData($body, 'user_id'))
 			errorSend(400, 'bad request');
 		$user_id = $body['user_id'];
-		/*if (!checkJWT($user_id))
-			errorSend(403, 'forbidden access');*/
+		if (!checkJWT($user_id))
+			errorSend(403, 'forbidden access');
 		deleteFriend($database, $body, $user_id);
 		break;
 	default:

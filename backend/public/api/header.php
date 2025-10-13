@@ -69,18 +69,32 @@ function doQuery(SQLite3 $database, string $sqlQuery, array ...$bindings): SQLit
 function checkJWT(int $id): bool
 {
     $JWT = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-    if (!$JWT) return false;
+    if (!$JWT){
+        // echo "no hay token de auth";
+        return false;
+    }
     $decodedJWT = getDecodedJWT($JWT);
-    if (!$decodedJWT) return false;
+    if (!$decodedJWT) {
+        // echo "error 2";
+        return false;
+    }
     $idJWT = $decodedJWT->data->userId ?? null;
-    if ($id !== $idJWT) return false;
+    // echo $id;
+    // echo $idJWT;
+    if ($id !== $idJWT) {
+        // echo "el id no coincide con el del token";
+        return false;
+    }
     return true;
 }
 
 function getDecodedJWT(string $JWT): ?object
 {
     list($jwt) = sscanf($JWT, 'Bearer %s');
-    if (!$jwt) return null;
+    if (!$jwt) {
+        // echo "no hay token en el autorization";
+        return null;
+    }
     $secretKey = getenv('JWTsecretKey');
     if ($secretKey === false) errorSend(500, "FATAL: JWT_SECRET_KEY no está configurada en el entorno.");
     try {
@@ -91,4 +105,5 @@ function getDecodedJWT(string $JWT): ?object
         return null;
     }
 }
+
 ?>
