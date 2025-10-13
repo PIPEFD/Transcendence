@@ -26,6 +26,7 @@ import { MatchHistoryView } from "./views/MatchHistory.js";
 import { LoginView } from "./views/Login.js";
 import { setLanguage } from "./translations/index.js";
 import { MenuView } from "./views/Menu.js";
+import { FriendsView } from "./views/Friend.js";
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
@@ -43,7 +44,6 @@ export function navigate(path) {
     }
     router();
 }
-// El router ahora es mucho más limpio
 function router() {
     const app = document.getElementById("app");
     if (!app)
@@ -95,6 +95,9 @@ function router() {
         case "/match-history":
             MatchHistoryView(app, state);
             break;
+        case "/friends":
+            FriendsView(app, state);
+            break;
         default: // Home
             HomeView(app, state);
             break;
@@ -122,7 +125,7 @@ window.addEventListener("load", () => {
     if (stored) {
         state.player = JSON.parse(stored);
     }
-    updateHeader(state); // 👈 render avatar if it’s already stored
+    updateHeader(state);
     if (!state.player.alias) {
         navigate("/register");
     }
@@ -204,7 +207,4 @@ langContainer.appendChild(frDbBtn);
 langContainer.appendChild(enDbBtn);
 // Añadir el botón al final del body o a un contenedor específico
 document.body.appendChild(langContainer);
-// tsc && docker build -t pixel-theme . && docker run -p 3000:3000 pixel-theme
-// docker build -t pixel-theme .
-//  docker run -p 3000:3000 pixel-theme
 //npx tsc --watch

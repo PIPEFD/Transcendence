@@ -42,7 +42,7 @@ export function SettingsView(app, state) {
   `;
     (_a = document.getElementById("cuseBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/profile"));
     (_b = document.getElementById("cavtBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/avatar"));
-    (_c = document.getElementById("cfrBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => navigate("/chat"));
+    (_c = document.getElementById("cfrBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => navigate("/friends"));
     (_d = document.getElementById("clangBtn")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", () => navigate("/language"));
     (_e = document.getElementById("gbcBtn")) === null || _e === void 0 ? void 0 : _e.addEventListener("click", () => navigate("/"));
     (_f = document.getElementById("logoutBtn")) === null || _f === void 0 ? void 0 : _f.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {

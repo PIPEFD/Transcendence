@@ -34,7 +34,7 @@ export function SettingsView(app: HTMLElement, state: any): void {
 
   document.getElementById("cuseBtn")?.addEventListener("click", () => navigate("/profile"));
   document.getElementById("cavtBtn")?.addEventListener("click", () => navigate("/avatar"));
-  document.getElementById("cfrBtn")?.addEventListener("click", () => navigate("/chat"));
+  document.getElementById("cfrBtn")?.addEventListener("click", () => navigate("/friends"));
   document.getElementById("clangBtn")?.addEventListener("click", () => navigate("/language"));
   document.getElementById("gbcBtn")?.addEventListener("click", () => navigate("/"));
 

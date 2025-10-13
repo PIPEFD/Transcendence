@@ -2,7 +2,6 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 export function MenuView(app, state) {
     var _a, _b, _c, _d;
-    // Determine avatar source
     let avatarSrc = "";
     if (state.player.avatar !== null && state.player.avatar !== undefined) {
         if (typeof state.player.avatar === "number") {
@@ -37,7 +36,7 @@ export function MenuView(app, state) {
     </div>
   `;
     (_a = document.getElementById("goBackBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/"));
-    (_b = document.getElementById("friends")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/"));
+    (_b = document.getElementById("friends")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/friends"));
     (_c = document.getElementById("gostats")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => navigate("/statistics"));
     (_d = document.getElementById("matchHistoryBtn")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", () => navigate("/match-history"));
 }

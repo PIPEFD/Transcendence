@@ -2,7 +2,6 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 
 export function MenuView(app: HTMLElement, state: any): void {
-  // Determine avatar source
   let avatarSrc = "";
   if (state.player.avatar !== null && state.player.avatar !== undefined) {
     if (typeof state.player.avatar === "number") {
@@ -38,7 +37,7 @@ export function MenuView(app: HTMLElement, state: any): void {
   `;
 
  document.getElementById("goBackBtn")?.addEventListener("click", () => navigate("/"));
- document.getElementById("friends")?.addEventListener("click", () => navigate("/"));
+ document.getElementById("friends")?.addEventListener("click", () => navigate("/friends"));
  document.getElementById("gostats")?.addEventListener("click", () => navigate("/statistics"));
  document.getElementById("matchHistoryBtn")?.addEventListener("click", () => navigate("/match-history"));
 }
