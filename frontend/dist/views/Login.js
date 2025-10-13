@@ -71,7 +71,7 @@ export function LoginView(app, state) {
             }
             // Si requiere 2FA
             if (data.pending_2fa) {
-                localStorage.setItem("pendingUserId", data.user_id);
+                localStorage.setItem("userId", data.user_id);
                 navigate("/authentication");
             }
             else {

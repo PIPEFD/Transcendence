@@ -13,21 +13,21 @@ switch ($requestMethod)
 		if (!checkBodyData($body, 'sender_id'))
 			errorSend(400, 'bad request');
 		$sender_id = $body['sender_id'];
-		if (!checkJWT($sender_id))
-			errorSend(403, 'forbidden access');
+		/*if (!checkJWT($sender_id))
+			errorSend(403, 'forbidden access');*/
 		sendFriendRequest($body, $database, $sender_id);
 		break;
 	case 'GET':
-		if (!checkJWT($queryId))
-			errorSend(403, 'forbidden access');
+		/*if (!checkJWT($queryId))
+			errorSend(403, 'forbidden access');*/
 		requestListId($queryId, $database);
 		break;
 	case 'PATCH':
 		if (!checkBodyData($body, 'receiver_id'))
 			errorSend(400, 'bad request');
 		$receiver_id = $body['receiver_id'];
-		if (!checkJWT($receiver_id))
-			errorSend(403, 'forbidden access');
+		/*if (!checkJWT($receiver_id))
+			errorSend(403, 'forbidden access');*/
 		acceptDeclineRequest($body, $database, $receiver_id);
 		break;
 	default:

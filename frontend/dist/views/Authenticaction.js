@@ -35,8 +35,10 @@ export function AuthView(app, state) {
     (_a = document.getElementById("mailButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         const emailInput = document.getElementById("mailEnter");
         const code = emailInput.value.trim();
-        const userIdStr = localStorage.getItem("pendingUserId"); // cojo el id del user, pero esta en tipo string
+        const userIdStr = localStorage.getItem("userId"); // cojo el id del user, pero esta en tipo string
         const id = userIdStr ? parseInt(userIdStr, 10) : null; // paso a int
+        console.log(id);
+        console.log(code);
         if (!code) {
             alert("Introduce el codigo");
             return;
@@ -61,7 +63,7 @@ export function AuthView(app, state) {
                 return;
             }
             alert("Codigo correcto");
-            localStorage.setItem("tokenUser", data.user_id); // Guardo token
+            localStorage.setItem("tokenUser", data.details); // Guardo token
             navigate("/choose");
         }
         catch (err) {

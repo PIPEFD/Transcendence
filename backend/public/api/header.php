@@ -21,13 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // --------------------------------------------
-// Mostrar errores (solo desarrollo)
-// --------------------------------------------
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// --------------------------------------------
 // Cargar configuraciones y dependencias
 // --------------------------------------------
 require_once __DIR__ . '/../config/config.php';
