@@ -78,9 +78,9 @@ function checkJWT(int $id): bool
         // echo "error 2";
         return false;
     }
-    $idJWT = $decodedJWT->data->userId ?? null;
-    // echo $id;
-    // echo $idJWT;
+    $idJWT = $decodedJWT->data->user_id ?? null;
+    // error_log(print_r($id, true));
+    error_log(print_r($idJWT, true));
     if ($id !== $idJWT) {
         // echo "el id no coincide con el del token";
         return false;

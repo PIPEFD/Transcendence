@@ -46,18 +46,15 @@ export function FriendsView(app: HTMLElement, state: any): void {
         }
 
         try {
-            // Llama al endpoint GET de tu PHP con el ID del usuario actual
-            const response = await fetch(`http://localhost:8085/api/friends.php?id=25`, {
+            console.log(userIdPlaceholder);
+            const response = await fetch(`http://localhost:8085/api/friends.php?id=${userIdPlaceholder}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                 }
             });
-            console.log("HOla1");
-            console.log(userIdPlaceholder);
             const data = await response.json();
-            console.log("HOla2");
             // Verifica si la solicitud fue exitosa y si hay un array de contenido (tu getFriendList devuelve un array)
             if (response.ok && Array.isArray(data.content)) { 
                 const friends = data.content;

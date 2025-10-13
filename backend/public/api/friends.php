@@ -6,7 +6,7 @@ $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
-
+error_log(print_r($queryId, true));
 switch ($requestMethod) 
 {
 	case 'GET':
