@@ -5,10 +5,10 @@ export function MenuView(app, state) {
     let avatarSrc = "";
     if (state.player.avatar !== null && state.player.avatar !== undefined) {
         if (typeof state.player.avatar === "number") {
-            avatarSrc = `/assets/avatar${state.player.avatar}.png`; // built-in
+            avatarSrc = `/assets/avatar${state.player.avatar}.png`;
         }
         else if (typeof state.player.avatar === "string") {
-            avatarSrc = state.player.avatar; // uploaded
+            avatarSrc = state.player.avatar;
         }
     }
     app.innerHTML = `

@@ -6,7 +6,6 @@ export function FriendsView(app, state) {
     <div class="bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-8 rounded-2xl shadow-lg max-w-3xl mx-auto flex flex-col items-center text-center space-y-4">
         <h1 class="text-xl font-bold mb-4">${t("friends_center")}</h1>
 
-        <!-- Top Navigation Tabs -->
         <div class="flex flex-wrap justify-around w-full mb-6 gap-3">
             <button id="friendsListBtn" class="tab-btn bg-poke-blue text-poke-light border-3 border-poke-blue border-b-blue-800 rounded px-4 py-2 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 active:animate-press">
                 ${t("friends_list")}
@@ -19,10 +18,8 @@ export function FriendsView(app, state) {
             </button>
         </div>
 
-        <!-- Dynamic Content Area -->
         <div id="friendsContentOuter" class="w-full bg-white bg-opacity-40 border-2 border-poke-dark rounded-lg p-4 overflow-hidden" style="height: 400px;">
             <div id="friendsContent" class="w-full h-full overflow-y-auto pr-2 space-y-2">
-                <!-- your friends list items go here -->
             </div>
         </div>
 
@@ -46,11 +43,12 @@ export function FriendsView(app, state) {
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <button class="px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press">${t("message")}</button>
+                            <button id="msg" class="px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press">${t("message")}</button>
                             <button class="px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded border-2 border-poke-red active:animate-press">${t("remove")}</button>
                         </div>
                     </li>
                 `).join('')}
+                
             </ul>
         `,
         add: `
@@ -78,10 +76,6 @@ export function FriendsView(app, state) {
                 </div>
                 <p class="text-sm text-poke-dark">${t("no_more_requests")}</p>
             </div>
-        `,
-        blocked: `
-            <h2 class="text-lg mb-3">${t("blocked_users")}</h2>
-            <p class="text-sm text-poke-dark">${t("no_blocked_users")}</p>
         `
     };
     const switchTab = (tab) => {
@@ -90,21 +84,29 @@ export function FriendsView(app, state) {
         setTimeout(() => {
             inner.innerHTML = sections[tab];
             inner.style.opacity = '1';
-            const sendReqBtn = document.getElementById("sendReqBtn");
-            if (sendReqBtn) {
-                sendReqBtn.addEventListener("click", () => {
-                    const nameInput = document.getElementById("friendName");
-                    if (!nameInput || !nameInput.value.trim())
-                        return;
-                    alert("Request sent to " + nameInput.value.trim());
-                    nameInput.value = "";
+            if (tab === "add") {
+                const sendReqBtn = document.getElementById("sendReqBtn");
+                if (sendReqBtn) {
+                    sendReqBtn.addEventListener("click", () => {
+                        const nameInput = document.getElementById("friendName");
+                        if (!nameInput || !nameInput.value.trim())
+                            return;
+                        alert("Request sent to " + nameInput.value.trim());
+                        nameInput.value = "";
+                    });
+                }
+            }
+            if (tab === "list") {
+                const msgButtons = inner.querySelectorAll("#msg");
+                msgButtons.forEach(btn => {
+                    btn.addEventListener("click", () => navigate("/chat"));
                 });
             }
         }, 120);
     };
-    (_a = document.getElementById("friendsListBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => switchTab("list"));
-    (_b = document.getElementById("addFriendBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => switchTab("add"));
-    (_c = document.getElementById("requestsBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => switchTab("requests"));
-    (_d = document.getElementById("blockedBtn")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", () => switchTab("blocked"));
+    (_a = document.getElementById("msg")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/chat"));
+    (_b = document.getElementById("friendsListBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => switchTab("list"));
+    (_c = document.getElementById("addFriendBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => switchTab("add"));
+    (_d = document.getElementById("requestsBtn")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", () => switchTab("requests"));
     (_e = document.getElementById("backBtn")) === null || _e === void 0 ? void 0 : _e.addEventListener("click", () => navigate("/"));
 }

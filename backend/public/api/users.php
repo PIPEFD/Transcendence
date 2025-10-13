@@ -42,7 +42,7 @@ function userDataById(SQLite3 $db, int $id): void {
 }
 
 function userList(SQLite3 $db): void {
-    $res = doQuery($db, "SELECT user_id, username, elo FROM users");
+    $res = doQuery($db, "SELECT id, username, elo FROM users");
     if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     $users = [];
     while ($r = $res->fetchArray(SQLITE3_ASSOC)) $users[] = $r;

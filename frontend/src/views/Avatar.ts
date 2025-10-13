@@ -69,9 +69,38 @@ export function AvatarView(app: HTMLElement, state: any): void {
     reader.readAsDataURL(file);
   });
 
-  saveBtn?.addEventListener("click", () => {
-    state.player.avatar = preview.src; // save image as base64 string
-    updateHeader(state);
-    navigate("/");
+  saveBtn?.addEventListener("click", async () => {
+    if (!uploadInput.files || uploadInput.files.length === 0) return;
+    const file = uploadInput.files[0];
+  
+    const formData = new FormData();
+    formData.append("avatar", file);
+    formData.append("user_id", String(state.player.id)); // asegúrate de tener el user ID
+  
+    try {
+      const res = await fetch("/api/upload.php", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        alert("Error al subir el avatar: " + data.error);
+        return;
+      }
+  
+      // Guardar la ruta recibida desde el backend en el estado
+      state.player.avatar = data.path; 
+      updateHeader(state);
+  
+      alert("Avatar subido correctamente!");
+      navigate("/"); 
+  
+    } catch (err) {
+      console.error("Error al subir avatar:", err);
+      alert("Error de conexión con el servidor");
+    }
   });
+  
 }
