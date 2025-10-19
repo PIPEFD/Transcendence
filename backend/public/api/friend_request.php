@@ -2,136 +2,136 @@
 
 require_once __DIR__ . '/header.php';
 
+// Conexión a la base de datos
 $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
-$queryId = $_GET['id'] ?? null;
+$queryId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// Validación de ID
+if ($queryId <= 0 && $requestMethod === 'GET') {
+    errorSend(400, 'Invalid user id');
+}
 
 switch ($requestMethod) 
 {
-	case 'POST':
-		if (!checkBodyData($body, 'sender_id'))
-			errorSend(400, 'bad request');
-		$sender_id = $body['sender_id'];
-		if (!checkJWT($sender_id))
-			errorSend(403, 'forbidden access');
-		sendFriendRequest($body, $database, $sender_id);
-		break;
-	case 'GET':
-		if (!checkJWT($queryId))
-			errorSend(403, 'forbidden access');
-		requestListId($queryId, $database);
-		break;
-	case 'PATCH':
-		if (!checkBodyData($body, 'receiver_id'))
-			errorSend(400, 'bad request');
-		$receiver_id = $body['receiver_id'];
-		if (!checkJWT($receiver_id))
-			errorSend(403, 'forbidden access');
-		acceptDeclineRequest($body, $database, $receiver_id);
-		break;
-	default:
-		errorSend(405, 'unauthorized method');
+    case 'POST':
+        if (!checkBodyData($body, 'sender_id', 'receiver_id')) {
+            errorSend(400, 'bad request');
+        }
+        $sender_id = (int)$body['sender_id'];
+        $receiver_id = (int)$body['receiver_id'];
+
+        // if (!checkJWT($sender_id)) errorSend(403, 'forbidden access');
+        sendFriendRequest($database, $sender_id, $receiver_id);
+        break;
+
+    case 'GET':
+        // if (!checkJWT($queryId)) errorSend(403, 'forbidden access');
+        requestListId($database, $queryId);
+        break;
+
+    case 'PATCH':
+        if (!checkBodyData($body, 'sender_id', 'receiver_id', 'action')) {
+            errorSend(400, 'bad request');
+        }
+        $sender_id = (int)$body['sender_id'];
+        $receiver_id = (int)$body['receiver_id'];
+        $action = $body['action'];
+
+        // if (!checkJWT($receiver_id)) errorSend(403, 'forbidden access');
+        acceptDeclineRequest($database, $sender_id, $receiver_id, $action);
+        break;
+
+    default:
+        errorSend(405, 'unauthorized method');
 }
 
-function sendFriendRequest(array $body, SQLite3 $database, int $sender_id): void 
+function sendFriendRequest(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
-	if (!checkBodyData($body, 'receiver_id'))
-		errorSend(400, 'bad request');
-	$receiver_id = $body['receiver_id'];
+    $sqlQuery = "INSERT INTO friend_request (sender_id, receiver_id) VALUES (:sender_id, :receiver_id)";
+    $bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+    $bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 
-	$sqlQuery = "INSERT INTO friend_request (sender_id, receiver_id) VALUES (:sender_id, :receiver_id)";
-	$bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
-	$bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
-	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
-	if (!$res)
-		errorSend(500, "Sql error: " . $database->lastErrorMsg());
-	else
-		successSend('friend request sent');
+    $res = doQuery($database, $sqlQuery, $bind1, $bind2);
+    if (!$res) {
+        errorSend(500, "Sql error: " . $database->lastErrorMsg());
+    }
+    successSend(['message' => 'friend request sent']);
 }
 
-function requestListId(int $queryId, SQLite3 $database): void
+function requestListId(SQLite3 $database, int $receiver_id): void
 {
-	$sqlQuery = "SELECT sender_id, created_at FROM friend_request WHERE receiver_id = :receiver_id";
-	$bind1 = [':receiver_id', $queryId, SQLITE3_INTEGER];
-	$res = doQuery($database, $sqlQuery, $bind1);
-	if (!$res)
-		errorSend(500, "Sql error: " . $database->lastErrorMsg());
-	$content = [];
-	while ($row = $res->fetchArray(SQLITE3_ASSOC))
-		$content[] = $row;
-	successSend($content, JSON_PRETTY_PRINT);
+    $sqlQuery = "SELECT sender_id, created_at FROM friend_request WHERE receiver_id = :receiver_id";
+    $bind = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
+
+    $res = doQuery($database, $sqlQuery, $bind);
+    if (!$res) {
+        errorSend(500, "Sql error: " . $database->lastErrorMsg());
+    }
+
+    $content = [];
+    while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+        $content[] = $row;
+    }
+
+    successSend($content); // <-- solo array, sin JSON_PRETTY_PRINT
 }
 
-function acceptDeclineRequest(array $body, SQLite3 $database, int $receiver_id): void
+function acceptDeclineRequest(SQLite3 $database, int $sender_id, int $receiver_id, string $action): void
 {
-	if (!checkBodyData($body, 'sender_id', 'receiver_id', 'action'))
-		errorSend(400, 'bad request');
-	$sender_id = $body['sender_id'];
-	$action = $body['action'];
+    $sqlQuery = "SELECT * FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
+    $bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
+    $bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
 
-	$sqlQuery = "SELECT * FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
-	$bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
-	$bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
-	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
-	if (!$res)
-		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
-	if (!$res->fetchArray(SQLITE3_ASSOC))
-		errorSend(404, 'user not found');
-		
-	if ($action === 'accept')
-		accept($database, $sender_id, $receiver_id);
-	else if ($action === 'decline')
-		decline($database, $sender_id, $receiver_id);
+    $res = doQuery($database, $sqlQuery, $bind1, $bind2);
+    if (!$res) errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
+
+    if (!$res->fetchArray(SQLITE3_ASSOC)) {
+        errorSend(404, 'friend request not found');
+    }
+
+    if ($action === 'accept') {
+        acceptRequest($database, $sender_id, $receiver_id);
+    } elseif ($action === 'decline') {
+        declineRequest($database, $sender_id, $receiver_id);
+    } else {
+        errorSend(400, 'Invalid action');
+    }
 }
 
-function accept(SQLite3 $database, int $sender_id, int $receiver_id): void
+function acceptRequest(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
-	$database->exec('BEGIN');
-	try
-	{
-		$success = true;
-		$sqlQuery00 = "INSERT INTO friends (user_id, friend_id) VALUES (:sender_id, :receiver_id)";
-		$bind01 = [':sender_id', $sender_id, SQLITE3_INTEGER];
-		$bind02 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
-		$res00 = doQuery($database, $sqlQuery00, $bind01, $bind02);
+    $database->exec('BEGIN');
+    try {
+        $res1 = doQuery($database, "INSERT INTO friends (user_id, friend_id) VALUES (:sender_id, :receiver_id)", 
+            [':sender_id', $sender_id, SQLITE3_INTEGER], [':receiver_id', $receiver_id, SQLITE3_INTEGER]);
+        $res2 = doQuery($database, "INSERT INTO friends (user_id, friend_id) VALUES (:receiver_id, :sender_id)", 
+            [':receiver_id', $receiver_id, SQLITE3_INTEGER], [':sender_id', $sender_id, SQLITE3_INTEGER]);
+        $res3 = doQuery($database, "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id", 
+            [':sender_id', $sender_id, SQLITE3_INTEGER], [':receiver_id', $receiver_id, SQLITE3_INTEGER]);
 
-		$sqlQuery01 = "INSERT INTO friends (user_id, friend_id) VALUES (:receiver_id, :sender_id)";
-		$bind12 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
-		$bind11 = [':sender_id', $sender_id, SQLITE3_INTEGER];
-		$res01 = doQuery($database, $sqlQuery01, $bind11, $bind12);
+        if (!$res1 || !$res2 || !$res3) throw new Exception('DB operation failed');
 
-		$sqlQuery02 = "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
-		$bind21 = [':sender_id', $sender_id, SQLITE3_INTEGER];
-		$bind22 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
-		$res02 = doQuery($database, $sqlQuery02, $bind21, $bind22);
-
-		if (!$res00 || !$res01 || !$res02)
-			$success = false;
-		if ($success)
-		{
-			$database->exec('COMMIT');
-			successSend('friend request accepted');
-		}
-		else
-			throw new Exception ('friend accept operation failed');
-	}
-	catch (Exception $e)
-	{
-		$database->exec('ROLLBACK');
-		errorSend(500, 'couldn\'t accept friend: ' . $database->lastErrorMsg());
-	}
+        $database->exec('COMMIT');
+        successSend(['message' => 'friend request accepted']);
+    } catch (Exception $e) {
+        $database->exec('ROLLBACK');
+        errorSend(500, 'Could not accept friend request: ' . $e->getMessage());
+    }
 }
 
-function decline(SQLite3 $database, int $sender_id, int $receiver_id): void
+
+
+
+function declineRequest(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
-	$sqlQuery = "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id";
-	$bind1 = [':sender_id', $sender_id, SQLITE3_INTEGER];
-	$bind2 = [':receiver_id', $receiver_id, SQLITE3_INTEGER];
-	$res = doQuery($database, $sqlQuery, $bind1, $bind2);
-	if (!$res)
-		errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
-	successSend('friend request declined');
+    $res = doQuery($database, "DELETE FROM friend_request WHERE sender_id = :sender_id AND receiver_id = :receiver_id",
+        [':sender_id', $sender_id, SQLITE3_INTEGER], [':receiver_id', $receiver_id, SQLITE3_INTEGER]);
+
+    if (!$res) errorSend(500, 'Sql error: ' . $database->lastErrorMsg());
+
+    successSend(['message' => 'friend request declined']);
 }
 
 ?>

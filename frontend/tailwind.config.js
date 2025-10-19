@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./*.html",          // todos los HTML en la raíz
-    "./src/**/*.{ts,js}", // todos los .ts y .js dentro de src y subcarpetas
+    "./*.html",
+    "./src/**/*.{ts,js}",
   ],
   theme: {
     extend: {
@@ -14,7 +14,6 @@ module.exports = {
         'poke-light': '#f7f7f7',
         'poke-white': '#ffffff',
         'poke-violet': '#693F8E',
-
       },
       fontFamily: {
         'pixel': ['"Press Start 2P"', 'cursive'],
@@ -22,16 +21,15 @@ module.exports = {
       borderWidth: {
         '3': '3px',
       },
-      // Add these new sections for the animation
       keyframes: {
         'press': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(2px)' },
-        }
+        },
       },
       animation: {
         'press': 'press 0.2s ease-in-out',
-      }
+      },
     },
   },
   plugins: [],

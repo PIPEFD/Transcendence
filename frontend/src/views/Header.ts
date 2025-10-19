@@ -38,5 +38,5 @@ export function updateHeader(state: any): void {
   const avBtn = document.getElementById("avBtn");
 
   if (settingsBtn) settingsBtn.addEventListener("click", () => navigate("/settings"));
-  if (avBtn) avBtn.addEventListener("click", () => navigate("/statistics"));
+  if (avBtn) avBtn.addEventListener("click", () => navigate("/menu"));
 }

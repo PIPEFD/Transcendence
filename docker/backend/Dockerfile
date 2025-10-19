@@ -24,7 +24,6 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Copiar archivos del proyecto
 COPY composer.* ./
-
 # Instalar dependencias con Composer
 RUN composer install --no-scripts --no-autoloader
 

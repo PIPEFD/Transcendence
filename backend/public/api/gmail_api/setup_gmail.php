@@ -12,6 +12,7 @@ $client = new Google\Client();
 $client->setApplicationName('Transcendence 2FA Setup');
 $client->setScopes(['https://www.googleapis.com/auth/gmail.send']);
 $client->setAuthConfig($credentialsPath);
+$client->setRedirectUri('http://localhost');
 $client->setAccessType('offline'); // Solicita un refresh_token
 $client->setPrompt('select_account consent');
 

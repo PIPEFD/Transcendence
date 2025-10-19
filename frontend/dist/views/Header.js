@@ -35,5 +35,5 @@ export function updateHeader(state) {
     if (settingsBtn)
         settingsBtn.addEventListener("click", () => navigate("/settings"));
     if (avBtn)
-        avBtn.addEventListener("click", () => navigate("/statistics"));
+        avBtn.addEventListener("click", () => navigate("/menu"));
 }
