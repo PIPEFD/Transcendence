@@ -36,7 +36,7 @@ export function Profile1View(app: HTMLElement, state: any): void {
 
   const backBtn = document.getElementById("back");
 
-  backBtn?.addEventListener("click", () => navigate("/register"));
+  backBtn?.addEventListener("click", () => navigate("/avatar1"));
 
   document.getElementById("userButton")?.addEventListener("click", async () => {
     const usernameInput = document.getElementById("userEnter") as HTMLInputElement;
@@ -74,7 +74,7 @@ export function Profile1View(app: HTMLElement, state: any): void {
       state.player.user = username;
       localStorage.setItem("player", JSON.stringify(state.player));
 
-      navigate("/register");
+      navigate("/avatar1");
     } catch (err) {
       console.error(err);
       alert("Error de conexión con el servidor");

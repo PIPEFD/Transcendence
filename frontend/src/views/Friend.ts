@@ -2,7 +2,6 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { ChatView } from "./Chat.js";
 
-
 // !!! IMPORTANTE: REEMPLAZA ESTE VALOR !!!
 // Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
 const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)

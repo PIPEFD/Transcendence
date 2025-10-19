@@ -43,7 +43,7 @@ export function AvatarView(app: HTMLElement, state: any): void {
       if (!value) return;
       state.player.avatar = Number(value);
       updateHeader(state);
-      navigate("/");
+      navigate("/settings");
     });
   });
 
@@ -78,7 +78,7 @@ export function AvatarView(app: HTMLElement, state: any): void {
     formData.append("user_id", String(state.player.id)); // asegúrate de tener el user ID
   
     try {
-      const res = await fetch("/api/upload.php", {
+      const res = await fetch("http://localhost:8085/api/upload.php", {
         method: "POST",
         body: formData,
       });
@@ -95,7 +95,7 @@ export function AvatarView(app: HTMLElement, state: any): void {
       updateHeader(state);
   
       alert("Avatar subido correctamente!");
-      navigate("/"); 
+      navigate("/settings"); 
   
     } catch (err) {
       console.error("Error al subir avatar:", err);

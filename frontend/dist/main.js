@@ -14,6 +14,7 @@ import { Profile1View } from "./views/Profile1.js";
 import { AuthView } from "./views/Authenticaction.js";
 import { ChooseView } from "./views/Choose.js";
 import { AvatarView } from "./views/Avatar.js";
+import { AvatarView1 } from "./views/Avatarlogin.js";
 import { GameView } from "./views/Game.js";
 import { TournamentView } from "./views/Tournament.js";
 import { ChatView } from "./views/Chat.js";
@@ -73,6 +74,9 @@ function router() {
             break;
         case "/avatar":
             AvatarView(app, state);
+            break;
+        case "/avatar1":
+            AvatarView1(app, state);
             break;
         case "/game":
             GameView(app, state);

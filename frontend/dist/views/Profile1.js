@@ -43,7 +43,7 @@ export function Profile1View(app, state) {
     </div>
   `;
     const backBtn = document.getElementById("back");
-    backBtn === null || backBtn === void 0 ? void 0 : backBtn.addEventListener("click", () => navigate("/register"));
+    backBtn === null || backBtn === void 0 ? void 0 : backBtn.addEventListener("click", () => navigate("/avatar1"));
     (_a = document.getElementById("userButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         const usernameInput = document.getElementById("userEnter");
         const emailInput = document.getElementById("mailEnter");
@@ -77,7 +77,7 @@ export function Profile1View(app, state) {
             alert("Usuario creado correctamente");
             state.player.user = username;
             localStorage.setItem("player", JSON.stringify(state.player));
-            navigate("/register");
+            navigate("/avatar1");
         }
         catch (err) {
             console.error(err);
