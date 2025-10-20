@@ -14,9 +14,27 @@ $queryId = $_GET['id'] ?? null;
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST': createUser($body, $database); break;
     case 'GET': $queryId ? userDataById($database, $queryId) : userList($database); break;
-    case 'PATCH': editUserData($queryId, $body, $database); break;
+    case 'PATCH': $queryId ? getUserAvatar($database, $queryId) : editUserData($queryId, $body, $database); break;
     case 'DELETE': deleteUser($queryId, $database); break;
     default: errorSend(405, 'Method not allowed');
+}
+
+function getUserAvatar(SQLite3 $db, int $id): void {
+    if (!is_numeric($id))
+        errorSend(400, 'bad petition');
+    $sqlQuery = "SELECT avatar_url FROM users WHERE id = :id";
+    $res = doQuery($db, $sqlQuery, [':id', $id, SQLITE3_INTEGER]);
+    if (!$res)
+        errorSend(500, "Sqlite error: " . $db->lastErrorMsg());
+    if (!$res['avatar_url'])
+        errorSend(404, "avatar not found in db");
+    $avatarPath = __DIR__ . $result['avatar_url'];
+    if (!file_exists($avatarPath))
+        errorSend(404, "file not found");
+
+    $info = getimagesize($avatarPath);
+    header('Content-Type: ' . $info['mime']);
+    readfile($avatarPath);
 }
 
 function createUser(array $body, SQLite3 $db): void {
