@@ -83,7 +83,7 @@ export function AvatarView(app, state) {
         formData.append("avatar", file);
         formData.append("user_id", String(state.player.id)); // asegúrate de tener el user ID
         try {
-            const res = yield fetch("/api/upload.php", {
+            const res = yield fetch("http://localhost:8085/api/upload.php", {
                 method: "POST",
                 body: formData,
             });

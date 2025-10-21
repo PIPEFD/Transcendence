@@ -64,7 +64,7 @@ export function AuthView(app, state) {
             }
             alert("Codigo correcto");
             localStorage.setItem("tokenUser", data.details); // Guardo token
-            navigate("/");
+            navigate("/choose");
         }
         catch (err) {
             console.error(err);
