@@ -215,11 +215,3 @@ Common issues:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-
-### Curls
-
-# Debe conectar (no hablará el protocolo, solo verifica apertura)
-curl -vk https://localhost:9443/ws/ -H "Connection: Upgrade" -H "Upgrade: websocket"
-
-

@@ -1,3 +1,21 @@
+# Ignorar archivos y directorios generados automáticamente
+Makefile.temp
+backend/database/database.sqlite
+config/cloudflare/certs/dhparam.pem
+config/cloudflare/certs/fullchain.pem
+config/cloudflare/certs/privkey.pem
+config/secrets/app_key.secret
+config/secrets/grafana_admin_password.secret
+config/secrets/grafana_admin_user.secret
+config/secrets/jwt_secret.secret
+config/secrets/scope_htpasswd.secret
+docker/nginx/40-inject-vars.sh
+frontend/dist/index.html
+nginx/conf.d/app.conf
+scripts/git-auto.sh
+backend/srcs/
+config/credentials.txt
+docker/nginx/docker-entrypoint.sh
 
 **/vendor/
 **/google_oauth_client.json

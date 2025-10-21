@@ -9,9 +9,6 @@ RUN rm -rf /etc/nginx/conf.d/*
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/conf.d/ /etc/nginx/conf.d/
 
-COPY config/ssl/privkey.pem /etc/ssl/
-COPY config/ssl/fullchain.pem /etc/ssl/
-RUN chmod 644 /etc/ssl/privkey.pem /etc/ssl/fullchain.pem
 # Copia el script de inicialización
 COPY docker/nginx/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
