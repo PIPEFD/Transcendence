@@ -16,12 +16,13 @@ services:
       - "works-with=backend"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../nginx/conf.d:/etc/nginx/conf.d:ro
-      - ../nginx/snippets:/etc/nginx/snippets:ro
+      - ../nginx/conf.d:/etc/nginx/conf.d
+      - ../nginx/snippets:/etc/nginx/snippets
       - ../config/ssl:/etc/ssl:ro
       - ../config/auth:/etc/nginx/auth:ro
       - ../logs/nginx:/var/log/nginx
       - ../backend/public:/var/www/html/public:ro
+      - ../docker/nginx/docker-entrypoint.sh:/docker-entrypoint-custom.sh:ro
     environment:
       - FRONTEND_PORT=${FRONTEND_PORT:-3000}
       - BACKEND_PORT=${BACKEND_PORT:-9000}
@@ -34,7 +35,8 @@ services:
       - SCOPE_PORT=${SCOPE_PORT:-4040}
     secrets:
       - scope_htpasswd
-    command: nginx -g "daemon off;"
+    entrypoint: ["/bin/sh", "/docker-entrypoint-custom.sh"]
+    command: ["nginx", "-g", "daemon off;"]
     networks: [default, monitoring]
     healthcheck:
       test: ["CMD", "nginx", "-t"]

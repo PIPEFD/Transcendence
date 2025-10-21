@@ -4,3 +4,6 @@
 **/google_token.json
 OUT.txt
 .env
+# test reports
+reports/
+

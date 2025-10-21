@@ -24,7 +24,7 @@ export function updateHeader(state: any): void {
                      id="avBtn"
                      alt="avatar"
                      class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
-                <img src="/assets/settings.png"
+                <img src="/dist/assets/settings.png"
                      id="settingsBtn"
                      alt="settings"
                      class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>

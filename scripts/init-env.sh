@@ -86,18 +86,57 @@ echo -e "${YELLOW}Preparando entorno de base de datos...${NC}"
 touch $BASE_DIR/backend/srcs/database/database.sqlite
 chmod 666 $BASE_DIR/backend/srcs/database/database.sqlite
 
-# 9. Cargar variables de entorno
-echo -e "${YELLOW}Cargando variables de entorno...${NC}"
-if [ -f "$BASE_DIR/.env" ]; then
-    # No exportar el archivo .env directamente para evitar problemas con comentarios
-    export APP_ENV=development
-    export APP_DEBUG=true
-    export FRONTEND_PORT=3000
-    export BACKEND_PORT=9000
-else
-    echo -e "${RED}Error: No se encontró el archivo .env${NC}"
-    exit 1
-fi
+# 9. Crear/actualizar archivo .env
+echo -e "${YELLOW}Configurando archivo .env...${NC}"
+ENV_FILE="$BASE_DIR/.env"
+
+# Crear o sobrescribir el archivo .env
+cat > "$ENV_FILE" << EOL
+# Transcendence - Configuración Principal
+APP_ENV=development
+APP_DEBUG=true
+APP_URL=https://localhost
+
+# Claves de seguridad
+APP_KEY=$(cat "$BASE_DIR/config/secrets/app_key.secret" 2>/dev/null || echo "base64:$(openssl rand -base64 32)")
+JWT_SECRET=$(cat "$BASE_DIR/config/secrets/jwt_secret.secret" 2>/dev/null || echo "$(openssl rand -base64 32)")
+
+# Puertos de servicios
+FRONTEND_PORT=3000
+BACKEND_PORT=9000
+GAME_WS_PORT=6001
+GRAFANA_PORT=3001
+PROMETHEUS_PORT=9090
+ELASTICSEARCH_PORT=9200
+KIBANA_PORT=5601
+
+# Configuración de Base de Datos
+DB_CONNECTION=sqlite
+DB_DATABASE=/app/srcs/database/database.sqlite
+
+# Configuración de servicios
+REDIS_HOST=redis
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+# Configuración de correo
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="noreply@transcendence.local"
+MAIL_FROM_NAME="Transcendence"
+EOL
+
+echo -e "${GREEN}Archivo .env configurado correctamente${NC}"
+
+# Cargar variables de entorno
+export APP_ENV=development
+export APP_DEBUG=true
+export FRONTEND_PORT=3000
+export BACKEND_PORT=9000
 
 # 10. Iniciar servicios
 echo -e "${YELLOW}Iniciando servicios...${NC}"

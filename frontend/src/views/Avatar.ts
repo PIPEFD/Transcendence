@@ -14,7 +14,7 @@ export function AvatarView(app: HTMLElement, state: any): void {
         <div class="grid grid-cols-3 gap-4 mb-4">
             ${Array.from({ length: 9 }, (_, i) => `
               <div class="flex flex-col items-center">
-                <img src="/assets/avatar${i + 1}.png" alt="Avatar ${i + 1}" class="w-20 h-20 mb-2 border-2 border-poke-dark rounded-lg shadow-md" />
+                <img src="/dist/assets/avatar${i + 1}.png" alt="Avatar ${i + 1}" class="w-20 h-20 mb-2 border-2 border-poke-dark rounded-lg shadow-md" />
                 <button class="bg-poke-blue bg-opacity-80 text-poke-light py-1 px-2 text-sm border-2 border-poke-dark rounded hover:bg-gradient-to-b hover:from-poke-blue hover:to-blue-600 hover:bg-opacity-100 active:animate-press" data-avatar="${i + 1}">
                   ${t("select")}
                 </button>

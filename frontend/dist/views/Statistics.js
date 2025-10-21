@@ -6,7 +6,7 @@ export function StatsView(app, state) {
     let avatarSrc = "";
     if (state.player.avatar !== null && state.player.avatar !== undefined) {
         if (typeof state.player.avatar === "number") {
-            avatarSrc = `/assets/avatar${state.player.avatar}.png`; // built-in
+            avatarSrc = `/dist/assets/avatar${state.player.avatar}.png`; // built-in
         }
         else if (typeof state.player.avatar === "string") {
             avatarSrc = state.player.avatar; // uploaded

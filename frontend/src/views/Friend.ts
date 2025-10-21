@@ -81,7 +81,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
                     ${friends.map((friend: any, i: number) => `
                         <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                             <div class="flex items-center gap-3">
-                                <img src="/assets/avatar${(i % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                                <img src="/dist/assets/avatar${(i % 9) + 1}.png" class="w-10 h-10 rounded-full" />
                                 <div class="text-left">
                                     <div class="text-sm font-medium">${friend.username}</div>
                                     <div class="text-xs text-poke-dark">Online</div>
@@ -203,7 +203,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
                     ${requests.map(r => `
                         <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                             <div class="flex items-center gap-3">
-                                <img src="/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                                <img src="/dist/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
                                 <div class="text-left">
                                     <div class="text-sm font-medium">Usuario #${r.sender_id}</div>
                                     <div class="text-sm text-poke-dark">${r.created_at}</div>

@@ -81,54 +81,44 @@ help:
 	@echo ""
 
 # Inicialización del entorno completo
-init: create-dirs create-certs create-env up
+init: create-dirs generate-secrets create-certs create-env up
 	@echo -e "$(GREEN)✓ Entorno inicializado y servicios iniciados$(RESET)"
+
+# Generación de secretos
+generate-secrets:
+	@echo -e "$(YELLOW)Generando secretos...$(RESET)"
+	@bash scripts/generate-secrets.sh
 
 # Creación de directorios
 create-dirs:
 	@echo -e "$(YELLOW)Creando estructura de directorios...$(RESET)"
 	@mkdir -p $(CONFIG_DIR)/ssl
 	@mkdir -p $(CONFIG_DIR)/auth
+	@mkdir -p $(CONFIG_DIR)/secrets
 	@mkdir -p $(CONFIG_DIR)/cloudflare/certs
 	@mkdir -p $(LOGS_DIR)/nginx
 	@mkdir -p ./backend/srcs/database
 	@mkdir -p ./backend/srcs/public/api/uploads
 	@mkdir -p ./waf/logs
+	@chmod 700 $(CONFIG_DIR)/secrets
 
-# Creación de certificados SSL si no existen
+# Creación de certificados SSL usando el script dedicado
 create-certs: create-dirs
-	@echo -e "$(YELLOW)Verificando certificados SSL...$(RESET)"
-	@if [ ! -f "$(SSL_DIR)/fullchain.pem" ] || [ ! -f "$(SSL_DIR)/privkey.pem" ]; then \
-		echo -e "$(YELLOW)Generando nuevos certificados SSL...$(RESET)"; \
-		openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-			-keyout $(SSL_DIR)/privkey.pem \
-			-out $(SSL_DIR)/fullchain.pem \
-			-subj "/C=ES/ST=Madrid/L=Madrid/O=42/OU=dev/CN=localhost"; \
-		if [ ! -f "$(SSL_DIR)/dhparam.pem" ]; then \
-			echo -e "$(YELLOW)Generando parámetros DH...$(RESET)"; \
-			openssl dhparam -out $(SSL_DIR)/dhparam.pem 2048; \
-		fi; \
-		cp $(SSL_DIR)/fullchain.pem $(CONFIG_DIR)/cloudflare/certs/; \
-		cp $(SSL_DIR)/privkey.pem $(CONFIG_DIR)/cloudflare/certs/; \
-		cp $(SSL_DIR)/dhparam.pem $(CONFIG_DIR)/cloudflare/certs/; \
-		chmod 600 $(SSL_DIR)/privkey.pem; \
-		chmod 644 $(SSL_DIR)/fullchain.pem $(SSL_DIR)/dhparam.pem; \
-	else \
-		echo -e "$(GREEN)Certificados SSL ya existen$(RESET)"; \
-	fi
+	@echo -e "$(YELLOW)Generando certificados SSL...$(RESET)"
+	@bash $(SCRIPTS_DIR)/make-certs.sh
 
-# Crear/verificar archivo .env
-create-env:
-	@echo -e "$(YELLOW)Verificando archivo .env...$(RESET)"
-	@if [ ! -f ".env" ]; then \
-		echo -e "$(YELLOW)Creando archivo .env con valores predeterminados...$(RESET)"; \
-		touch .env; \
-		echo "# Transcendence - Configuración Principal" > .env; \
-		echo "APP_ENV=development" >> .env; \
-		echo "APP_DEBUG=true" >> .env; \
-		echo "APP_URL=https://localhost" >> .env; \
-		echo "APP_KEY=base64:$$(openssl rand -base64 32)" >> .env; \
-		echo "JWT_SECRET=base64:$$(openssl rand -base64 64)" >> .env; \
+# Regla de inicialización
+init: init-env create-certs create-dirs backend-setup
+
+# Configuración inicial del entorno
+init-env:
+	@echo -e "$(YELLOW)Configurando entorno inicial...$(RESET)"
+	@bash $(SCRIPTS_DIR)/init-env.sh
+
+# Configuración del backend
+backend-setup:
+	@echo -e "$(YELLOW)Configurando el backend...$(RESET)"
+	@cd backend && make setup
 		echo "JWT_EXPIRATION=86400" >> .env; \
 		echo "DB_CONNECTION=sqlite" >> .env; \
 		echo "DB_DATABASE=/var/www/database/database.sqlite" >> .env; \
@@ -322,4 +312,4 @@ reset: down
 	fi
 
 # Marca los objetivos que no son archivos
-.PHONY: help init create-dirs create-certs create-env up up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps test test-unit test-integration clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs
+.PHONY: help init create-dirs generate-secrets create-certs create-env up up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps test test-unit test-integration clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs

@@ -7,7 +7,7 @@ export function updateHeader(state) {
     let avatarSrc = "";
     if (state.player.avatar !== null && state.player.avatar !== undefined) {
         if (typeof state.player.avatar === "number") {
-            avatarSrc = `/assets/avatar${state.player.avatar}.png`; // built-in avatar
+            avatarSrc = `/dist/assets/avatar${state.player.avatar}.png`; // built-in avatar
         }
         else if (typeof state.player.avatar === "string") {
             avatarSrc = state.player.avatar; // uploaded avatar (base64 or URL)
@@ -22,7 +22,7 @@ export function updateHeader(state) {
                      id="avBtn"
                      alt="avatar"
                      class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
-                <img src="/assets/settings.png"
+                <img src="/dist/assets/settings.png"
                      id="settingsBtn"
                      alt="settings"
                      class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
