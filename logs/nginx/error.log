@@ -3072,3 +3072,6 @@
 2025/09/23 12:20:03 [alert] 1#1: worker process 25 exited on signal 9
 2025/09/23 12:20:03 [alert] 1#1: worker process 24 exited on signal 9
 2025/09/24 17:24:32 [warn] 23#23: *7 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: localhost, request: "GET /assets/pong_logo.png HTTP/1.1", upstream: "http://172.18.0.2:3000/assets/pong_logo.png", host: "localhost:8085", referrer: "http://localhost:8085/"
+2025/10/21 15:10:12 [warn] 21#21: *76 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 172.18.0.1, server: _, request: "POST /api/upload.php HTTP/1.1", host: "localhost:8085", referrer: "http://localhost:3000/"
+2025/10/21 15:10:48 [warn] 21#21: *76 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000002, client: 172.18.0.1, server: _, request: "POST /api/upload.php HTTP/1.1", host: "localhost:8085", referrer: "http://localhost:3000/"
+2025/10/21 15:11:09 [warn] 21#21: *76 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000003, client: 172.18.0.1, server: _, request: "POST /api/upload.php HTTP/1.1", host: "localhost:8085", referrer: "http://localhost:3000/"

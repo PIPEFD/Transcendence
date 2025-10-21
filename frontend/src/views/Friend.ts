@@ -4,8 +4,7 @@ import { ChatView } from "./Chat.js";
 
 // !!! IMPORTANTE: REEMPLAZA ESTE VALOR !!!
 // Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
-const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
-const userIdPlaceholder = userId ? parseInt(userId, 10) : null; // ESO ES EL NUMERO ID AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
 
 export function FriendsView(app: HTMLElement, state: any): void {
     app.innerHTML = `
@@ -41,6 +40,9 @@ export function FriendsView(app: HTMLElement, state: any): void {
         </div>
     `;
   
+    const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+    console.log("id entrar friends: ", userId);
+    const userIdPlaceholder = userId ? parseInt(userId, 10) : null; // ESO ES EL NUMERO ID AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     const content = document.getElementById("friendsContent") as HTMLElement;
 
@@ -50,6 +52,10 @@ export function FriendsView(app: HTMLElement, state: any): void {
         if (!token) {
             return `<p class="text-red-500">${t("error_no_login") || "Error: No se ha iniciado sesión."}</p>`;
         }
+        console.log("tt:", token);
+        const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+        console.log("id entrar friends: ", userId);
+        const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
     
         try {
             console.log("User ID:", userIdPlaceholder);
@@ -173,7 +179,9 @@ export function FriendsView(app: HTMLElement, state: any): void {
         });
     };
 
-    const requestsList = async (): Promise<string> => {
+    
+
+     /* const requestsList = async (): Promise<string> => {
         const token = localStorage.getItem('tokenUser');
         if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
     
@@ -225,7 +233,170 @@ export function FriendsView(app: HTMLElement, state: any): void {
             console.error(err);
             return `<p class="text-red-500">${t("error_network")}</p>`;
         }
-    };
+    }; */
+
+    const requestsList = async (): Promise<string> => {
+    const token = localStorage.getItem('tokenUser');
+    console.log("tt:", token);
+    if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
+
+    try {
+        // Traer solicitudes de amistad
+        const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data: { success: { sender_id: number; created_at: string }[] } = await response.json();
+
+        if (!response.ok || !Array.isArray(data.success)) {
+            return `<p class="text-red-500">Error al cargar solicitudes.</p>`;
+        }
+
+        const requests = data.success;
+
+        if (requests.length === 0) {
+            return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
+        }
+
+        console.log("ee ");
+        // Traer usernames de cada sender_id
+        const usernames = await Promise.all(
+            requests.map(async r => {
+                try {
+                    const res = await fetch(`http://localhost:8085/api/users.php?id=${r.sender_id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    /* if (!res.ok) throw new Error("Error al obtener username");
+                    const userData = await res.json();
+                    console.log("ee ", userData);
+                    return userData.username || `Usuario #${r.sender_id}`; */
+                    const text1 = await res.text();
+                    console.log("Raw response:", text1);
+
+                    let dd;
+                    try {
+                        dd = JSON.parse(text1);
+                    } catch {
+                        console.error("No se pudo parsear JSON:", text1);
+                        dd = { error: "invalid_json", raw: text1 };
+                    }
+                    const receiverId = dd.success?.username;
+                    return receiverId;
+                } catch {
+                    console.log("sta mal ");
+                    return `Usuario #${r.sender_id}`;
+                }
+            })
+        );
+
+        console.log("ee ", usernames[0]);
+        return `
+            <h2 class="text-lg mb-3">${t("request_list")}</h2>
+            <ul class="space-y-2">
+                ${requests.map((r, i) => `
+                    <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
+                        <div class="flex items-center gap-3">
+                            <img src="/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                            <div class="text-left">
+                                <div class="text-sm font-medium">${usernames[i]}</div>
+                                <div class="text-sm text-poke-dark">${r.created_at}</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="accept-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded" data-sender-id="${r.sender_id}">
+                                ${t("accept")}
+                            </button>
+                            <button class="decline-btn px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded" data-sender-id="${r.sender_id}">
+                                ${t("decline")}
+                            </button>
+                        </div>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+
+    } catch (err) {
+        console.error(err);
+        return `<p class="text-red-500">${t("error_network")}</p>`;
+    }
+};
+ 
+
+    /* const requestsList = async (): Promise<string> => {
+        const token = localStorage.getItem('tokenUser');
+        if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
+
+        try {
+            const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data: { success: { sender_id: number; created_at: string }[] } = await response.json();
+
+            if (!response.ok || !Array.isArray(data.success)) {
+                return `<p class="text-red-500">Error al cargar solicitudes.</p>`;
+            }
+
+            const requests = data.success;
+            if (requests.length === 0) {
+                return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
+            }
+
+            const usernames = await Promise.all(
+                requests.map(async (r) => {
+                    try {
+                        const res = await fetch(`http://localhost:8085/api/users.php?id=${r.sender_id}`);
+                        if (!res.ok) throw new Error("Error al obtener username");
+                        const userData = await res.json();
+                        return userData.username || `Usuario #${r.sender_id}`;
+                    } catch {
+                        return `Usuario #${r.sender_id}`;
+                    }
+                })
+            );
+
+            return `
+                <h2 class="text-lg mb-3">${t("request_list")}</h2>
+                <ul class="space-y-2">
+                    ${requests.map((r, i) => `
+                        <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
+                            <div class="flex items-center gap-3">
+                                <img src="/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                                <div class="text-left">
+                                    <div class="text-sm font-medium">${usernames[i]}</div>
+                                    <div class="text-sm text-poke-dark">${r.created_at}</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="accept-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded" data-sender-id="${r.sender_id}">
+                                    ${t("accept")}
+                                </button>
+                                <button class="decline-btn px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded" data-sender-id="${r.sender_id}">
+                                    ${t("decline")}
+                                </button>
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+        } catch (err) {
+            console.error(err);
+            return `<p class="text-red-500">${t("error_network")}</p>`;
+        }
+    }; */
+
 
     const setupRequestListeners = (container: HTMLElement) => {
         const token = localStorage.getItem('tokenUser');
@@ -432,7 +603,9 @@ export function FriendsView(app: HTMLElement, state: any): void {
         `;
     
         // Obtener solicitudes del servidor
+        console.log("antes de");
         const reqHtml = await requestsList();
+        console.log("dess de");
     
         setTimeout(() => {
             inner.innerHTML = reqHtml;
@@ -446,7 +619,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
     }    
 
       // Lógica para las otras pestañas ('add', 'requests')
-      setTimeout(() => {
+      /* setTimeout(() => {
           inner.innerHTML = sections[tab];
           inner.style.opacity = '1';
   
@@ -462,6 +635,84 @@ export function FriendsView(app: HTMLElement, state: any): void {
                       const token = localStorage.getItem('tokenUser');
                       const receiver_str = r_id_Input.value.trim();
                       const receiver_id = receiver_str ? parseInt(receiver_str, 10) : null;
+                      console.log({
+                        token,
+                        userIdPlaceholder,
+                        receiver_id
+                      });
+                      try {
+                        const response = await fetch("http://localhost:8085/api/friend_request.php", {
+                            method: 'POST', // Tu backend usa POST para DELETE
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ sender_id: userIdPlaceholder, receiver_id : receiver_id })
+                        });
+                        if (!response.ok) {
+                            alert("Error en el fetch de request");
+                            return;
+                          }
+
+                        alert("Request realizada");
+                      }
+                      catch (err) {
+                        console.error(err);
+                        alert("Error de conexión con el servidor");
+                      }
+                      //nameInput.value = "";
+                  });
+              }
+          }
+      }, 120); */
+      setTimeout(() => {
+          inner.innerHTML = sections[tab];
+          inner.style.opacity = '1';
+  
+          if (tab === "add") {
+              const sendReqBtn = document.getElementById("sendReqBtn");
+              const r_id_Input = document.getElementById("friendName") as HTMLInputElement;
+              if (sendReqBtn) {
+                  sendReqBtn.addEventListener("click", async () => {
+                      const nameInput = document.getElementById("friendName") as HTMLInputElement | null;
+                      if (!nameInput || !nameInput.value.trim()) return;
+                      //alert("Request sent to " + nameInput.value.trim());
+                      //aqui meto el fetch
+                      const token = localStorage.getItem('tokenUser');
+                      const username = r_id_Input.value.trim();
+                      // aqui busco el id del username
+                      console.log("antes");
+                     try {
+                        console.log("User ID ff:", userIdPlaceholder);
+                         console.log("User ID ff:", username);
+                        const response = await fetch(`http://localhost:8085/api/users.php?user=${username}`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                
+                        const text = await response.text();
+                        console.log("Raw response:", text);
+
+                        let data;
+                        try {
+                            data = JSON.parse(text);
+                        } catch {
+                            console.error("No se pudo parsear JSON:", text);
+                            data = { error: "invalid_json", raw: text };
+                        }
+                        const receiverId = data.success?.user_id;
+                        console.log("ID del usuario:", receiverId);
+                        localStorage.setItem('lastFriendId', receiverId);
+                     }catch (err) {
+                        console.error(err);
+                        alert("Error de conexión con el servidor");
+                      }
+                      const uu = localStorage.getItem('lastFriendId');
+                      const receiver_id = uu ? parseInt(uu, 10) : null;
+                      console.log("uu ", uu);
                       console.log({
                         token,
                         userIdPlaceholder,

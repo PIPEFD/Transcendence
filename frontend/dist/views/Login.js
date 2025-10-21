@@ -69,9 +69,9 @@ export function LoginView(app, state) {
                 errorDiv.textContent = data.error;
                 return; // ¡detenemos la navegación!
             }
+            localStorage.setItem("userId", data.user_id);
             // Si requiere 2FA
             if (data.pending_2fa) {
-                localStorage.setItem("userId", data.user_id);
                 navigate("/authentication");
             }
             else {

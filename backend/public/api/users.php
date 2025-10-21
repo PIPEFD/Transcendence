@@ -11,13 +11,15 @@ $database = connectDatabase();
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
 $queryUsername = $_GET['user'] ?? null;
+$username = "";
 
 if ($queryUsername && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $query = "SELECT id FROM users WHERE username = :username";
-    $res = doQuery($query, $database, [':username', $username, SQLITE3_TEXT]);
+    $res = doQuery($database, $query, [':username', $queryUsername, SQLITE3_TEXT]);
+    $row = $res->fetchArray(SQLITE3_ASSOC);
     if (!$res)
         errorSend(500, 'Sql error ' . $database->lastErrorMsg());
-    successSend(['success' => 'id found', 'user_id' => $res]);
+    successSend(['user_id' => $row['id']]);
     exit ;
 }
 
@@ -61,10 +63,22 @@ function createUser(array $body, SQLite3 $db): void {
     successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
 }
 
-function userDataById(SQLite3 $db, int $id): void {
+/* function userDataById(SQLite3 $db, int $id): void {
     $sql = "SELECT user_id, username, email, elo FROM users WHERE user_id = :id";
     $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
     if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    $row ? successSend($row) : errorSend(404, 'User not found');
+} */
+
+function userDataById(SQLite3 $db, int $id): void {
+    $sql = "SELECT id AS user_id, username, email, elo FROM users WHERE id = :id";
+    $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
+
+    if (!$res) {
+        errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    }
+
     $row = $res->fetchArray(SQLITE3_ASSOC);
     $row ? successSend($row) : errorSend(404, 'User not found');
 }

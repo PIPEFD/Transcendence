@@ -737,10 +737,6 @@ video {
   width: 2rem;
 }
 
-.w-\[90vw\] {
-  width: 90vw;
-}
-
 .w-full {
   width: 100%;
 }
@@ -755,6 +751,10 @@ video {
 
 .max-w-\[80\%\] {
   max-width: 80%;
+}
+
+.max-w-\[90vw\] {
+  max-width: 90vw;
 }
 
 .max-w-lg {

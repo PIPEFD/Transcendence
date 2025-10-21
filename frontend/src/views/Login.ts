@@ -71,9 +71,10 @@ export function LoginView(app: HTMLElement, state: any): void {
         return; // ¡detenemos la navegación!
       }
 
+      localStorage.setItem("userId", data.user_id);
+
       // Si requiere 2FA
       if (data.pending_2fa) {
-        localStorage.setItem("userId", data.user_id);
         navigate("/authentication");
       } else {
         navigate("/"); // login exitoso
