@@ -10,6 +10,16 @@ require_once __DIR__ . '/header.php';
 $database = connectDatabase();
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
+$queryUsername = $_GET['user'] ?? null;
+
+if ($queryUsername && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $query = "SELECT id FROM users WHERE username = :username";
+    $res = doQuery($query, $database, [':username', $username, SQLITE3_TEXT]);
+    if (!$res)
+        errorSend(500, 'Sql error ' . $database->lastErrorMsg());
+    successSend(['success' => 'id found', 'user_id' => $res]);
+    exit ;
+}
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST': createUser($body, $database); break;
