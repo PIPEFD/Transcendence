@@ -120,6 +120,7 @@ export function AvatarView1(app: HTMLElement, state: any): void {
 		});
 		const data = await response.json();
 		console.log("Friends data:", data);
+		await updateHeader(state);
 	} catch (error) {
             console.error("Error fetching friend list:", error);
             return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;

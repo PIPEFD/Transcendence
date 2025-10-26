@@ -120,6 +120,7 @@ export function AvatarView1(app, state) {
             });
             const data = yield response.json();
             console.log("Friends data:", data);
+            yield updateHeader(state);
         }
         catch (error) {
             console.error("Error fetching friend list:", error);
