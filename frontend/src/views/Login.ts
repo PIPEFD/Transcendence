@@ -71,7 +71,12 @@ export function LoginView(app: HTMLElement, state: any): void {
         return; // ¡detenemos la navegación!
       }
 
-      localStorage.setItem("userId", data.user_id);
+      //localStorage.setItem("userId", data.user_id);
+      localStorage.setItem("userId", String(data.user_id));
+
+      const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+      console.log("id entrar home: ", userId);
+      const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 
       // Si requiere 2FA
       if (data.pending_2fa) {

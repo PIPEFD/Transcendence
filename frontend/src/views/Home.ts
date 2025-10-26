@@ -29,4 +29,8 @@ export function HomeView(app: HTMLElement, state: any): void {
   document.getElementById("gameBtn")?.addEventListener("click", () => navigate("/game"));
   document.getElementById("tournamentBtn")?.addEventListener("click", () => navigate("/tournament"));
   document.getElementById("chatBtn")?.addEventListener("click", () => navigate("/chat"));
+
+    const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+    console.log("id entrar home: ", userId);
+    const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 }
