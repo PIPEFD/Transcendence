@@ -10,18 +10,30 @@ function gmailClient(): Google\Client
     $client->setAuthConfig(__DIR__ . '/../../../secrets/google_oauth_client.json');
     $client->setAccessType('offline'); // Al solicitar acceso offline, le estás pidiendo a Google que, además del access_token de corta duración, //te entregue un refresh_token. Este es un token especial de larga duración. Su única función es permitir que tu servidor, //de forma automática y sin intervención del usuario, lo intercambie por un nuevo access_token cada vez que el antiguo caduque. //La alternativa, el acceso online, se tiene que renovar cada hora.
 
-    $tokenPath = __DIR__ . '/../../../secrets/google_token.json';
-    if (!file_exists($tokenPath))
-		throw new Exception('Falta google_token.json. Ejecuta el script de setup para generarlo.'); 
+	// Prefer relative token in the gmail_api folder
+	$relativeToken = __DIR__ . '/../auth/gmail_api/google_token.json';
+	$tmpToken = sys_get_temp_dir() . '/transcendence_gmail_token.json';
 
-    $accessToken = json_decode(file_get_contents($tokenPath), true);
+	$tokenPath = null;
+	if (file_exists($relativeToken)) {
+		$tokenPath = $relativeToken;
+	} elseif (file_exists($tmpToken)) {
+		$tokenPath = $tmpToken;
+	} else {
+		throw new Exception('Falta google_token.json. Ejecuta el script de setup para generarlo.');
+	}
+
+	$accessToken = json_decode(file_get_contents($tokenPath), true);
     $client->setAccessToken($accessToken);
 
-    if ($client->isAccessTokenExpired())
-    {
+	if ($client->isAccessTokenExpired())
+	{
+		// Only attempt refresh if token was writable (relative path)
 		$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-		file_put_contents($tokenPath, json_encode($client->getAccessToken(), JSON_PRETTY_PRINT));
-    }
+		if (is_writable(dirname($tokenPath))) {
+			@file_put_contents($tokenPath, json_encode($client->getAccessToken(), JSON_PRETTY_PRINT));
+		}
+	}
     return $client;
 }
 

@@ -68,8 +68,9 @@ echo -e "${BLUE}Contraseña:${NC} $SCOPE_PASSWORD"
 
 # Establecer permisos correctos para los archivos de secretos
 echo -e "${YELLOW}Estableciendo permisos para los secretos...${NC}"
-chmod 600 "$SECRETS_DIR"/*
-echo -e "${GREEN}Permisos establecidos${NC}"
+# Los secretos deben ser legibles por los contenedores (644) pero solo escribibles por el propietario
+chmod 644 "$SECRETS_DIR"/*
+echo -e "${GREEN}Permisos establecidos (644 - legibles por contenedores)${NC}"
 
 echo -e "${GREEN}¡Todos los secretos han sido generados correctamente!${NC}"
 echo -e "${YELLOW}Importante:${NC} Estos secretos son sensibles. No los comparta ni los suba a control de versiones."

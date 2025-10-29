@@ -38,12 +38,25 @@ function sendMailGmailAPI(string $mail, string $id, string $code): bool
 		$client = gmailClient();
 		$gmail = new Google\Service\Gmail($client);
 
+		// Construir URL de verificación usando variables de entorno
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+		$host = $_SERVER['HTTP_HOST'] ?? 'localhost:9443';
+		
+		// Si estamos en desarrollo/docker, usar la URL externa configurada
+		$base_url = getenv('FRONTEND_URL') ?: "{$protocol}://{$host}";
+		$verify_url = "{$base_url}/#/verify-2fa?code={$code}&user_id={$id}";
+
 		$message = "From: 'me'\r\n";
 		$message .= "To: {$mail}\r\n";
-		$message .= "Subject: code for user => {$id}\r\n";
+		$message .= "Subject: Código de verificación 2FA - Transcendence\r\n";
 		$message .= "Content-Type: text/plain; charset=UTF-8\r\n";
 		$message .= "\r\n";
-		$message .= "CODE: " . $code;
+		$message .= "Hola,\r\n\r\n";
+		$message .= "Tu código de verificación 2FA es: " . $code . "\r\n\r\n";
+		$message .= "O haz clic en el siguiente enlace para verificar automáticamente:\r\n";
+		$message .= $verify_url . "\r\n\r\n";
+		$message .= "Este código expirará en 10 minutos.\r\n\r\n";
+		$message .= "Si no solicitaste este código, ignora este mensaje.\r\n";
 		$message .= "\r\n";
 
 		$rawMessage = rtrim(strtr(base64_encode($message), '+/', '-_'), '=');

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 function handleAuth($webSocket, $conn, $body) {
     $conn->authToken = $body['token'] ?? null;

@@ -14,10 +14,12 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 # Generar parámetros DH
 openssl dhparam -out "$SSL_DIR/dhparam.pem" 2048
 
-# Establecer permisos correctos
-chmod 600 "$SSL_DIR/privkey.pem"
+# Establecer permisos correctos (644 para que nginx pueda leer desde el volumen read-only)
+chmod 644 "$SSL_DIR/privkey.pem"
 chmod 644 "$SSL_DIR/fullchain.pem"
 chmod 644 "$SSL_DIR/dhparam.pem"
+
+echo "✅ Permisos establecidos: 644 (lectura para nginx en volumen read-only)"
 
 # Crear enlaces simbólicos para compatibilidad
 mkdir -p nginx/certs

@@ -1,30 +1,34 @@
-# syntax=docker/dockerfile:1
-FROM php:8.2-cli-alpine
+FROM php:8.2-cli
+
 WORKDIR /app
 
-# Instalamos dependencias para Composer y extensiones de PHP necesarias
-RUN apk add --no-cache git zip unzip
+# Instalar dependencias para Ratchet y herramientas de construcción
+RUN apt-get update && apt-get install -y \
+    libevent-dev \
+    git \
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install sockets \
+    && docker-php-ext-install zip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalamos Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalar Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Exponemos el puerto para WebSocket
+# Copiar composer.json y realizar la instalación como root primero
+COPY composer.json /app/
+RUN composer install
+
+# Crear usuario no root y ajustar permisos
+RUN useradd -r -u 1001 gameuser \
+    && chown -R gameuser:gameuser /app
+
+# Cambiar al usuario no root
+USER gameuser
+
+# Copiar el resto de los archivos
+COPY --chown=gameuser:gameuser . /app/
+
 EXPOSE 8080
 
-# Usamos un script de inicio para instalar dependencias si es necesario
-COPY <<EOF /docker-entrypoint.sh
-#!/bin/sh
-set -e
-
-# Si no existe vendor o está vacío, instala las dependencias
-if [ ! -d "vendor" ] || [ -z "\$(ls -A vendor 2>/dev/null)" ]; then
-    echo "Instalando dependencias del game-ws..."
-    composer install --no-interaction --no-progress
-fi
-
-# Ejecuta el comando proporcionado
-exec "\$@"
-EOF
-RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["php", "src/ws_server.php"]
+CMD ["php", "src/sourse/server.php"]

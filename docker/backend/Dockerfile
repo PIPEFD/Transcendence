@@ -30,6 +30,10 @@ RUN composer install --no-scripts --no-autoloader
 # Copiar el resto de los archivos
 COPY backend/ .
 
+# Crear directorios de configuración y garantizar permisos
+RUN mkdir -p /var/www/html/public/api/auth/gmail_api \
+    && chmod -R 777 /var/www/html/public/api/auth/gmail_api
+
 # Generar autoloader optimizado
 RUN composer dump-autoload --optimize
 

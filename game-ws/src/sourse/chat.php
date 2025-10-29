@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 function handleChatGlobal($webSocket, $conn, $body) {
     $message = $body['message'] ?? null;

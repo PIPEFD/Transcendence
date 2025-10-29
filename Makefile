@@ -252,7 +252,7 @@ ports:
 
 # Ver estado de los servicios
 ps:
-	@$(COMPOSE) ps
+	@$(COMPOSE) ps -qa
 
 # Ejecutar pruebas
 test:
@@ -272,8 +272,8 @@ test-integration:
 # Limpieza de contenedores e imágenes sin usar
 clean:
 	@echo -e "$(YELLOW)Limpiando recursos Docker sin usar...$(RESET)"
-	@docker container prune -f
-	@docker image prune -f
+	@docker system prune -f --container
+	@docker system prune -f --images
 	@echo -e "$(GREEN)✓ Limpieza completada$(RESET)"
 
 # Limpieza completa del entorno
@@ -292,7 +292,7 @@ clean-all: reset-env cleanup-files
 	
 # Verificar disponibilidad de puertos
 check-ports:
-	@./check-ports.sh
+	@scripts/check-ports.sh
 
 # Reset del entorno y datos (peligroso)
 reset: down
@@ -303,9 +303,8 @@ reset: down
 		rm -rf $(SSL_DIR)/*.pem; \
 		rm -rf $(CONFIG_DIR)/cloudflare/certs; \
 		rm -rf $(LOGS_DIR)/*; \
-		rm -rf ./backend/database/*.sqlite; \
 		echo -e "$(YELLOW)Eliminando volúmenes Docker...$(RESET)"; \
-		docker volume prune -f; \
+		docker system prune -f --volume \
 		echo -e "$(GREEN)✓ Datos restablecidos. Utilice 'make init' para inicializar nuevamente.$(RESET)"; \
 	else \
 		echo -e "$(BLUE)Operación cancelada.$(RESET)"; \

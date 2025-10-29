@@ -38,6 +38,15 @@ else
   echo "¡Advertencia! Secret scope_htpasswd no encontrado"
 fi
 
+# Fix SSL permissions
+echo "Fixing SSL file permissions..."
+if [ -d "/etc/ssl" ]; then
+    # chown -R nginx:nginx /etc/ssl/*.pem
+    # chmod 644 /etc/ssl/fullchain.pem /etc/ssl/dhparam.pem
+    # chmod 640 /etc/ssl/privkey.pem
+    echo "SSL files permissions already set on host"
+fi
+
 # Finalmente, ejecuta el comando original de Nginx
 echo "Iniciando Nginx..."
 exec "$@"

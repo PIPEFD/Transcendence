@@ -3,6 +3,8 @@ FROM nginx:1.27-alpine
 
 # Crear directorios necesarios
 RUN mkdir -p /etc/ssl /etc/nginx/auth
+RUN mkdir -p /tmp/nginx/conf.d /tmp/nginx/snippets
+RUN chmod 755 /etc/nginx/conf.d /etc/nginx/snippets
 
 # Borra default y copia tu config
 RUN rm -rf /etc/nginx/conf.d/*

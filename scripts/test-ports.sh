@@ -49,7 +49,7 @@ echo ""
 echo -e "${YELLOW}=== MONITORING SERVICES ===${NC}"
 test_port "Prometheus" "http://localhost:${PROMETHEUS_PORT:-9090}/" "200"
 test_port "Grafana" "http://localhost:${GRAFANA_PORT:-3001}/" "200"
-test_port "cAdvisor" "http://localhost:${CADVISOR_PORT:-8080}/containers/" "200"
+test_port "cAdvisor" "http://localhost:${CADVISOR_PORT:-8081}/containers/" "200"
 test_port "Weave Scope" "http://localhost:${SCOPE_PORT:-9584}/" "200"
 
 echo ""

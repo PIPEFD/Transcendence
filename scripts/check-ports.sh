@@ -19,8 +19,8 @@ echo -e "${BLUE}╚════════════════════�
 echo -e "Este script comprueba si los puertos necesarios están disponibles\n"
 
 # Cargar variables del archivo .env
-if [ -f "../.env" ]; then
-    source .env
+if [ -f ".env" ]; then
+    source ../.env
     echo -e "${GREEN}✓ Archivo .env cargado correctamente${NC}"
 else
     echo -e "${RED}✗ No se encontró el archivo .env${NC}"
