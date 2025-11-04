@@ -7,7 +7,8 @@ RUN apk add --no-cache \
     zip \
     unzip \
     sqlite-dev \
-    curl
+    curl \
+    wget
 
 # Instalar extensiones PHP necesarias
 RUN docker-php-ext-install pdo pdo_mysql pdo_sqlite

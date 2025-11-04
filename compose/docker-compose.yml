@@ -55,7 +55,7 @@ services:
       - monitoring
       - game
     healthcheck:
-      test: ["CMD", "nginx", "-t"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -95,6 +95,7 @@ services:
     volumes:
       - ../backend/public:/var/www/html/public
       - ../backend/database:/var/www/html/database
+      - ../config/auth/google_oauth_client.json:/var/www/html/config/google_oauth_client.json:ro
     labels:
       - "app=transcendence"
       - "tier=api"
@@ -103,6 +104,7 @@ services:
       - APP_DEBUG=${APP_DEBUG:-true}
       - DB_DATABASE=/var/www/html/database/database.sqlite
       - FRONTEND_URL=${FRONTEND_URL:-https://localhost:9443}
+      - GOOGLE_OAUTH_CONFIG=/var/www/html/config/google_oauth_client.json
     secrets:
       - app_key
       - jwt_secret

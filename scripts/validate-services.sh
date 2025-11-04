@@ -195,7 +195,7 @@ count_result
 # cAdvisor via Nginx
 validate_endpoint \
     "cAdvisor (via Nginx)" \
-    "https://localhost:9443/cadvisor/" \
+    "https://localhost:9443/cadvisor/containers" \
     "200" \
     "cAdvisor accesible vía proxy reverso"
 count_result
@@ -256,17 +256,20 @@ echo -e "${YELLOW}  CONECTIVIDAD ENTRE CONTENEDORES${NC}"
 echo -e "${YELLOW}═══════════════════════════════════════════════════════${NC}"
 echo ""
 
-# Backend desde Nginx
+# Backend desde Nginx (prueba a través del proxy, ya que PHP-FPM requiere FastCGI)
 echo -e "${CYAN}┌─────────────────────────────────────────────────────${NC}"
-echo -e "${CYAN}│ Test: ${WHITE}Nginx → Backend${NC}"
-echo -e "${CYAN}│ Descripción: Conectividad entre Nginx y Backend${NC}"
+echo -e "${CYAN}│ Test: ${WHITE}Nginx → Backend (via FastCGI)${NC}"
+echo -e "${CYAN}│ Descripción: Conectividad entre Nginx y Backend via FastCGI${NC}"
 echo -e "${CYAN}└─────────────────────────────────────────────────────${NC}"
-backend_test=$(docker exec transcendence-nginx wget -qO- http://backend:9000/api/health.php 2>&1)
+# PHP-FPM requiere FastCGI, así que probamos a través del proxy de nginx
+backend_test=$(docker exec transcendence-nginx wget -qO- --no-check-certificate https://localhost:443/api/health.php 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "   ${GREEN}✓ Nginx puede acceder a Backend${NC}"
+    echo -e "   ${GREEN}✓ Nginx puede acceder a Backend via FastCGI${NC}"
+    echo -e "   ${GREEN}✓ Respuesta: ${backend_test}${NC}"
     success=$((success + 1))
 else
     echo -e "   ${RED}✗ No se pudo conectar Nginx → Backend${NC}"
+    echo -e "   ${RED}✗ Error: ${backend_test}${NC}"
     failed=$((failed + 1))
 fi
 total=$((total + 1))

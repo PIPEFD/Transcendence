@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1
 FROM nginx:1.27-alpine
 
+# Instalar wget para testing/healthchecks
+RUN apk add --no-cache wget
+
 # Crear directorios necesarios
 RUN mkdir -p /etc/ssl /etc/nginx/auth
 RUN mkdir -p /tmp/nginx/conf.d /tmp/nginx/snippets
