@@ -57,6 +57,6 @@ export function StatsView(app: HTMLElement, state: any): void {
     </div>
   `;
 
-  document.getElementById("goBackBtn")?.addEventListener("click", () => navigate("/"));
+  document.getElementById("goBackBtn")?.addEventListener("click", () => navigate("/menu"));
   document.getElementById("matchHistoryBtn")?.addEventListener("click", () => navigate("/match-history"));
 }

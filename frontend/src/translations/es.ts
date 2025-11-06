@@ -26,6 +26,7 @@ export default {
   username_info: "Este es tu nombre de usuario.",
   new_username: "Nuevo nombre de usuario",
   enter_username: "Aceptar nuevo nombre",
+  _username: "Nombre de usuario",
   registration: "Registro",
   error_empty_user: "Error: USUARIO VACÍO",
   return: "Volver",
@@ -45,4 +46,12 @@ export default {
   score: "Marcador",
   victory: "Victoria",
   defeat: "Derrota",
+  sign_up: "Registrarse",
+  log_in: "Iniciar sesión",
+  password: "Contraseña",
+  mail: "Email",
+  enter_code_mail: "Introduce el código que has recibido por email",
+  code: "Código",
+  enter_code: "Valida el código",
+
 };

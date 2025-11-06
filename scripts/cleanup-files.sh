@@ -35,41 +35,48 @@ echo -e "${YELLOW}Iniciando limpieza de archivos innecesarios...${NC}"
 
 # Archivos en la raíz que parecen ser temporales o innecesarios
 echo -e "${BLUE}Eliminando archivos temporales en la raíz del proyecto...${NC}"
-rm -f /workspaces/Transcendence/ouput
-rm -f /workspaces/Transcendence/outfile
-rm -f /workspaces/Transcendence/output.txt
-rm -f /workspaces/Transcendence/ComoConectarFrontConBack.txt
-rm -f /workspaces/Transcendence/secrets.txt
-rm -f /workspaces/Transcendence/Makefile.temp
-rm -f /workspaces/Transcendence/dashboard.html  # Este parece duplicado, ya que hay uno en backend/public
+rm -f ./ouput
+rm -f ./outfile
+rm -f ./output.txt
+rm -f ./ComoConectarFrontConBack.txt
+rm -f ./secrets.txt
+rm -f ./Makefile.temp
+# rm -f ./dashboard.html  # Comentado por si es necesario
 
 # Archivos en el directorio backend que parecen ser documentación temporal o basura
 echo -e "${BLUE}Eliminando archivos temporales en el directorio backend...${NC}"
-rm -f /workspaces/Transcendence/backend/activao.txt
-rm -f /workspaces/Transcendence/backend/docu.txt
-rm -f /workspaces/Transcendence/backend/SETUP.txt
+rm -f ./backend/activao.txt
+rm -f ./backend/docu.txt
+rm -f ./backend/SETUP.txt
 
-# Limpiar archivos temporales y logs
-echo -e "${BLUE}Eliminando archivos temporales y logs...${NC}"
-find /workspaces/Transcendence -name "*.tmp" -type f -delete
-find /workspaces/Transcendence -name "*.log" -type f -delete
-find /workspaces/Transcendence -name "*.swp" -type f -delete
-find /workspaces/Transcendence -name "*.bak" -type f -delete
-find /workspaces/Transcendence -name "*~" -type f -delete
+# IMPORTANTE: Preservar base de datos
+echo -e "${GREEN}✓ Preservando backend/database/database.sqlite${NC}"
+
+# Limpiar archivos temporales y logs (EXCLUYENDO base de datos y logs de sistema)
+echo -e "${BLUE}Eliminando archivos temporales...${NC}"
+find . -name "*.tmp" -type f -delete
+# NO eliminar logs de sistema (logs/nginx/, etc.)
+# find . -path "./logs" -prune -o -name "*.log" -type f -delete
+find . -name "*.swp" -type f -delete
+find . -name "*.bak" -type f -delete
+find . -name "*~" -type f -delete
+
+# IMPORTANTE: NO eliminar database.sqlite
+echo -e "${YELLOW}Base de datos preservada: backend/database/database.sqlite${NC}"
 
 # Eliminar directorios __pycache__ (Python)
 echo -e "${BLUE}Eliminando directorios de caché de Python...${NC}"
-find /workspaces/Transcendence -name "__pycache__" -type d -exec rm -rf {} +  2>/dev/null || true
+find . -name "__pycache__" -type d -exec rm -rf {} +  2>/dev/null || true
 
-# Eliminar archivos .DS_Store (MacOS)
+# Eliminar archivos .DS_Store (MacOS) - EXCEPTO en database
 echo -e "${BLUE}Eliminando archivos .DS_Store...${NC}"
-find /workspaces/Transcendence -name ".DS_Store" -type f -delete
+find . -path "./backend/database" -prune -o -name ".DS_Store" -type f -delete
 
 # Eliminar archivos de compilación
 echo -e "${BLUE}Eliminando archivos de compilación...${NC}"
-find /workspaces/Transcendence -name "*.o" -type f -delete
-find /workspaces/Transcendence -name "*.pyc" -type f -delete
-find /workspaces/Transcendence -name "*.pyo" -type f -delete
+find . -name "*.o" -type f -delete
+find . -name "*.pyc" -type f -delete
+find . -name "*.pyo" -type f -delete
 
 echo -e "${GREEN}¡Limpieza de archivos innecesarios finalizada!${NC}"
 echo -e "${YELLOW}Se han eliminado todos los archivos temporales y basura detectados.${NC}"

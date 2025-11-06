@@ -11,17 +11,27 @@ export function RegisterView(app: HTMLElement, state: any): void {
         <h2 class="text-sm leading-relaxed mb-4">${t("registration")}</h2>
         <p class="text-sm leading-relaxed mb-4">${t("connect_with_42")}</p>
         <div class="flex justify-center">
+        <button id="reg1Button" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded
+                hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 hover:border-b-red-800 active:animate-press active:border-b-red-800">
+                ${t("sign_up")}
+            </button>
             <button id="regButton" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded
                 hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 hover:border-b-red-800 active:animate-press active:border-b-red-800">
-                ${t("enter")}
+                ${t("log_in")}
             </button>
         </div>
     </div>
   `;
 
+  document.getElementById("reg1Button")?.addEventListener("click", () => {
+    state.player.alias = "42User";
+    state.player.user = "42Userrr";
+    navigate("/profile1");
+  }); 
+
   document.getElementById("regButton")?.addEventListener("click", () => {
     state.player.alias = "42User";
     state.player.user = "42Userrr";
-    navigate("/profile");
+    navigate("/login");
   }); 
 };

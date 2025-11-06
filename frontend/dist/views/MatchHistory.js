@@ -38,5 +38,5 @@ export function MatchHistoryView(app, state) {
     </div>
   `;
     // Go back to statistics view
-    (_a = document.getElementById("goBackBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/statistics"));
+    (_a = document.getElementById("goBackBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/menu"));
 }

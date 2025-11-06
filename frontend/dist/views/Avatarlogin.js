@@ -22,7 +22,7 @@ export function AvatarView1(app, state) {
 		<div class="grid grid-cols-3 gap-4 mb-4">
 			${Array.from({ length: 9 }, (_, i) => `
 			  <div class="flex flex-col items-center">
-				<img src="/dist/assets/avatar${i + 1}.png" alt="Avatar ${i + 1}" class="w-20 h-20 mb-2 border-2 border-poke-dark rounded-lg shadow-md" />
+				<img src="/assets/avatar${i + 1}.png" alt="Avatar ${i + 1}" class="w-20 h-20 mb-2 border-2 border-poke-dark rounded-lg shadow-md" />
 				<button class="bg-poke-blue bg-opacity-80 text-poke-light py-1 px-2 text-sm border-2 border-poke-dark rounded hover:bg-gradient-to-b hover:from-poke-blue hover:to-blue-600 hover:bg-opacity-100 active:animate-press" data-avatar="${i + 1}">
 				  ${t("select")}
 				</button>
@@ -81,26 +81,50 @@ export function AvatarView1(app, state) {
         const file = uploadInput.files[0];
         const formData = new FormData();
         formData.append("avatar", file);
-        formData.append("user_id", String(state.player.id)); // asegúrate de tener el user ID
+        const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+        console.log("id entrar upload: ", userId);
+        const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+        formData.append("user_id", String(userId)); // asegúrate de tener el user ID
+        const token = localStorage.getItem('tokenUser');
+        // try {
+        //   const res = await fetch("http://localhost:8085/api/upload.php", {
+        // 	method: "POST",
+        // 	body: formData,
+        //   });
+        //   const data = await res.json();
+        //   if (!res.ok) {
+        // 	alert("Error al subir el avatar: " + data.error);
+        // 	return;
+        //   }
+        //   // Guardar la ruta recibida desde el backend en el estado
+        //   state.player.avatar = data.path; 
+        //   updateHeader(state);
+        //   alert("Avatar subido correctamente!");
+        //   navigate("/register"); 
+        // } catch (err) {
+        //   console.error("Error al subir avatar:", err);
+        //   alert("Error de conexión con el servidor");
+        // }
+        console.log("Hola");
         try {
-            const res = yield fetch("/api/upload.php", {
-                method: "POST",
-                body: formData,
+            const response = yield fetch('http://localhost:8085/api/upload.php', {
+                method: 'POST', // Tu backend usa POST para DELETE
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userIdPlaceholder,
+                    avatar: file,
+                })
             });
-            const data = yield res.json();
-            if (!res.ok) {
-                alert("Error al subir el avatar: " + data.error);
-                return;
-            }
-            // Guardar la ruta recibida desde el backend en el estado
-            state.player.avatar = data.path;
-            updateHeader(state);
-            alert("Avatar subido correctamente!");
-            navigate("/register");
+            const data = yield response.json();
+            console.log("Friends data:", data);
+            yield updateHeader(state);
         }
-        catch (err) {
-            console.error("Error al subir avatar:", err);
-            alert("Error de conexión con el servidor");
+        catch (error) {
+            console.error("Error fetching friend list:", error);
+            return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;
         }
     }));
 }

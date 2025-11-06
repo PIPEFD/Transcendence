@@ -118,18 +118,21 @@ init-env:
 # Configuración del backend
 backend-setup:
 	@echo -e "$(YELLOW)Configurando el backend...$(RESET)"
-	@cd backend && make setup
-		echo "JWT_EXPIRATION=86400" >> .env; \
-		echo "DB_CONNECTION=sqlite" >> .env; \
-		echo "DB_DATABASE=/var/www/database/database.sqlite" >> .env; \
-		echo "FRONTEND_PORT=3000" >> .env; \
-		echo "BACKEND_PORT=9000" >> .env; \
-		echo "GAME_WS_PORT=8081" >> .env; \
-		echo "SSL_CERT=/config/ssl/fullchain.pem" >> .env; \
-		echo "SSL_KEY=/config/ssl/privkey.pem" >> .env; \
-		echo "SSL_DHPARAM=/config/ssl/dhparam.pem" >> .env; \
+	@if [ ! -f backend/.env ]; then \
+		echo -e "$(YELLOW)Creando archivo .env para el backend...$(RESET)"; \
+		echo "JWT_SECRET=$$(cat config/secrets/jwt_secret.secret 2>/dev/null || openssl rand -base64 32)" > backend/.env; \
+		echo "JWT_EXPIRATION=86400" >> backend/.env; \
+		echo "DB_CONNECTION=sqlite" >> backend/.env; \
+		echo "DB_DATABASE=/var/www/database/database.sqlite" >> backend/.env; \
+		echo "FRONTEND_PORT=3000" >> backend/.env; \
+		echo "BACKEND_PORT=9000" >> backend/.env; \
+		echo "GAME_WS_PORT=8081" >> backend/.env; \
+		echo "SSL_CERT=/config/ssl/fullchain.pem" >> backend/.env; \
+		echo "SSL_KEY=/config/ssl/privkey.pem" >> backend/.env; \
+		echo "SSL_DHPARAM=/config/ssl/dhparam.pem" >> backend/.env; \
+		echo -e "$(GREEN)✓ Archivo .env creado$(RESET)"; \
 	else \
-		echo -e "$(GREEN)Archivo .env ya existe$(RESET)"; \
+		echo -e "$(GREEN)✓ Archivo .env ya existe$(RESET)"; \
 	fi
 
 # Iniciar todos los servicios (perfil default)
@@ -272,8 +275,7 @@ test-integration:
 # Limpieza de contenedores e imágenes sin usar
 clean:
 	@echo -e "$(YELLOW)Limpiando recursos Docker sin usar...$(RESET)"
-	@docker system prune -f --container
-	@docker system prune -f --images
+	@docker system prune -f
 	@echo -e "$(GREEN)✓ Limpieza completada$(RESET)"
 
 # Limpieza completa del entorno

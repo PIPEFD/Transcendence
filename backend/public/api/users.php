@@ -1,127 +1,114 @@
 <?php
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-require_once '../utils/init.php';
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
-// var_dump($context);
-$requestMethod = $context['requestMethod'];
-$queryId = $context['queryId'];
+require_once __DIR__ . '/header.php';
+$database = connectDatabase();
+$body = json_decode(file_get_contents('php://input'), true);
+$queryId = $_GET['id'] ?? null;
+$queryUsername = $_GET['user'] ?? null;
+$username = "";
 
-switch ($requestMethod) {
-    case 'POST':
-        createUser($context); // no pide auth
-    case 'GET':
-        if ($queryId) {
-            userDataById($context); // no pide auth
-        }
-        else {
-            userList($context); // no pide auth
-        }
-    case 'PATCH':
-        editUserData($context); // pide auth
-    case 'DELETE':
-        deleteUser($context); // pide auth
-    default:
-        response(405, 'unauthorized method');
-}
-
-function userList($context) {
-    $database = $context['database'];
-
-    $sqlQuery = "SELECT id, username, elo FROM users";
-    $res = $database->query($sqlQuery);
+if ($queryUsername && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $query = "SELECT id FROM users WHERE username = :username";
+    $res = doQuery($database, $query, [':username', $queryUsername, SQLITE3_TEXT]);
+    $row = $res->fetchArray(SQLITE3_ASSOC);
     if (!$res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
-
-    $data = [];
-    while ($row = $res->fetchArray(SQLITE3_ASSOC))
-        $data[] = $row;
-
-    echo json_encode($data);
+        errorSend(500, 'Sql error ' . $database->lastErrorMsg());
+    successSend(['user_id' => $row['id']]);
     exit ;
 }
 
-function userDataById($context) {
-    $database = $context['database'];
-    $queryId = isId($context['queryId']);
-
-    $sqlQuery = "SELECT username, email, elo FROM users WHERE id = '$queryId'";
-    $res = $database->query($sqlQuery);
-    if (!$res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
-    if (!($res->fetchArray(SQLITE3_ASSOC)))
-        response(404, 'user not found');
-
-    echo json_encode($res->fetchArray(SQLITE3_ASSOC));
-    exit ;
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'POST': createUser($body, $database); break;
+    case 'GET': $queryId ? userDataById($database, $queryId) : userList($database); break;
+    case 'PATCH': $queryId ? getUserAvatar($database, $queryId) : editUserData($queryId, $body, $database); break;
+    case 'DELETE': deleteUser($queryId, $database); break;
+    default: errorSend(405, 'Method not allowed');
 }
 
-function createUser($context) {
-    $database = $context['database'];
-    $body = $context['body'];
-    
-    $username = getAndCheck($body, 'username');
-    $email = getAndCheck($body, 'email');
-    //var_dump($email);
-    $pass = getAndCheck($body, 'password');
-    $passwordHash = password_hash($pass, PASSWORD_DEFAULT);
-    $sqlQuery = "INSERT INTO users (username, email, pass) VALUES ('$username', '$email', '$passwordHash')";
-    $res = $database->exec($sqlQuery);
+function getUserAvatar(SQLite3 $db, int $id): void {
+    if (!is_numeric($id))
+        errorSend(400, 'bad petition');
+    $sqlQuery = "SELECT avatar_url FROM users WHERE id = :id";
+    $res = doQuery($db, $sqlQuery, [':id', $id, SQLITE3_INTEGER]);
+    if (!$res)
+        errorSend(500, "Sqlite error: " . $db->lastErrorMsg());
+    if (!$res['avatar_url'])
+        errorSend(404, "avatar not found in db");
+    $avatarPath = __DIR__ . $result['avatar_url'];
+    if (!file_exists($avatarPath))
+        errorSend(404, "file not found");
+
+    $info = getimagesize($avatarPath);
+    header('Content-Type: ' . $info['mime']);
+    readfile($avatarPath);
+}
+
+function createUser(array $body, SQLite3 $db): void {
+    if (!checkBodyData($body, 'username', 'email', 'pass'))
+        errorSend(400, 'Missing fields');
+
+    $username = $body['username'];
+    $email = $body['email'];
+    $passHash = password_hash($body['pass'], PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
+    $res = doQuery($db, $sql, [':username', $username, SQLITE3_TEXT], [':email', $email, SQLITE3_TEXT], [':pass', $passHash, SQLITE3_TEXT]);
+    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
+}
+
+/* function userDataById(SQLite3 $db, int $id): void {
+    $sql = "SELECT user_id, username, email, elo FROM users WHERE user_id = :id";
+    $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
+    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    $row ? successSend($row) : errorSend(404, 'User not found');
+} */
+
+function userDataById(SQLite3 $db, int $id): void {
+    $sql = "SELECT id AS user_id, username, email, elo FROM users WHERE id = :id";
+    $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
+
     if (!$res) {
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
+        errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     }
 
-    echo json_encode(['success' => 'new user created']);
-    exit ;
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    $row ? successSend($row) : errorSend(404, 'User not found');
 }
 
-function editUserData($context) {
-    $id = $context['tokenId'];
-    if ($id !== $context['queryId'])
-        response(403, 'forbidden access');
-    $body = $context['body'];
-    $database = $context['database'];
-
-    if ($context['body']['password'])
-        editUserPass($id, $body, $database);
-
-    $username = getAndCheck($body, 'username');
-    $email = getAndCheck($body, 'email');
-
-    $updates = [ "username = '$username'", "email = '$email'" ];
-    $sqlQuery = "UPDATE users SET" . implode(', ', $updates) . "WHERE id = '$id'";
-    $res = $database->exec($sqlQuery);
-    if (!res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
-
-    echo json_encode(['success' => 'user data modified']);
-    exit ;
+function userList(SQLite3 $db): void {
+    $res = doQuery($db, "SELECT id, username, elo FROM users");
+    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    $users = [];
+    while ($r = $res->fetchArray(SQLITE3_ASSOC)) $users[] = $r;
+    successSend($users);
 }
 
-function editUserPass($id, $body, $database) {
-    $newPassword = getAndCheck($body, 'password');
-    $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+function editUserData(int $id, array $body, SQLite3 $db): void {
+    $updates = [];
+    if (isset($body['pass'])) $updates['pass'] = password_hash($body['pass'], PASSWORD_DEFAULT);
+    if (isset($body['username'])) $updates['username'] = $body['username'];
+    if (isset($body['email'])) $updates['email'] = $body['email'];
 
-    $sqlQuery = "UPDATE users SET pass = '$newPasswordHash' WHERE id = '$id'";
-    $res = $database->exec($sqlQuery);
-    if (!res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
-
-    echo json_encode(['success' => 'password updated']);
-    exit ;
+    foreach ($updates as $col => $val) {
+        $sql = "UPDATE users SET $col = :val WHERE user_id = :id";
+        $res = doQuery($db, $sql, [':val', $val, SQLITE3_TEXT], [':id', $id, SQLITE3_INTEGER]);
+        if (!$res) errorSend(500, "SQLite error updating $col");
+    }
+    successSend(['message' => 'User updated']);
 }
 
-function deleteUser($context) {
-    if ($context['tokenId'] !== $context['queryId'])
-        response(403, 'forbidden access');
-    $database = $context['database'];
-
-    $sqlQuery = "DELETE FROM users WHERE id = :id";
-    $res = $database->exec($sqlQuery);
-    if (!$res)
-        response(500, 'Sql error: ' . $database->lastErrorMsg());
-    
-    echo json_encode(['success' => 'user deleted']);
-    exit ;
+function deleteUser(int $id, SQLite3 $db): void {
+    $sql = "DELETE FROM users WHERE user_id = :id";
+    $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
+    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    successSend(['message' => 'User deleted']);
 }
-
 ?>

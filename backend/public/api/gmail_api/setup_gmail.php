@@ -1,9 +1,9 @@
 <?php
 
-require_once(__DIR__ . '../../../vendor/autoload.php'); // Carga el autoloader de Composer => para que encuentre la clase Google\Client
+require_once(__DIR__ . '/../../../vendor/autoload.php'); // Carga el autoloader de Composer => para que encuentre la clase Google\Client
 
-$credentialsPath = __DIR__ . '../../../secrets/google_oauth_client.json'; // Ruta al archivo de credenciales descargado de Google Cloud
-$tokenPath = __DIR__ . '../../../secrets/google_token.json'; // Ruta donde se guardará el token de acceso/refresco
+$credentialsPath = __DIR__ . '/../../../secrets/google_oauth_client.json'; // Ruta al archivo de credenciales descargado de Google Cloud
+$tokenPath = __DIR__ . '/../../../secrets/google_token.json'; // Ruta donde se guardará el token de acceso/refresco
 
 if (!file_exists($credentialsPath))
 	throw new Exception('No se encuentra el archivo de credenciales. Descárgalo de Google Cloud y guárdalo en: ' . $credentialsPath);
