@@ -47,7 +47,7 @@ export function SettingsView(app, state) {
     (_e = document.getElementById("gbcBtn")) === null || _e === void 0 ? void 0 : _e.addEventListener("click", () => navigate("/"));
     (_f = document.getElementById("logoutBtn")) === null || _f === void 0 ? void 0 : _f.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch("http://localhost:8085/api/logout.php", {
+            const response = yield fetch("/api/logout.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
             });

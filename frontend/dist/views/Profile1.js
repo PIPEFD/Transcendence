@@ -56,7 +56,7 @@ export function Profile1View(app, state) {
             return;
         }
         try {
-            const response = yield fetch("http://localhost:8085/api/users.php", {
+            const response = yield fetch("/api/users.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, pass })

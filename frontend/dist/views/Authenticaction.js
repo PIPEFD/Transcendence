@@ -44,7 +44,7 @@ export function AuthView(app, state) {
             return;
         }
         try {
-            const response = yield fetch("http://localhost:8085/api/verify_2fa.php", {
+            const response = yield fetch("/api/verify_2fa.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, code })

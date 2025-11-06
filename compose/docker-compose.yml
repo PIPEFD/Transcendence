@@ -139,8 +139,11 @@ services:
     expose:
       - "${FRONTEND_PORT:-3000}"
     volumes:
-      - ../frontend:/app
-      - /app/node_modules
+      # Montar solo archivos necesarios, no node_modules
+      - ../frontend/index.html:/app/index.html:ro
+      - ../frontend/indexf.html:/app/indexf.html:ro
+      - ../frontend/dist:/app/dist
+      - ../frontend/assets:/app/assets:ro
     labels:
       - "app=transcendence"
       - "tier=ui"
@@ -492,6 +495,8 @@ volumes:
   prometheus_data:
     driver: local
   grafana_data:
+    driver: local
+  frontend_node_modules:
     driver: local
 
 # Secretos centralizados

@@ -1,5 +1,6 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 export function Profile1View(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -53,9 +54,8 @@ export function Profile1View(app: HTMLElement, state: any): void {
     }
 
     try {
-      const response = await fetch("http://localhost:8085/api/users.php", {
+      const response = await apiFetch(API_ENDPOINTS.USERS, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, pass })
       });
 

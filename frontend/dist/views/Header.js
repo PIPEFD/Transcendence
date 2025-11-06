@@ -14,7 +14,7 @@ function fetchAvatarUrl(userId, token) {
         if (!userId || !token)
             return null;
         try {
-            const response = yield fetch('http://localhost:8085/api/avatar_photo.php', {
+            const response = yield fetch('/api/avatar_photo.php', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

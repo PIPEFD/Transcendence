@@ -18,8 +18,8 @@ if (!checkBodyData($body, 'username', 'pass'))
 $username = $body['username'];
 $passwordSent = $body['pass'];
 
-// Ajuste: usar 'id' en el SELECT
-$sqlQuery = "SELECT id, pass, email FROM users WHERE username = :username";
+// Usar 'user_id' (nombre correcto de la columna)
+$sqlQuery = "SELECT user_id, pass, email FROM users WHERE username = :username";
 $bind1 = [':username', $username, SQLITE3_TEXT];
 $res1 = doQuery($database, $sqlQuery, $bind1);
 
@@ -30,7 +30,7 @@ $row = $res1->fetchArray(SQLITE3_ASSOC);
 if (!$row)
     errorSend(401, 'Invalid username or password');
 
-$user_id = $row['id'];          // <-- cambio aquí de 'user_id' a 'id'
+$user_id = $row['user_id'];
 $passwordStored = $row['pass'];
 $email = $row['email'];
 

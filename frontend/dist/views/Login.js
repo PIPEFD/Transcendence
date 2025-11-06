@@ -49,7 +49,7 @@ export function LoginView(app, state) {
             return;
         }
         try {
-            const response = yield fetch("http://localhost:8085/api/login.php", {
+            const response = yield fetch("/api/login.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, pass }),

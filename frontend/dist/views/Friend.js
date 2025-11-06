@@ -62,7 +62,7 @@ export function FriendsView(app, state) {
         const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
         try {
             console.log("User ID:", userIdPlaceholder);
-            const response = yield fetch(`http://localhost:8085/api/friends.php?id=${userIdPlaceholder}`, {
+            const response = yield fetch(`/api/friends.php?id=${userIdPlaceholder}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -132,7 +132,7 @@ export function FriendsView(app, state) {
                     console.log(userIdPlaceholder);
                     console.log(friendId);
                     try {
-                        const response = yield fetch('http://localhost:8085/api/friends.php', {
+                        const response = yield fetch('/api/friends.php', {
                             method: 'POST', // Tu backend usa POST para DELETE
                             headers: {
                                 'Authorization': `Bearer ${token}`,
@@ -177,7 +177,7 @@ export function FriendsView(app, state) {
        if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
    
        try {
-           const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+           const response = await fetch(`/api/friend_request.php?id=${userIdPlaceholder}`, {
                method: 'GET',
                headers: {
                    'Authorization': `Bearer ${token}`,
@@ -232,7 +232,7 @@ export function FriendsView(app, state) {
             return `<p class="text-red-500">${t("error_no_login")}</p>`;
         try {
             // Traer solicitudes de amistad
-            const response = yield fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+            const response = yield fetch(`/api/friend_request.php?id=${userIdPlaceholder}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -252,7 +252,7 @@ export function FriendsView(app, state) {
             const usernames = yield Promise.all(requests.map((r) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
                 try {
-                    const res = yield fetch(`http://localhost:8085/api/users.php?id=${r.sender_id}`, {
+                    const res = yield fetch(`/api/users.php?id=${r.sender_id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -317,7 +317,7 @@ export function FriendsView(app, state) {
         if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
 
         try {
-            const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+            const response = await fetch(`/api/friend_request.php?id=${userIdPlaceholder}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -339,7 +339,7 @@ export function FriendsView(app, state) {
             const usernames = await Promise.all(
                 requests.map(async (r) => {
                     try {
-                        const res = await fetch(`http://localhost:8085/api/users.php?id=${r.sender_id}`);
+                        const res = await fetch(`/api/users.php?id=${r.sender_id}`);
                         if (!res.ok) throw new Error("Error al obtener username");
                         const userData = await res.json();
                         return userData.username || `Usuario #${r.sender_id}`;
@@ -385,7 +385,7 @@ export function FriendsView(app, state) {
         const handleAction = (senderId, action) => __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const response = yield fetch('http://localhost:8085/api/friend_request.php', {
+                const response = yield fetch('/api/friend_request.php', {
                     method: 'PATCH',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -455,7 +455,7 @@ export function FriendsView(app, state) {
         }
       
         try {
-          const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+          const response = await fetch(`/api/friend_request.php?id=${userIdPlaceholder}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -606,7 +606,7 @@ export function FriendsView(app, state) {
                           receiver_id
                         });
                         try {
-                          const response = await fetch("http://localhost:8085/api/friend_request.php", {
+                          const response = await fetch("/api/friend_request.php", {
                               method: 'POST', // Tu backend usa POST para DELETE
                               headers: {
                                   'Authorization': `Bearer ${token}`,
@@ -651,7 +651,7 @@ export function FriendsView(app, state) {
                         try {
                             console.log("User ID ff:", userIdPlaceholder);
                             console.log("User ID ff:", username);
-                            const response = yield fetch(`http://localhost:8085/api/users.php?user=${username}`, {
+                            const response = yield fetch(`/api/users.php?user=${username}`, {
                                 method: 'GET',
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
@@ -685,7 +685,7 @@ export function FriendsView(app, state) {
                             receiver_id
                         });
                         try {
-                            const response = yield fetch("http://localhost:8085/api/friend_request.php", {
+                            const response = yield fetch("/api/friend_request.php", {
                                 method: 'POST', // Tu backend usa POST para DELETE
                                 headers: {
                                     'Authorization': `Bearer ${token}`,

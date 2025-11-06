@@ -14,12 +14,12 @@ $queryUsername = $_GET['user'] ?? null;
 $username = "";
 
 if ($queryUsername && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $query = "SELECT id FROM users WHERE username = :username";
+    $query = "SELECT user_id FROM users WHERE username = :username";
     $res = doQuery($database, $query, [':username', $queryUsername, SQLITE3_TEXT]);
     $row = $res->fetchArray(SQLITE3_ASSOC);
     if (!$res)
         errorSend(500, 'Sql error ' . $database->lastErrorMsg());
-    successSend(['user_id' => $row['id']]);
+    successSend(['user_id' => $row['user_id']]);
     exit ;
 }
 
@@ -34,7 +34,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 function getUserAvatar(SQLite3 $db, int $id): void {
     if (!is_numeric($id))
         errorSend(400, 'bad petition');
-    $sqlQuery = "SELECT avatar_url FROM users WHERE id = :id";
+    $sqlQuery = "SELECT avatar_url FROM users WHERE user_id = :id";
     $res = doQuery($db, $sqlQuery, [':id', $id, SQLITE3_INTEGER]);
     if (!$res)
         errorSend(500, "Sqlite error: " . $db->lastErrorMsg());
@@ -72,7 +72,7 @@ function createUser(array $body, SQLite3 $db): void {
 } */
 
 function userDataById(SQLite3 $db, int $id): void {
-    $sql = "SELECT id AS user_id, username, email, elo FROM users WHERE id = :id";
+    $sql = "SELECT user_id, username, email, elo FROM users WHERE user_id = :id";
     $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
 
     if (!$res) {
@@ -84,7 +84,7 @@ function userDataById(SQLite3 $db, int $id): void {
 }
 
 function userList(SQLite3 $db): void {
-    $res = doQuery($db, "SELECT id, username, elo FROM users");
+    $res = doQuery($db, "SELECT user_id, username, elo FROM users");
     if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     $users = [];
     while ($r = $res->fetchArray(SQLITE3_ASSOC)) $users[] = $r;

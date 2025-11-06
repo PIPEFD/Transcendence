@@ -88,7 +88,7 @@ export function AvatarView(app, state) {
         const token = localStorage.getItem('tokenUser');
         console.log("userId:", String(userIdPlaceholder), "token:", token);
         // try {
-        //   const res = await fetch("http://localhost:8085/api/upload.php", {
+        //   const res = await fetch("/api/upload.php", {
         //     method: "POST",
         //     body: formData,
         //   });
@@ -108,7 +108,7 @@ export function AvatarView(app, state) {
         // }
         console.log("Hola");
         try {
-            const response = yield fetch('http://localhost:8085/api/upload.php', {
+            const response = yield fetch('/api/upload.php', {
                 method: 'POST', // Tu backend usa POST para DELETE
                 headers: {
                     'Authorization': `Bearer ${token}`

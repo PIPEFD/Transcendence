@@ -152,7 +152,7 @@ clearDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, fun
     if (!confirm("Esto borrará toda la base de datos. ¿Seguro?"))
         return;
     try {
-        const response = yield fetch("http://localhost:8085/api/delete_all.php", {
+        const response = yield fetch("/api/delete_all.php", {
             method: 'POST'
         });
         const data = yield response.json();

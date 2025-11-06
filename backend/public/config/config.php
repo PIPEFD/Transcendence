@@ -2,7 +2,7 @@
 
 function connectDatabase (): ?SQLite3 
 {
-    $databasePath = __DIR__ . '/../../database/database.sqlite';
+    $databasePath = __DIR__ . '/../../srcs/database/database.sqlite';
     $tablesPath = __DIR__ . '/schema.sql';
     try
 	{
