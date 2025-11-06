@@ -16,11 +16,11 @@ services:
       - "works-with=backend"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../nginx/conf.d/app.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../nginx/conf.d/app.conf:/etc/nginx/conf.d/default.conf
       # - ../nginx/conf.d/00-tuning.conf:/etc/nginx/conf.d/00-tuning.conf:ro
-      - ../nginx/snippets:/etc/nginx/snippets:ro
+      - ../nginx/snippets:/etc/nginx/snippets
+      - ../nginx/error-pages:/etc/nginx/error-pages:ro
       - ../config/auth:/etc/nginx/auth:ro
-      - ../logs/nginx:/var/log/nginx
       - ../backend/public:/var/www/html/public:ro
       - ../docker/nginx/docker-entrypoint.sh:/docker-entrypoint.sh:ro
       - type: bind
@@ -55,7 +55,7 @@ services:
       - monitoring
       - game
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
+      test: ["CMD", "wget", "--no-check-certificate", "-q", "--spider", "https://localhost:443/"]
       interval: 30s
       timeout: 5s
       retries: 3

@@ -1,14 +1,38 @@
 <?php
-header('Content-Type: application/json');
+/**
+ * Health Check Endpoint
+ * Returns the status of the backend service
+ */
 
-$status = [
-    'status' => 'healthy',
-    'timestamp' => time(),
-    'php_version' => PHP_VERSION,
-    'services' => [
-        'php-fpm' => 'running',
-        'database' => file_exists('/var/www/database/database.sqlite') ? 'available' : 'not found'
-    ]
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+
+// Check database connection
+$db_status = 'unknown';
+try {
+    $db_path = __DIR__ . '/../../database/transcendence.db';
+    if (file_exists($db_path)) {
+        $db = new SQLite3($db_path);
+        $result = $db->query('SELECT 1');
+        if ($result) {
+            $db_status = 'ok';
+        }
+        $db->close();
+    } else {
+        $db_status = 'database_file_not_found';
+    }
+} catch (Exception $e) {
+    $db_status = 'error: ' . $e->getMessage();
+}
+
+// Response
+$response = [
+    'status' => 'ok',
+    'service' => 'transcendence-backend',
+    'timestamp' => date('Y-m-d H:i:s'),
+    'database' => $db_status,
+    'php_version' => phpversion()
 ];
 
-echo json_encode($status);
+http_response_code(200);
+echo json_encode($response, JSON_PRETTY_PRINT);
