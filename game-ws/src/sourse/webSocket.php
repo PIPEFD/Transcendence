@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/chat.php';
 require_once __DIR__ . '/game.php';
 require_once __DIR__ . '/auth.php';

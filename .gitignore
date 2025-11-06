@@ -1,2 +1,9 @@
-/backend/secrets/
-backend/secrets/google_token.json
+
+**/vendor/
+**/google_oauth_client.json
+**/google_token.json
+OUT.txt
+.env
+# test reports
+reports/
+

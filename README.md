@@ -1,124 +1,217 @@
-# ft_transcendence
-Frontend en TypeScript (Babylon listo), NGINX (HTTPS/WSS), Backend PHP-FPM (REST + SQLite) y Game-WS en PHP-CLI (WebSocket). Observabilidad con ELK.
+# Transcendence
 
-## Arranque rápido
-1) `make certs` (TLS autofirmado)
-2) `make up`
-3) Frontend: https://localhost  • Kibana: http://localhost:5601  • ES: http://localhost:9200
+A multiplayer Pong game with social features and authentication, specifically designed to work within 42 campus network constraints.
 
-## Servicios
-- nginx: sirve estáticos + proxy /api/* (FPM) + /ws/game (CLI)
-- backend: PHP-FPM + SQLite
-- game-ws: PHP-CLI (Ratchet) servidor WebSocket
-- elasticsearch + logstash + kibana: logs centralizados
+## Architecture
 
-## Desarrollo FE
-Compila TS a `dist/` con tu bundler (Vite/Webpack). NGINX servirá lo que haya en `frontend/dist/`.
+- **Frontend**: TypeScript/Babylon.js SPA
+- **Backend**: PHP-FPM with REST API and SQLite
+- **Game-WS**: WebSocket server for game events
+- **Nginx**: HTTP/WS proxy, static file server, load balancer
+- **Observability**: Prometheus + Grafana + Node/NGINX/PHP-FPM exporters
+- **Security**: HTTPS, CSP, and secure headers
 
-## Web Application Firewall (WAF)
+## 42 Campus Network Constraints
 
-The project includes a WAF using ModSecurity v3 + OWASP Core Rule Set (CRS) in a sidecar/front proxy container. This provides an additional layer of security by filtering and monitoring HTTP traffic between clients and the application.
+This project has been specifically configured to work within 42 campus network limitations:
 
-### Traffic Flow with WAF
+- **Custom Ports**: All externally exposed ports use the 9100-9500 range to avoid firewall restrictions
+- **Localhost Binding**: Monitoring services bind to 127.0.0.1 only
+- **Port Mapping**: Service port configuration is centralized in the `.env` file
+- **Multiple Profiles**: Docker Compose profiles for development, production, and testing
+
+## Prerequisites
+
+- Docker and Docker Compose
+- Git
+- Internet access for downloading Docker images
+
+## Quick Start
+
+Follow these steps to get the project running:
+
+1. Clone this repository:
+   ```bash
+   git clone https://your-repository/Transcendence.git
+   cd Transcendence
+   ```
+
+2. Create environment configuration:
+   ```bash
+   cp .env.sample .env
+   ```
+   Modify the `.env` file if needed to set custom ports or configurations.
+
+3. Initialize the environment:
+   ```bash
+   make init
+   ```
+   This command:
+   - Creates the necessary directory structure
+   - Generates self-signed SSL certificates
+   - Creates Docker secrets
+   - Starts all services
+
+4. Access the application:
+   - **Frontend**: https://localhost:9443 (or the port configured in NGINX_HTTPS_PORT)
+   - **Monitoring**:
+     - Grafana: http://localhost:9191/grafana (default credentials in .env)
+     - Prometheus: http://localhost:9190/prometheus
+   
+## Docker Compose Profiles
+
+The project uses Docker Compose profiles to organize services:
+
+- **default**: Core services with monitoring (nginx, backend, frontend, game-ws)
+- **prod**: Production mode (optimized settings)
+- **dev**: Development mode with exposed service ports
+- **test**: Test environment with integration tests
+- **monitoring**: Just monitoring services
+
+Example usage:
+```bash
+# Start default services
+docker-compose up -d
+
+# Start development mode with exposed ports
+docker-compose --profile dev up -d
+
+# Start only monitoring services
+docker-compose --profile monitoring up -d
+
+# Run tests
+docker-compose --profile test up
+```
+
+## Directory Structure
 
 ```
-Client → WAF:80 → Nginx:80 → Backend Services
+├── backend/             # PHP backend API
+├── compose/             # Docker Compose configuration
+├── config/              # Configuration files
+│   ├── auth/            # Authentication configs
+│   ├── secrets/         # Docker secrets
+│   └── ssl/             # SSL certificates
+├── docker/              # Docker configuration
+├── docs/                # Documentation
+├── frontend/            # SPA frontend
+├── game-ws/             # WebSocket server
+├── monitoring/          # Prometheus/Grafana configuration
+├── nginx/               # Nginx configuration
+│   ├── conf.d/          # Server blocks
+│   └── snippets/        # Reusable configuration
+├── scripts/             # Utility scripts
+└── tests/               # Test suite
 ```
 
-The WAF acts as the first point of contact for all incoming traffic, providing:
-- Request filtering based on OWASP CRS rules
-- JSON audit logging of security events
-- Rate limiting for API endpoints
-- Security headers enforcement
+## Nginx Configuration
 
-### Configuration
+The Nginx configuration has been organized following best practices:
 
-#### Paranoia Level
+- **nginx.conf**: Main configuration file with global settings
+- **conf.d/**: Server blocks (virtual hosts)
+  - app.conf: Main application server
+  - status.conf: Monitoring endpoints
+- **snippets/**: Reusable configuration fragments
+  - api_proxy.conf: Backend API proxy settings
+  - ws_proxy.conf: WebSocket proxy settings
+  - monitoring.conf: Metrics and status endpoints
+  - proxy_common.conf: Common proxy parameters
 
-The WAF's paranoia level can be configured using the `PARANOIA_LEVEL` environment variable:
+## Monitoring Stack
+
+The project includes a comprehensive monitoring stack:
+
+- **Prometheus**: Metrics collection and alerting
+- **Grafana**: Visualization dashboards
+- **cAdvisor**: Container metrics
+- **Node Exporter**: Host system metrics
+- **Nginx Exporter**: Nginx metrics
+- **PHP-FPM Exporter**: PHP-FPM metrics
+
+## Secret Management
+
+Docker secrets are used for secure management of sensitive information:
+
+- **app_key**: Application key for PHP backend
+- **jwt_secret**: Secret for JWT token generation
+- **grafana_admin_user/password**: Grafana admin credentials
+- **scope_htpasswd**: htpasswd file for Weave Scope authentication
+
+Secrets are stored in individual files in the `config/secrets/` directory.
+
+## Main Commands
+
+The project uses a simplified Makefile system:
 
 ```bash
-PARANOIA_LEVEL=1 make security-up  # Default, less strict
-PARANOIA_LEVEL=2 make security-up  # More strict, may require tuning
+# Show help with all available commands
+make
+
+# Initialize the full environment
+make init
+
+# Start all services
+make up
+
+# Stop all services
+make down
+
+# Restart all services
+make restart
+
+# View logs of all services
+make logs
+
+# Cleanup commands
+make cleanup-files    # Remove temporary and unnecessary files
+make reset            # Clean Docker environment (containers, volumes, networks)
+make clean-all        # Complete project cleanup (reset + cleanup-files)
 ```
 
-Higher paranoia levels provide stricter security but may require more tuning to avoid false positives.
+## Development
 
-#### WebSocket Handling
-
-WebSocket connections are automatically allowed through the WAF when using the proper upgrade headers. The `/ws` path is configured to bypass certain WAF rules that might interfere with WebSocket handshakes.
-
-#### Rate Limiting
-
-API endpoints are rate-limited by default:
-- 10 requests per second per IP
-- Burst allowance of 20 requests
-- Returns HTTP 429 when exceeded
-
-### Security Testing
-
-Run security tests using:
+For local development, use the dev profile which exposes all services on separate ports:
 
 ```bash
-make security-test
+docker-compose --profile dev up -d
 ```
 
-To run specific test categories:
+This will start services with volumes mounted for live code changes:
+
+- **Frontend**: http://localhost:9280
+- **Backend API**: http://localhost:9380
+- **Game WebSocket**: http://localhost:9480
+
+## Testing
+
+The project includes comprehensive tests:
+
 ```bash
-make security-test "pytest -v -k 'security or waf or headers'"
+# Run all tests
+make test
+
+# Run specific test suites
+make test-backend
+make test-frontend
+make test-integration
 ```
 
-The security test suite includes:
-- Security headers verification
-- WAF blocking tests for common attacks
-- Rate limiting tests
-- WebSocket connectivity tests
-- Audit log verification
+## Security Considerations
 
-### Audit Logs
+- All containers use minimal permissions with capability dropping
+- NGINX is configured with security headers and CSP
+- Access to monitoring interfaces is restricted to localhost
+- TLS 1.3 and modern cipher suites are enforced
 
-WAF audit logs are written to `./waf/logs/` in JSON format. Each blocked request includes:
-- Timestamp
-- Request ID (X-Request-ID header)
-- Triggered rule IDs
-- Anomaly scores
-- Request details
+## Troubleshooting
 
-To correlate requests across services, use the X-Request-ID header that's automatically added to all requests.
+Common issues:
 
-### ELK Integration
+1. **Port conflicts**: Edit the `.env` file to change conflicting ports
+2. **Certificate warnings**: The default setup uses self-signed certificates; for production, replace with valid certificates
+3. **Permission issues**: Some directories need specific permissions; run `make fix-permissions` to resolve
 
-The WAF and Nginx are configured to output JSON-formatted logs ready for ELK ingestion:
+## License
 
-- WAF audit logs: `/var/log/modsec/audit.log`
-  - Format: JSON with security event details
-  - Fields: service.name=waf, security.event=true, waf.rule.id, waf.anomaly.score
-
-- Nginx access logs: `/var/log/nginx/access.json`
-  - Format: JSON with standard fields
-  - Additional: X-Request-ID for correlation
-
-### Security Headers
-
-The following security headers are automatically added to all responses:
-- Content-Security-Policy (CSP)
-- X-Content-Type-Options
-- X-Frame-Options
-- Referrer-Policy
-- Permissions-Policy
-- Strict-Transport-Security (HSTS, when using HTTPS)
-
-### Making Changes
-
-1. WAF Configuration:
-   - ModSecurity settings: `waf/modsecurity.conf`
-   - CRS settings: `waf/crs-setup.conf`
-   - Nginx config: `waf/nginx.conf`
-
-2. Testing Changes:
-   - Add test cases to `tests/test_security.py`
-   - Use `make security-test` to validate
-
-3. Viewing Logs:
-   - WAF audit logs: `tail -f waf/logs/audit.log`
-   - Test reports: `reports/report.html`
+This project is licensed under the MIT License - see the LICENSE file for details.

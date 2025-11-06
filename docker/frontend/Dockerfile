@@ -2,10 +2,16 @@
 FROM node:20-alpine
 WORKDIR /app
 ENV CI=true
-COPY package*.json ./
-# cache de npm para acelerar
-RUN --mount=type=cache,target=/root/.npm npm ci || npm install
-COPY . .
+
+# No copiamos package.json ni instalamos dependencias en la imagen
+# porque estamos montando el directorio completo como volumen
 EXPOSE 3000
-# En dev: servidor con hot-reload; en prod cambia a serve/NGINX
-CMD ["npm", "run", "dev"]
+
+# Crear script de inicio simplificado
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'mkdir -p /app/dist' >> /entrypoint.sh && \
+    echo 'npm install' >> /entrypoint.sh && \
+    echo 'npm run dev' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
