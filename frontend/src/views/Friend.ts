@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { ChatView } from "./Chat.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 // !!! IMPORTANTE: REEMPLAZA ESTE VALOR !!!
 // Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
@@ -59,11 +60,10 @@ export function FriendsView(app: HTMLElement, state: any): void {
     
         try {
             console.log("User ID:", userIdPlaceholder);
-            const response = await fetch(`http://localhost:8085/api/friends.php?id=${userIdPlaceholder}`, {
+            const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${userIdPlaceholder}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
                 }
             });
     
@@ -136,11 +136,10 @@ export function FriendsView(app: HTMLElement, state: any): void {
                     console.log(userIdPlaceholder);
                     console.log(friendId); 
                     try {
-                        const response = await fetch('http://localhost:8085/api/friends.php', {
+                        const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}`, {
                             method: 'POST', // Tu backend usa POST para DELETE
                             headers: {
                                 'Authorization': `Bearer ${token}`,
-                                'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
                                 user_id: userIdPlaceholder,
@@ -242,7 +241,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
 
     try {
         // Traer solicitudes de amistad
-        const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
+        const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${userIdPlaceholder}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -267,7 +266,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
         const usernames = await Promise.all(
             requests.map(async r => {
                 try {
-                    const res = await fetch(`http://localhost:8085/api/users.php?id=${r.sender_id}`, {
+                    const res = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${r.sender_id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -404,7 +403,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
     
         const handleAction = async (senderId: number, action: 'accept' | 'decline') => {
             try {
-                const response = await fetch('http://localhost:8085/api/friend_request.php', {
+                const response = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}`, {
                     method: 'PATCH',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -685,7 +684,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
                      try {
                         console.log("User ID ff:", userIdPlaceholder);
                          console.log("User ID ff:", username);
-                        const response = await fetch(`http://localhost:8085/api/users.php?user=${username}`, {
+                        const response = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}?user=${username}`, {
                             method: 'GET',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
@@ -719,7 +718,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
                         receiver_id
                       });
                       try {
-                        const response = await fetch("http://localhost:8085/api/friend_request.php", {
+                        const response = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST})`, {
                             method: 'POST', // Tu backend usa POST para DELETE
                             headers: {
                                 'Authorization': `Bearer ${token}`,

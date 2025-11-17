@@ -68,7 +68,7 @@ $secretKey = getenv('JWTsecretKey'); //necesitamos getenv para leer la variable 
 
 $jwt = Firebase\JWT\JWT::encode($payload, $secretKey, 'HS256'); // Codificamos el payload para generar el string del JWT, usando el algoritmo HS256
 
-doQuery($database, "UPDATE users SET is_online = 1 WHERE id = :id", [':id', $user_id, SQLITE3_INTEGER]);
+doQuery($database, "UPDATE users SET is_online = 1 WHERE user_id = :id", [':id', $user_id, SQLITE3_INTEGER]);
 successSend('Login successful.', 200, $jwt);
 
 function delete_row(SQLite3 $database, int $user_id): void

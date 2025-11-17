@@ -29,9 +29,9 @@ switch ($requestMethod)
 function getFriendList(SQLite3 $database, int $queryId): void 
 {
     $sqlQuery = "
-		SELECT u.id, u.username, u.email
+		SELECT u.user_id, u.username, u.email
 		FROM users u
-		WHERE u.id IN (
+		WHERE u.user_id IN (
 			SELECT f.friend_id FROM friends f WHERE f.user_id = :id
 			UNION
 			SELECT f.user_id FROM friends f WHERE f.friend_id = :id

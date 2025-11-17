@@ -6,7 +6,7 @@ $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
-$user_id = $body['user_id'];
+$user_id = $body['user_id'] ?? null;
 switch ($requestMethod)
 {
 	case 'POST':
@@ -26,8 +26,34 @@ switch ($requestMethod)
 			errorSend(403, 'forbidden access');
 		findMatch($database, $queryId);
 		break;
+	case 'PATCH':
+		if ($user_id) {
+			if (!checkJWT($user_id))
+				errorSend(403, 'forbidden access');
+			getStats($database, $user_id);
+		}
 	default:
 		errorSend(405, 'unauthorized method');
+}
+
+function getStats(SQLite3 $database, int $user_id) {
+	$query = "SELECT games_played, games_win, games_lose FROM ranking WHERE user_id = :user_id";
+	$sqlParams = [":user_id", $user_id, SQLITE3_INTEGER];
+	$res = doQuery($database, $query, $sqlParams);
+	$row = $res->fetchArray(SQLITE3_ASSOC);
+	if (!$row) {
+		successSend("", 200, json_encode([
+			"matches" => 0,
+			"victories" => 0,
+			"defeats" => 0
+		]));
+		return ;
+	}
+	successSend("", 200, [
+		"matches" => intval($row["games_played"]),
+		"victories" => intval($row["games_win"]),
+		"defeats" => intval($row["games_lose"])
+	]);
 }
 
 function getHistory(SQLite3 $database, int $user_id) {

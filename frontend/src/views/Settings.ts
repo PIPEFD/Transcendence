@@ -1,5 +1,6 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 export function SettingsView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -40,15 +41,17 @@ export function SettingsView(app: HTMLElement, state: any): void {
 
   document.getElementById("logoutBtn")?.addEventListener("click", async () => {
     try {
-      const response = await fetch("http://localhost:8085/api/logout.php", {
+      const user_id = localStorage.getItem("userId");
+      const response = await apiFetch(`${API_ENDPOINTS.LOGOUT}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({user_id}),
       });
       const data = await response.json();
       console.log("Logout response:", data);
 
       // Borrar JWT del localStorage y volver al inicio
-      localStorage.removeItem("JWT");
+      localStorage.removeItem('tokenUser');
       navigate("/register");
     } catch (err) {
       console.error("Error during logout:", err);

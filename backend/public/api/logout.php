@@ -11,7 +11,7 @@ if ($requestMethod != 'POST')
 	errorSend(405, 'Method Not Allowed');
 
 // ahora logOut necesita USER_ID en el body para setear el status en off. 
-doQuery($database, "UPDATE users SET is_online = 0 WHERE id = :id", [':id', $user_id, SQLITE3_INTEGER]);
+doQuery($database, "UPDATE users SET is_online = 0 WHERE user_id = :id", [':id', $user_id, SQLITE3_INTEGER]);
 successSend('Logged out successfully');
 exit;
 
