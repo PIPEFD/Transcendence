@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     elo INTEGER DEFAULT 200,
+    is_online BOOLEAN DEFAULT 0,
     username TEXT UNIQUE NOT NULL,
     email TEXT NOT NULL,
     pass TEXT NOT NULL,
@@ -49,5 +50,6 @@ CREATE TABLE IF NOT EXISTS ranking
     games_played INTEGER DEFAULT 0,
     games_win INTEGER DEFAULT 0,
     games_lose INTEGER DEFAULT 0,
+    history TEXT DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );

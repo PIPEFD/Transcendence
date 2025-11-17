@@ -6,7 +6,7 @@ $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
-
+$user_id = $body['user_id'];
 switch ($requestMethod)
 {
 	case 'POST':
@@ -14,11 +14,14 @@ switch ($requestMethod)
 			errorSend(400, 'bad request');
 		$winner_id = $body['winner_id'];
 		$loser_id = $body['loser_id'];
+		$game_result = $body['result'];
 		if (!(checkJWT($winner_id) || checkJWT($loser_id)))
 			errorSend(403, 'forbidden access');
-		updateElo($database, $winner_id, $loser_id);
+		updateElo($database, $winner_id, $loser_id, $game_result);
 		break;
 	case 'GET':
+		if (!$queryId && $user_id)
+			getHistory($database, $user_id);
 		if (!checkJWT($queryId))
 			errorSend(403, 'forbidden access');
 		findMatch($database, $queryId);
@@ -27,27 +30,74 @@ switch ($requestMethod)
 		errorSend(405, 'unauthorized method');
 }
 
-function updateElo(SQLite3 $database, int $win_id, int $ls_id): void
+function getHistory(SQLite3 $database, int $user_id) {
+    $res = doQuery(
+        $database,
+        "SELECT history FROM ranking WHERE user_id = :id",
+        [":id", $user_id, SQLITE3_INTEGER]
+    );
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    if (!$row || !$row['history']) {
+        successSend("history empty", 200, []);
+    }
+    $historyArray = json_decode($row['history'], true);
+    successSend("history: ", 200, $historyArray);
+}
+
+function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
 {
 	$winElo = getElo($database, $win_id);									
 	$lsElo = getElo($database, $ls_id);
 
 	$newWinElo = operateElo($winElo, $lsElo, true);
 	$newLsElo = operateElo($lsElo, $winElo, false);
+	$winnerEloDiff = $newWinElo - $winElo;
+	$loserEloDiff = $newLsElo - $lsElo;
 
-	$database->exec('BEGIN');
-	try
-	{
-		updateEloAux($database, $win_id, $newWinElo, true);
-		updateEloAux($database, $ls_id, $newLsElo, false);
-		$database->exec('COMMIT');
-		successSend('elo updated');
-	}
-	catch (Exception $e)
-	{
-		$database->exec('ROLLBACK');
-		errorSend(500, 'couldn\'t update elo', $e->getMessage());
-	}
+	operateEloAux($database, $win_id, $newWinElo, true);
+	operateEloAux($database, $ls_id, $newLsElo, false);
+	$winnerHistoryEntry = [
+		"status" => "win",
+		"result" => $res,
+		"elo" => "+" . $winnerEloDiff,
+		"against" => $ls_id
+	];
+	$loserHistoryEntry = [
+		"status" => "lose",
+		"result" => $res,
+		"elo" => $loserEloDiff,
+		"against" => $win_id
+	];
+	updateHistory($database, $win_id, $winnerHistoryEntry, true);
+	updateHistory($database, $ls_id, $loserHistoryEntry, false);
+	successSend("match data updated", 200);
+}
+
+function updateHistory(SQLite3 $database, int $id, array $entry, bool $flag) {
+    $res = doQuery($database,
+        "SELECT history FROM ranking WHERE user_id = :id",
+        [":id", $user_id, SQLITE3_INTEGER]
+    );
+    $row = $res->fetchArray(SQLITE3_ASSOC);
+    $historyArr = $row && $row['history']
+        ? json_decode($row['history'], true)
+        : [];
+    if (!is_array($historyArr)) $historyArr = [];
+    $historyArr[] = $entry;
+    $newJson = json_encode($historyArr);
+    doQuery(
+        $database,
+        "UPDATE ranking SET 
+            history = :history,
+            games_played = games_played + 1,
+            games_win    = games_win  + :w,
+            games_lose   = games_lose + :l
+         WHERE user_id = :id",
+         [":history", $newJson, SQLITE3_TEXT],
+         [":w", $isWinner ? 1 : 0, SQLITE3_INTEGER],
+         [":l", $isWinner ? 0 : 1, SQLITE3_INTEGER],
+         [":id", $user_id, SQLITE3_INTEGER]
+    );
 }
 
 function getElo(SQLite3 $database, int $user_id): int
@@ -113,7 +163,7 @@ function findMatch(SQLite3 $database, int $queryId)
 	$currentElo = $row['elo'];
 
 	$sqlQ = "SELECT user_id, elo, ABS(elo - :currentElo) AS elo_diff FROM users
-	WHERE user_id != :user_id ORDER BY elo_diff ASC LIMIT 1";
+	WHERE user_id != :user_id AND is_online = 1 ORDER BY elo_diff ASC LIMIT 1";
 	$bind1 = [':currentElo', $currentElo, SQLITE3_INTEGER]; 
 	$bind2 = [':user_id', $queryId, SQLITE3_INTEGER];
 	$res = doQuery($database, $sqlQ, $bind1, $bind2);
@@ -121,7 +171,7 @@ function findMatch(SQLite3 $database, int $queryId)
 		errorSend(500, 'SQL error -> ' . $database->lastErrorMsg());
 	$nextRival = $res->fetchArray();
 	if (!$nextRival)
-		errorSend(404, 'no rival found');
+		errorSend(404, 'no rival found / no online players');
 	else
 		successSend('rival found', 200, "user_id -> $nextRival");
 }

@@ -63,14 +63,6 @@ function createUser(array $body, SQLite3 $db): void {
     successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
 }
 
-/* function userDataById(SQLite3 $db, int $id): void {
-    $sql = "SELECT user_id, username, email, elo FROM users WHERE user_id = :id";
-    $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
-    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
-    $row = $res->fetchArray(SQLITE3_ASSOC);
-    $row ? successSend($row) : errorSend(404, 'User not found');
-} */
-
 function userDataById(SQLite3 $db, int $id): void {
     $sql = "SELECT user_id, username, email, elo FROM users WHERE user_id = :id";
     $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);

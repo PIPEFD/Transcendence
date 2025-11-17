@@ -53,6 +53,7 @@ class webSocket implements \Ratchet\MessageComponentInterface {
         $conn->close();
     }
     public function onClose(\Ratchet\ConnectionInterface $conn) {
+        // mandar peticion de logOut
         $this->client->detach($conn);
         if (isset($conn->userId))
             unset($this->usersConns[$conn->userId]);
