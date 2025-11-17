@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 export function LoginView(app, state) {
     app.innerHTML = `
     <div class="text-center mb-4">
@@ -49,7 +50,7 @@ export function LoginView(app, state) {
             return;
         }
         try {
-            const response = yield fetch("/api/login.php", {
+            const response = yield apiFetch(API_ENDPOINTS.LOGIN, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, pass }),

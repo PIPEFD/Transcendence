@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { RegisterView } from "./views/Register.js";
 import { ProfileView } from "./views/Profile.js";
 import { Profile1View } from "./views/Profile1.js";
-import { AuthView } from "./views/Authenticaction.js";
+import { AuthView } from "./views/Authentication.js";
 import { ChooseView } from "./views/Choose.js";
 import { AvatarView } from "./views/Avatar.js";
 import { AvatarView1 } from "./views/Avatarlogin.js";
@@ -152,7 +152,7 @@ clearDbBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, fun
     if (!confirm("Esto borrará toda la base de datos. ¿Seguro?"))
         return;
     try {
-        const response = yield fetch("/api/delete_all.php", {
+        const response = yield fetch("http://localhost:8085/api/delete_all.php", {
             method: 'POST'
         });
         const data = yield response.json();
@@ -211,4 +211,5 @@ langContainer.appendChild(frDbBtn);
 langContainer.appendChild(enDbBtn);
 // Añadir el botón al final del body o a un contenedor específico
 document.body.appendChild(langContainer);
-//npx tsc --watch
+// npx tsc --watch
+// export PATH="$HOME/node-v20.7.0-linux-x64/bin:$PATH"

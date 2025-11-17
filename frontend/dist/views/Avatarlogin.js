@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { navigate } from "../main.js";
 import { updateHeader } from "./Header.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 export function AvatarView1(app, state) {
     app.innerHTML = `
 	<div class="text-center mb-4">
@@ -87,7 +88,7 @@ export function AvatarView1(app, state) {
         formData.append("user_id", String(userId)); // asegúrate de tener el user ID
         const token = localStorage.getItem('tokenUser');
         // try {
-        //   const res = await fetch("/api/upload.php", {
+        //   const res = await fetch("http://localhost:8085/api/upload.php", {
         // 	method: "POST",
         // 	body: formData,
         //   });
@@ -105,10 +106,9 @@ export function AvatarView1(app, state) {
         //   console.error("Error al subir avatar:", err);
         //   alert("Error de conexión con el servidor");
         // }
-        console.log("Hola");
         try {
-            const response = yield fetch('/api/upload.php', {
-                method: 'POST', // Tu backend usa POST para DELETE
+            const response = yield apiFetch(API_ENDPOINTS.UPLOAD, {
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

@@ -41,7 +41,7 @@ export function ChatView(app, state) {
             return;
         }
         try {
-            const response = yield fetch(`/api/friends.php?id=${userIdNum}`, {
+            const response = yield fetch(`http://localhost:8085/api/friends.php?id=${userIdNum}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = yield response.json();

@@ -1,5 +1,6 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 export function AuthView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -38,7 +39,7 @@ export function AuthView(app: HTMLElement, state: any): void {
     }
 
     try {
-      const response = await fetch("http://localhost:8085/api/verify_2fa.php", {
+      const response = await apiFetch(API_ENDPOINTS.VERIFY_2FA, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, code })

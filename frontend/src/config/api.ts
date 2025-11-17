@@ -56,18 +56,6 @@ export const API_ENDPOINTS = {
   HEALTH: `${API_BASE_URL}/api/health.php`,
 };
 
-// Helper para construir URLs con query parameters
-export const buildUrl = (endpoint: string, params?: Record<string, any>): string => {
-  if (!params) return endpoint;
-  
-  const queryString = Object.entries(params)
-    .filter(([_, value]) => value !== null && value !== undefined)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join('&');
-  
-  return queryString ? `${endpoint}?${queryString}` : endpoint;
-};
-
 // Helper para hacer fetch con configuración predeterminada
 export const apiFetch = async (url: string, options: RequestInit = {}): Promise<Response> => {
   const defaultOptions: RequestInit = {
@@ -85,6 +73,5 @@ export const apiFetch = async (url: string, options: RequestInit = {}): Promise<
 export default {
   API_BASE_URL,
   API_ENDPOINTS,
-  buildUrl,
   apiFetch,
 };

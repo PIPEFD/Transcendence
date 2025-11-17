@@ -2,7 +2,7 @@
 import { RegisterView } from "./views/Register.js";
 import { ProfileView } from "./views/Profile.js";
 import { Profile1View } from "./views/Profile1.js";
-import { AuthView } from "./views/Authenticaction.js";
+import { AuthView } from "./views/Authentication.js";
 import { ChooseView } from "./views/Choose.js";
 import { AvatarView } from "./views/Avatar.js";
 import { AvatarView1 } from "./views/Avatarlogin.js";
@@ -241,4 +241,5 @@ document.body.appendChild(langContainer);
 
 export {}; // para evitar conflictos TS  
 
-  //npx tsc --watch
+// npx tsc --watch
+// export PATH="$HOME/node-v20.7.0-linux-x64/bin:$PATH"

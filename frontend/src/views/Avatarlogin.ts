@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { updateHeader } from "./Header.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 export function AvatarView1(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -105,10 +106,9 @@ export function AvatarView1(app: HTMLElement, state: any): void {
 	//   console.error("Error al subir avatar:", err);
 	//   alert("Error de conexión con el servidor");
 	// }
-	console.log("Hola");
 	try {
-		const response = await fetch('http://localhost:8085/api/upload.php', {
-			method: 'POST', // Tu backend usa POST para DELETE
+		const response = await apiFetch(API_ENDPOINTS.UPLOAD, {
+			method: 'POST',
 			headers: {
 				'Authorization': `Bearer ${token}`,
 				'Content-Type': 'application/json'
