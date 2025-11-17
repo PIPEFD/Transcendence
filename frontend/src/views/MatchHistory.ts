@@ -1,34 +1,54 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
-export function MatchHistoryView(app: HTMLElement, state: any): void {
-  // Generate random matches for demonstration
-  const matches = Array.from({ length: 5 }, (_, i) => {
-    const won = Math.random() > 0.5;
-    return {
-      opponent: `Opponent${i + 1}`,
-      result: won ? t("victory") : t("defeat"),
-      score: `${Math.floor(Math.random() * 10)} - ${Math.floor(Math.random() * 10)}`
-    };
-  });
+export async function MatchHistoryView(app: HTMLElement, state: any): Promise<void> {
+  interface matchEntry {
+    status: "win" | "lose";
+    result: string;
+    elo: string;
+    against: number;
+  }
+
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('tokenUser');
+
+  let matches: matchEntry[] = [];
+
+  try {
+    const res = await apiFetch(`${API_ENDPOINTS.MATCHES}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user_id: userId })
+    });
+
+    const json = await res.json();
+    matches = json.data ?? [];
+
+  } catch (error) {
+    console.error("Error fetching match history:", error);
+    matches = [];
+  }
 
   app.innerHTML = `
     <div class="bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-6 rounded-lg shadow-lg max-w-sm mx-auto flex flex-col items-center text-center">
-      
       <h1 class="text-sm leading-relaxed mb-4 font-bold">${t("matchHistory")}</h1>
 
       <div class="w-full mb-4">
         <div class="flex justify-between font-semibold border-b-2 border-poke-dark pb-2 mb-2">
           <span>${t("opponent")}</span>
           <span>${t("result")}</span>
-          <span>${t("score")}</span>
+          <span>${t("elo")}</span>
         </div>
 
         ${matches.map(m => `
-          <div class="flex justify-between items-center p-2 border-2 border-poke-dark rounded mb-2">
-            <span class="truncate">${m.opponent}</span>
+          <div class="flex justify-between items-center p-2 border-2 border-poke-dark rounded mb-2 ${m.status === "win" ? "bg-green-100" : "bg-red-100"}">
+            <span class="truncate">ID: ${m.against}</span>
             <span>${m.result}</span>
-            <span>${m.score}</span>
+            <span>${m.elo}</span>
           </div>
         `).join("")}
       </div>
@@ -39,6 +59,6 @@ export function MatchHistoryView(app: HTMLElement, state: any): void {
     </div>
   `;
 
-  // Go back to statistics view
   document.getElementById("goBackBtn")?.addEventListener("click", () => navigate("/menu"));
 }
+

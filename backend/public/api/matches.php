@@ -7,9 +7,14 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
 $user_id = $body['user_id'] ?? null;
+
 switch ($requestMethod)
 {
 	case 'POST':
+		if ($user_id) {
+			getHistory($database, $user_id);
+			break ;
+		}
 		if (!checkBodyData($body, 'win_id', 'loser_id'))
 			errorSend(400, 'bad request');
 		$winner_id = $body['winner_id'];
@@ -20,8 +25,6 @@ switch ($requestMethod)
 		updateElo($database, $winner_id, $loser_id, $game_result);
 		break;
 	case 'GET':
-		if (!$queryId && $user_id)
-			getHistory($database, $user_id);
 		if (!checkJWT($queryId))
 			errorSend(403, 'forbidden access');
 		findMatch($database, $queryId);
@@ -64,10 +67,14 @@ function getHistory(SQLite3 $database, int $user_id) {
     );
     $row = $res->fetchArray(SQLITE3_ASSOC);
     if (!$row || !$row['history']) {
-        successSend("history empty", 200, []);
+        successSend("history empty", 200, json_encode([]));
+        return;
     }
     $historyArray = json_decode($row['history'], true);
-    successSend("history: ", 200, $historyArray);
+    if (!is_array($historyArray)) {
+        $historyArray = [];
+    }
+    successSend("history", 200, $historyArray);
 }
 
 function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
