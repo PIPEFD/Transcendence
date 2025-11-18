@@ -28,6 +28,9 @@ import { LoginView } from "./views/Login.js";
 import { setLanguage } from "./translations/index.js";
 import { MenuView } from "./views/Menu.js";
 import { FriendsView } from "./views/Friend.js";
+import { GameOne } from "./views/1v1.js";
+import { GameVsAI } from "./views/vsIA.js";
+import { GameThree } from "./views/3players.js";
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
@@ -101,6 +104,15 @@ function router() {
             break;
         case "/friends":
             FriendsView(app, state);
+            break;
+        case "/1v1":
+            GameOne(app, state);
+            break;
+        case "/vsAI":
+            GameVsAI(app, state);
+            break;
+        case "/3player":
+            GameThree(app, state);
             break;
         default: // Home
             HomeView(app, state);
