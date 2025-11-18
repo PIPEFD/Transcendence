@@ -9,10 +9,18 @@ $user_id = $body['user_id'];
 
 if ($requestMethod != 'POST')
 	errorSend(405, 'Method Not Allowed');
-
-// ahora logOut necesita USER_ID en el body para setear el status en off. 
+if (!is_numeric($user_id))
+	errorSend(403, 'Bad petition');
+ 
 doQuery($database, "UPDATE users SET is_online = 0 WHERE user_id = :id", [':id', $user_id, SQLITE3_INTEGER]);
 successSend('Logged out successfully');
+
 exit;
+
+/*
+	por parte del backend solo actualizo la variable is_online a 0
+	la gestion importante del logout se realiza en el frontend borrando
+	los items de localStorage
+*/
 
 ?>

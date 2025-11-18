@@ -45,15 +45,15 @@ if ($row['attempts_left'] <= 0)
 }
 
 $currentTime = new DateTime();
-$createdAt = new DateTime($row['created_at']); // el constructor de DateTime() es capaz de interpretar el formato de texto estándar de SQLite (YYYY-MM-DD HH:MM:SS)
-$diff_secs =  $currentTime->getTimestamp() - $createdAt->getTimestamp();  // getTimestamp() => devuelve el timestamp Unix: número de segundos transcurridos desde el 1 de enero de 1970 00:00:00
+$createdAt = new DateTime($row['created_at']);
+$diff_secs =  $currentTime->getTimestamp() - $createdAt->getTimestamp();
 if ($diff_secs > $row['time_to_expire_mins'] * 60)
 {
 	delete_row($database, $user_id);
 	errorSend(401, 'code is too old =>' . $diff_secs . ' .max time: ' . $row['time_to_expire_mins'] * 60);
 }
 
-if (!hash_equals($row['code'], $code)) //con === se puede timear el tiempo que pasa comparando ambos strings, para saber hasta que caracter son identicos, con hash_equals() no
+if (!hash_equals($row['code'], $code))
 {
 	decrease_attempts_left($database, $user_id, $row['attempts_left']);
 	errorSend(401, 'invalid credentials2');
@@ -87,5 +87,11 @@ function decrease_attempts_left(SQLite3 $database, int $user_id, int $attempts_l
 	if (!$stmt_update->execute())
 		errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
 }
+
+/*
+	esta es la segunda parte del login (2fa) la cual va a comprobar
+	en la db que la peticion de 2fa exista, comprueba el codigo de la api
+	y setea el usuario a is_online = 1
+*/
 
 ?>

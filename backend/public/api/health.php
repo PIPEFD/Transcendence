@@ -1,13 +1,8 @@
 <?php
-/**
- * Health Check Endpoint
- * Returns the status of the backend service
- */
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// Check database connection
 $db_status = 'unknown';
 try {
     $db_path = __DIR__ . '/../../database/transcendence.db';
@@ -25,7 +20,6 @@ try {
     $db_status = 'error: ' . $e->getMessage();
 }
 
-// Response
 $response = [
     'status' => 'ok',
     'service' => 'transcendence-backend',
@@ -36,3 +30,7 @@ $response = [
 
 http_response_code(200);
 echo json_encode($response, JSON_PRETTY_PRINT);
+/*
+    endpoint hecho por parsero que retorna status de operatividad
+    del backend / base de datos
+*/

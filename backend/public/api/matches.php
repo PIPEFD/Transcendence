@@ -7,6 +7,7 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
 $user_id = $body['user_id'] ?? null;
+// vars de mi entorno
 
 switch ($requestMethod)
 {
@@ -38,6 +39,13 @@ switch ($requestMethod)
 	default:
 		errorSend(405, 'unauthorized method');
 }
+/*
+	router de gestion de partidos y resultados, cubre:
+		- con peticion POST y { user_id } en el body retorna historial de partidas
+		- con peticion POST y los campos { winner_id, loser_id, result } actualiza el elo y ambos historiales
+		- con peticion GET y queryParam ?id="id" busca un partido [por elo cercano y por is_online status = 1]
+		- con peticion PATCH y { user_id } en el body devuelve stats genericas
+*/
 
 function getStats(SQLite3 $database, int $user_id) {
 	$query = "SELECT games_played, games_win, games_lose FROM ranking WHERE user_id = :user_id";
@@ -58,6 +66,10 @@ function getStats(SQLite3 $database, int $user_id) {
 		"defeats" => intval($row["games_lose"])
 	]);
 }
+/*
+	hay 2 tipos de historial, este el cual retorna estadisticas generales
+	como partidas jugadas, ganadas y perdidas.
+*/
 
 function getHistory(SQLite3 $database, int $user_id) {
     $res = doQuery(
@@ -76,6 +88,13 @@ function getHistory(SQLite3 $database, int $user_id) {
     }
     successSend("history", 200, $historyArray);
 }
+/*
+	misma funcionalidad pero con el historial, su formato es:
+		- "status" => "win / lose"
+		- "result" => "3 - 8"
+		- "elo" => "+31 / -24"
+		- "against" => "id de contrincante"
+*/
 
 function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
 {
@@ -105,6 +124,11 @@ function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
 	updateHistory($database, $ls_id, $loserHistoryEntry, false);
 	successSend("match data updated", 200);
 }
+/*
+	esta funcion opera ambas diferencias de elo (ganador y perdedor),
+	y actualiza los valores en la base de datos tanto los de los stats como
+	el historial anterior, de forma bidimensional todo.
+*/
 
 function updateHistory(SQLite3 $database, int $id, array $entry, bool $flag) {
     $res = doQuery($database,
@@ -132,6 +156,9 @@ function updateHistory(SQLite3 $database, int $id, array $entry, bool $flag) {
          [":id", $user_id, SQLITE3_INTEGER]
     );
 }
+/*
+	funcion exclusiva para actualizar el campo history de la db [text]
+*/
 
 function getElo(SQLite3 $database, int $user_id): int
 {
@@ -145,6 +172,7 @@ function getElo(SQLite3 $database, int $user_id): int
 		errorSend(400, 'couldn\'t find user elo');
 	return $row['elo'];
 }
+//retorna el elo actual del usuario (si lo encuentra)
 
 function operateElo(int $oldElo, int $oppElo, bool $win) 
 {
@@ -153,6 +181,7 @@ function operateElo(int $oldElo, int $oppElo, bool $win)
 	$newElo = $oldElo + $k * ($win - $expected);
 	return round($newElo);
 }
+// op de elo robada del ajedrez
 
 function updateEloAux(SQLite3 $database, int $user_id, int $newElo, bool $win): void
 {
@@ -182,6 +211,10 @@ function updateEloAux(SQLite3 $database, int $user_id, int $newElo, bool $win): 
 	if (!$res)
 		throw new Exception ('SQL error ' . $database->lastErrorMsg());
 }
+/*
+	actualiza el resto de campos de la tabla matches de la db
+	(los stats) mirando los anteriores
+*/
 
 function findMatch(SQLite3 $database, int $queryId)
 {
@@ -208,5 +241,9 @@ function findMatch(SQLite3 $database, int $queryId)
 	else
 		successSend('rival found', 200, "user_id -> $nextRival");
 }
+/*
+	busca, entre los usuarios con el status is_online, el que tenga el elo
+	mas cercano al usuario recibido en la queryParam
+*/
 
 ?>

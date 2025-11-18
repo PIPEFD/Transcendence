@@ -7,7 +7,7 @@ import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 // Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
 
 
-export function FriendsView(app: HTMLElement, state: any): void {
+export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
     app.innerHTML = `
         <div class="flex justify-center gap-6 max-w-6xl mx-auto">
         <!-- Columna izquierda: amigos -->
@@ -23,7 +23,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
                 </button>
                 <button id="requestsBtn" class="tab-btn bg-poke-blue text-poke-light border-3 border-poke-blue border-b-blue-800 rounded px-4 py-2 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 active:animate-press">
                     ${t("requests")}
-                </button>f
+                </button>
             </div>
     
             <div id="friendsContentOuter" class="w-full bg-white bg-opacity-40 border-2 border-poke-dark rounded-lg p-4 overflow-hidden" style="height: 400px;">
@@ -54,7 +54,7 @@ export function FriendsView(app: HTMLElement, state: any): void {
             return `<p class="text-red-500">${t("error_no_login") || "Error: No se ha iniciado sesión."}</p>`;
         }
         console.log("tt:", token);
-        const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+        const userId = localStorage.getItem('userId');
         console.log("id entrar friends: ", userId);
         const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
     

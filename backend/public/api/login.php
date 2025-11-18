@@ -18,7 +18,6 @@ if (!checkBodyData($body, 'username', 'pass'))
 $username = $body['username'];
 $passwordSent = $body['pass'];
 
-// Usar 'user_id' (nombre correcto de la columna)
 $sqlQuery = "SELECT user_id, pass, email FROM users WHERE username = :username";
 $bind1 = [':username', $username, SQLITE3_TEXT];
 $res1 = doQuery($database, $sqlQuery, $bind1);
@@ -37,13 +36,11 @@ $email = $row['email'];
 if (!password_verify($passwordSent, $passwordStored))
     errorSend(401, 'Invalid username or password');
 
-// Limpiamos códigos 2FA previos
 $stmt_delete = $database->prepare('DELETE FROM twofa_codes WHERE user_id = :user_id');
 $stmt_delete->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 if (!$res_delete = $stmt_delete->execute())
     errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
 
-// Generamos nuevo código 2FA
 $two_fa_code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
 $stmt_insert = $database->prepare('INSERT OR REPLACE INTO twofa_codes (user_id, code) VALUES (:user_id, :code)');
@@ -52,11 +49,14 @@ $stmt_insert->bindValue(':code', $two_fa_code, SQLITE3_TEXT);
 if ($stmt_insert->execute() === false)
     errorSend(500, 'couldn`t insert two_fa_code');
 
-// Enviamos el código por email
 if (!sendMailGmailAPI($user_id, $email, $two_fa_code))
     errorSend(500, 'couldn\'t send mail with Gmail API');
-
-// Respuesta JSON
 echo json_encode(['pending_2fa' => true, 'user_id' => $user_id]);
 exit;
+/*
+    en esta primera parte del login se comprobaran las credenciales
+    basicas (nombre de usuario y contrasenha) para retornar el valor 1
+    en pending_2fa y enviar un correo con la API de google [gmail]
+*/
+
 ?>

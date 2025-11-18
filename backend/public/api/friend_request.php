@@ -2,16 +2,15 @@
 
 require_once __DIR__ . '/header.php';
 
-// Conexión a la base de datos
 $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// Validación de ID
 if ($queryId <= 0 && $requestMethod === 'GET') {
     errorSend(400, 'Invalid user id');
 }
+// checka el id
 
 switch ($requestMethod) 
 {
@@ -46,6 +45,12 @@ switch ($requestMethod)
     default:
         errorSend(405, 'unauthorized method');
 }
+/*
+    router basico el cual cubre
+        - enviar friend_request con POST y body { sender_id, receiver_id }
+        - comprobar solicitudes pendientes con GET y queryParam ?id="id"
+        - aceptar/declinar solicitudes en formato { sender_id, receiver_id, action[accept/decline] }
+*/
 
 function sendFriendRequest(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
@@ -59,6 +64,7 @@ function sendFriendRequest(SQLite3 $database, int $sender_id, int $receiver_id):
     }
     successSend(['message' => 'friend request sent']);
 }
+// inserta en la db la solicitud de amistad bidireccional
 
 function requestListId(SQLite3 $database, int $receiver_id): void
 {
@@ -75,8 +81,9 @@ function requestListId(SQLite3 $database, int $receiver_id): void
         $content[] = $row;
     }
 
-    successSend($content); // <-- solo array, sin JSON_PRETTY_PRINT
+    successSend($content);
 }
+// lee de la db solicitudes pendientes
 
 function acceptDeclineRequest(SQLite3 $database, int $sender_id, int $receiver_id, string $action): void
 {
@@ -99,6 +106,9 @@ function acceptDeclineRequest(SQLite3 $database, int $sender_id, int $receiver_i
         errorSend(400, 'Invalid action');
     }
 }
+// comprueba campos y acepta/declina una solicitud de amistad junto con
+// dos funciones auxiliares que aceptan o declinan y agregan al amigo en caso
+// de aceptar
 
 function acceptRequest(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
@@ -120,9 +130,7 @@ function acceptRequest(SQLite3 $database, int $sender_id, int $receiver_id): voi
         errorSend(500, 'Could not accept friend request: ' . $e->getMessage());
     }
 }
-
-
-
+// funcion auxiliar que anhade amigo
 
 function declineRequest(SQLite3 $database, int $sender_id, int $receiver_id): void
 {
@@ -133,5 +141,6 @@ function declineRequest(SQLite3 $database, int $sender_id, int $receiver_id): vo
 
     successSend(['message' => 'friend request declined']);
 }
+// funcion aux que declina solicitud
 
 ?>
