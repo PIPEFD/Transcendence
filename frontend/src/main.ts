@@ -169,91 +169,10 @@ window.addEventListener("load", () => {
 
 window.addEventListener("popstate", router);
 
-const clearDbBtn = document.createElement('button');
-clearDbBtn.textContent = "🧹 Borrar toda la base de datos (Test)";
-clearDbBtn.className = `
-  bg-gradient-to-b from-red-500 to-red-700 
-  text-poke-light py-2 px-4 border-3 border-red-900 border-b-red-900 
-  rounded hover:from-red-600 hover:to-red-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-clearDbBtn.addEventListener('click', async () => {
-  if (!confirm("Esto borrará toda la base de datos. ¿Seguro?")) return;
-
-  try {
-    const response = await fetch("http://localhost:8085/api/delete_all.php", {
-      method: 'POST'
-    });
-
-    const data = await response.json();
-    alert(data.success || data.error);
-  } catch (err) {
-    console.error(err);
-    alert("Error borrando la base de datos");
-  }
+// Actualizar UI cuando cambia el idioma
+window.addEventListener('languageChanged', () => {
+  router();
+  updateHeader(state);
 });
 
-const esDbBtn = document.createElement('button');
-esDbBtn.textContent = "Spanish";
-esDbBtn.className = `
-  bg-gradient-to-b from-blue-500 to-blue-700 
-  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
-  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-esDbBtn.addEventListener('click', async () => {
-  setLanguage("es");
-});
-
-const frDbBtn = document.createElement('button');
-frDbBtn.textContent = "French";
-frDbBtn.className = `
-  bg-gradient-to-b from-blue-500 to-blue-700 
-  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
-  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-frDbBtn.addEventListener('click', async () => {
-  setLanguage("fr");
-});
-
-const enDbBtn = document.createElement('button');
-enDbBtn.textContent = "English";
-enDbBtn.className = `
-  bg-gradient-to-b from-blue-500 to-blue-700 
-  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
-  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-enDbBtn.addEventListener('click', async () => {
-  setLanguage("en");
-});
-
-const langContainer = document.createElement("div");
-langContainer.className = "flex gap-2 justify-center mt-4"; // flex horizontal + espacio entre botones
-
-// Añadir los botones al contenedor
-langContainer.appendChild(clearDbBtn);
-langContainer.appendChild(esDbBtn);
-langContainer.appendChild(frDbBtn);
-langContainer.appendChild(enDbBtn);
-
-// Añadir el botón al final del body o a un contenedor específico
-document.body.appendChild(langContainer);
-
-export {}; // para evitar conflictos TS  
-
-// npx tsc --watch
-// export PATH="$HOME/node-v20.7.0-linux-x64/bin:$PATH"
+export {}; // para evitar conflictos TS

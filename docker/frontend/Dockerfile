@@ -36,7 +36,7 @@ RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo 'npm run build' >> /entrypoint.sh && \
     echo 'echo "✅ Build complete"' >> /entrypoint.sh && \
     echo 'echo "🌐 Starting development server on port 3000..."' >> /entrypoint.sh && \
-    echo 'exec npx serve . -l 3000' >> /entrypoint.sh && \
+    echo 'exec npx serve -s . -l 3000' >> /entrypoint.sh && \
     chmod +x /entrypoint.sh && \
     chown node:node /entrypoint.sh
 

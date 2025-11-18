@@ -1,5 +1,9 @@
 // src/views/Chat.ts
 import { t } from "../translations/index.js";
+import { WsClient } from "../utils/WsClient.js";
+import { API_BASE_URL } from "../config.js";
+
+let wsClient: WsClient | null = null;
 
 export function ChatView(app: HTMLElement, state: any) {
   const userId = localStorage.getItem("userId");
@@ -38,7 +42,7 @@ export function ChatView(app: HTMLElement, state: any) {
     }
 
     try {
-      const response = await fetch(`http://localhost:8085/api/friends.php?id=${userIdNum}`, {
+      const response = await fetch(`${API_BASE_URL}/api/friends.php?id=${userIdNum}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -113,4 +117,26 @@ export function ChatView(app: HTMLElement, state: any) {
 
   // Cargar lista de amigos al iniciar
   loadFriends();
+  
+  // Inicializar WebSocket
+  const token = localStorage.getItem("tokenUser");
+  const userId = localStorage.getItem("userId");
+  
+  if (token && userId) {
+    wsClient = new WsClient();
+    wsClient.connect(token, parseInt(userId, 10));
+    
+    wsClient.on('chat-friends', (data) => {
+      console.log('Mensaje de chat recibido:', data);
+      // TODO: Mostrar mensaje en el chat activo
+    });
+  }
+}
+
+// Función de limpieza para desconectar WebSocket al salir
+export function cleanupChatView() {
+  if (wsClient) {
+    wsClient.disconnect();
+    wsClient = null;
+  }
 }

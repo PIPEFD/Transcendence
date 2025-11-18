@@ -1,11 +1,12 @@
 import { navigate } from "../main.js";
+import { API_BASE_URL } from "../config.js";
 
 // Función async para obtener la URL del avatar
 async function fetchAvatarUrl(userId: number | null, token: string | null): Promise<string | null | undefined> {
   if (!userId || !token) return null;
 
   try {
-    const response = await fetch('http://localhost:8085/api/avatar_photo.php', {
+    const response = await fetch(`${API_BASE_URL}/api/avatar_photo.php`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

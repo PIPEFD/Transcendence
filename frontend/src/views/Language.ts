@@ -28,15 +28,12 @@ export function LanguageView(app: HTMLElement, state: any): void {
 
   document.getElementById("lang-en")?.addEventListener("click", () => {
     setLanguage("en");
-    navigate("/settings");
   });
   document.getElementById("lang-fr")?.addEventListener("click", () => {
     setLanguage("fr");
-    navigate("/settings");
   });
   document.getElementById("lang-es")?.addEventListener("click", () => {
     setLanguage("es");
-    navigate("/settings");
   });
   document.getElementById("lang-back")?.addEventListener("click", () => navigate("/settings"));
 }

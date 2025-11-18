@@ -9,6 +9,9 @@ const translations: Record<string, Record<string, string>> = { en, fr, es };
 export function setLanguage(lang: "en" | "fr" | "es") {
   currentLang = lang;
   localStorage.setItem("lang", lang);
+  
+  // Disparar evento personalizado para notificar el cambio
+  window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
 export function getLanguage(): "en" | "fr" | "es" {
