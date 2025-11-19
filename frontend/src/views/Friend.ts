@@ -236,12 +236,16 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
 
     const requestsList = async (): Promise<string> => {
     const token = localStorage.getItem('tokenUser');
-    console.log("tt:", token);
+    console.log('🔍 requestsList - userId:', userIdPlaceholder, 'token:', token?.substring(0, 20));
+    
     if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
 
     try {
-        // Traer solicitudes de amistad
-        const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${userIdPlaceholder}`, {
+        // Traer solicitudes de amistad pendientes
+        const url = `${API_ENDPOINTS.FRIEND_REQUEST}?id=${userIdPlaceholder}`;
+        console.log('📡 Fetching friend requests from:', url);
+        
+        const response = await apiFetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -249,64 +253,58 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             }
         });
 
+        console.log('📥 Response status:', response.status, response.ok);
         const data: { success: { sender_id: number; created_at: string }[] } = await response.json();
+        console.log('📦 Friend requests data:', data);
 
         if (!response.ok || !Array.isArray(data.success)) {
+            console.error('❌ Invalid response format or error:', data);
             return `<p class="text-red-500">Error al cargar solicitudes.</p>`;
         }
 
         const requests = data.success;
+        console.log('✅ Found', requests.length, 'friend requests');
 
         if (requests.length === 0) {
             return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
         }
 
-        console.log("ee ");
-        // Traer usernames de cada sender_id
-        const usernames = await Promise.all(
+        // Obtener información de cada sender
+        const usersInfo = await Promise.all(
             requests.map(async r => {
                 try {
-                    const res = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${r.sender_id}`, {
+                    const res = await apiFetch(`${API_ENDPOINTS.USER_INFO}?id=${r.sender_id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
                         }
                     });
-                    /* if (!res.ok) throw new Error("Error al obtener username");
-                    const userData = await res.json();
-                    console.log("ee ", userData);
-                    return userData.username || `Usuario #${r.sender_id}`; */
-                    const text1 = await res.text();
-                    console.log("Raw response:", text1);
-
-                    let dd;
-                    try {
-                        dd = JSON.parse(text1);
-                    } catch {
-                        console.error("No se pudo parsear JSON:", text1);
-                        dd = { error: "invalid_json", raw: text1 };
+                    
+                    if (!res.ok) {
+                        return { username: `User#${r.sender_id}`, avatar_url: '/assets/avatar1.png' };
                     }
-                    const receiverId = dd.success?.username;
-                    return receiverId;
+                    
+                    const userData = await res.json();
+                    return {
+                        username: userData.success?.username || `User#${r.sender_id}`,
+                        avatar_url: userData.success?.avatar_url || '/assets/avatar1.png'
+                    };
                 } catch {
-                    console.log("sta mal ");
-                    return `Usuario #${r.sender_id}`;
+                    return { username: `User#${r.sender_id}`, avatar_url: '/assets/avatar1.png' };
                 }
             })
         );
-
-        console.log("ee ", usernames[0]);
         return `
             <h2 class="text-lg mb-3">${t("request_list")}</h2>
             <ul class="space-y-2">
                 ${requests.map((r, i) => `
                     <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                         <div class="flex items-center gap-3">
-                            <img src="/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                            <img src="${usersInfo[i].avatar_url}" class="w-10 h-10 rounded-full" />
                             <div class="text-left">
-                                <div class="text-sm font-medium">${usernames[i]}</div>
-                                <div class="text-sm text-poke-dark">${r.created_at}</div>
+                                <div class="text-sm font-medium">${usersInfo[i].username}</div>
+                                <div class="text-sm text-poke-dark">${new Date(r.created_at).toLocaleDateString()}</div>
                             </div>
                         </div>
                         <div class="flex gap-2">

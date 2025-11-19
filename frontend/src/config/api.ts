@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
   
   // Usuarios
   USERS: `${API_BASE_URL}/api/users.php`,
+  USER_INFO: `${API_BASE_URL}/api/user_info.php`,
   
   // Avatares y uploads
   UPLOAD: `${API_BASE_URL}/api/upload.php`,
