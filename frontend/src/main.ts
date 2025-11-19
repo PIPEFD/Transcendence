@@ -133,7 +133,7 @@ function router(): void {
     case "/vsAI":
       GameVsAI(app, state);
       break;
-          case "/3player":
+    case "/3player":
       GameThree(app, state);
       break;
     case "/ws-test":
@@ -152,7 +152,7 @@ function updateHeaderFooterVisibility(route: string) {
   const footer = document.querySelector("footer");
   if (!header || !footer) return;
 
-  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1"];
+  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player","/1v1","/vsAI"];
   if (hiddenRoutes.includes(route)) {
     header.classList.add("hidden");
     footer.classList.add("hidden");

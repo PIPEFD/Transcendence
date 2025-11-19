@@ -125,7 +125,7 @@ function updateHeaderFooterVisibility(route) {
     const footer = document.querySelector("footer");
     if (!header || !footer)
         return;
-    const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1"];
+    const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player", "/1v1", "/vsAI"];
     if (hiddenRoutes.includes(route)) {
         header.classList.add("hidden");
         footer.classList.add("hidden");
