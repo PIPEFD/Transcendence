@@ -46,6 +46,7 @@ export const API_ENDPOINTS = {
   // Amigos
   FRIENDS: `${API_BASE_URL}/api/friends.php`,
   FRIEND_REQUEST: `${API_BASE_URL}/api/friend_request.php`,
+  GET_USER_ID: `${API_BASE_URL}/api/get_user_id.php`,
   
   // Partidas y estadísticas
   MATCHES: `${API_BASE_URL}/api/matches.php`,

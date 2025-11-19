@@ -19,4 +19,5 @@ if (IS_DEV) {
   console.log('🔧 Configuration:');
   console.log('  API_BASE_URL:', API_BASE_URL);
   console.log('  WS_BASE_URL:', WS_BASE_URL);
+  console.log('WebSocketTest.ts loaded', WS_BASE_URL);
 }

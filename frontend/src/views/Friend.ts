@@ -679,65 +679,55 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                       //aqui meto el fetch
                       const token = localStorage.getItem('tokenUser');
                       const username = r_id_Input.value.trim();
-                      // aqui busco el id del username
-                      console.log("antes");
+                      
                      try {
-                        console.log("User ID ff:", userIdPlaceholder);
-                         console.log("User ID ff:", username);
-                        const response = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}?user=${username}`, {
+                        // 1. Buscar el user_id por username
+                        const getUserResponse = await apiFetch(`${API_ENDPOINTS.GET_USER_ID}?user=${username}`, {
                             method: 'GET',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                                 'Content-Type': 'application/json'
                             }
                         });
-                
-                        const text = await response.text();
-                        console.log("Raw response:", text);
 
-                        let data;
-                        try {
-                            data = JSON.parse(text);
-                        } catch {
-                            console.error("No se pudo parsear JSON:", text);
-                            data = { error: "invalid_json", raw: text };
+                        if (!getUserResponse.ok) {
+                            alert(`Usuario ${username} no encontrado`);
+                            return;
                         }
-                        const receiverId = data.success?.user_id;
-                        console.log("ID del usuario:", receiverId);
-                        localStorage.setItem('lastFriendId', receiverId);
-                     }catch (err) {
-                        console.error(err);
-                        alert("Error de conexión con el servidor");
-                      }
-                      const uu = localStorage.getItem('lastFriendId');
-                      const receiver_id = uu ? parseInt(uu, 10) : null;
-                      console.log("uu ", uu);
-                      console.log({
-                        token,
-                        userIdPlaceholder,
-                        receiver_id
-                      });
-                      try {
-                        const response = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST})`, {
-                            method: 'POST', // Tu backend usa POST para DELETE
+
+                        const userData = await getUserResponse.json();
+                        const receiverId = userData.success?.user_id;
+
+                        if (!receiverId) {
+                            alert('Error: No se pudo obtener el ID del usuario');
+                            return;
+                        }
+
+                        // 2. Enviar friend request
+                        const sendRequestResponse = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}`, {
+                            method: 'POST',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ sender_id: userIdPlaceholder, receiver_id : receiver_id })
+                            body: JSON.stringify({ 
+                                sender_id: userIdPlaceholder, 
+                                receiver_id: receiverId 
+                            })
                         });
-                        if (!response.ok) {
-                            alert("Error en el fetch de request");
-                            return;
-                          }
 
-                        alert("Request realizada");
-                      }
-                      catch (err) {
+                        if (!sendRequestResponse.ok) {
+                            alert("Error al enviar solicitud de amistad");
+                            return;
+                        }
+
+                        alert(`✅ Solicitud enviada a ${username}`);
+                        nameInput.value = "";
+                        
+                     } catch (err) {
                         console.error(err);
                         alert("Error de conexión con el servidor");
                       }
-                      //nameInput.value = "";
                   });
               }
           }

@@ -22,6 +22,8 @@ import { FriendsView } from "./views/Friend.js";
 import { GameOne } from "./views/1v1.js";
 import { GameVsAI } from "./views/vsIA.js";
 import { GameThree } from "./views/3players.js";
+import { WebSocketTestView } from "./views/WebSocketTest.js";
+import { wsService } from "./services/WebSocketService.js";
 
 
 
@@ -129,6 +131,9 @@ function router(): void {
       break;
           case "/3player":
       GameThree(app, state);
+      break;
+    case "/ws-test":
+      WebSocketTestView(app, state);
       break;   
     default: // Home
       HomeView(app, state);
@@ -164,6 +169,28 @@ window.addEventListener("load", () => {
     navigate("/register");
   } else {
     router();
+  }
+
+  // Conectar al WebSocket si el usuario está autenticado
+  const token = localStorage.getItem('tokenUser');
+  const userId = localStorage.getItem('userId');
+  
+  if (token && userId) {
+    console.log('🔌 Usuario autenticado detectado. Conectando WebSocket...');
+    wsService.connect()
+      .then(() => {
+        console.log('✅ WebSocket conectado y autenticado');
+        
+        // Configurar ping cada 30 segundos para mantener conexión
+        setInterval(() => {
+          if (wsService.isConnected()) {
+            wsService.ping();
+          }
+        }, 30000);
+      })
+      .catch((error) => {
+        console.error('❌ Error conectando WebSocket:', error);
+      });
   }
 });
 

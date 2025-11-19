@@ -1,12 +1,12 @@
 import { navigate } from "../main.js";
-import { API_BASE_URL } from "../config.js";
+import { API_ENDPOINTS } from "../config/api.js";
 
 // Función async para obtener la URL del avatar
 async function fetchAvatarUrl(userId: number | null, token: string | null): Promise<string | null | undefined> {
   if (!userId || !token) return null;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/avatar_photo.php`, {
+    const response = await fetch(API_ENDPOINTS.AVATAR_PHOTO, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -15,29 +15,28 @@ async function fetchAvatarUrl(userId: number | null, token: string | null): Prom
       body: JSON.stringify({ id: userId }),
     });
 
-    // const text1 = await response.text(); // always read as text first
-    // console.log("Raw response:", text1);
+    if (!response.ok) {
+      console.error("Error fetching avatar:", response.status);
+      return null;
+    }
 
-    // let dd;
-    // try {
-    //     dd = JSON.parse(text1);
-    // } catch {
-    //     console.error("No se pudo parsear JSON:", text1);
-    //     dd = { error: "invalid_json", raw: text1 };
-    // }
-    const text = await response.text();
-      let data: any;
-      console.log(text);
-      console.log(data);
-      try { data = JSON.parse(text); } 
-      catch { alert("Error inesperado del servidor"); return; }
-
-      if (!response.ok) {
-        alert("Error: " + (data.error || "Bad Request"));
-        return;
+    const data = await response.json();
+    
+    console.log("Avatar response:", data);
+    
+    // El backend puede devolver diferentes formatos:
+    // { success: { avatar_url: "..." } } o { success: "..." }
+    let avatarUrl = null;
+    
+    if (data.success) {
+      if (typeof data.success === 'object' && data.success.avatar_url) {
+        avatarUrl = data.success.avatar_url;
+      } else if (typeof data.success === 'string') {
+        avatarUrl = data.success;
       }
-
-      alert("Codigo correcto");
+    }
+    
+    return avatarUrl;
 
   } catch (error) {
     console.error("Error fetching avatar:", error);
@@ -60,36 +59,24 @@ export function updateHeader(state: any): void {
 
   // Llamamos a la función async sin usar await
   fetchAvatarUrl(userIdPlaceholder, token).then((avatarUrl) => {
-    // Determine avatar source
-    let avatarSrc = "";
-    if (avatarUrl) {
-      avatarSrc = avatarUrl; // Avatar subido
-    } else if (state.player.avatar !== null && state.player.avatar !== undefined) {
-      if (typeof state.player.avatar === "number") {
-        avatarSrc = `/assets/avatar_39.png`; // built-in avatar
-        // `../../../backend/public/api/uploads/avatar_39.png`
-      } else if (typeof state.player.avatar === "string") {
-        avatarSrc = state.player.avatar; // base64 o URL guardado
-      }
-    }
+    console.log("Avatar URL obtenida:", avatarUrl);
+    
+    // Usar el avatar del endpoint si existe
+    let avatarSrc = avatarUrl || "/assets/avatar_39.png"; // Avatar por defecto si no hay
 
     header.innerHTML = `
       <div class="relative flex items-center justify-center">
-        <p class="text-lg font-bold">PONG</p>
-        ${
-          avatarSrc
-            ? `<div class="absolute right-4 flex items-center space-x-2">
-                  <img src="${avatarSrc}"
-                       id="avBtn"
-                       alt="avatar"
-                       class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
-                  <img src="/assets/settings.png"
-                       id="settingsBtn"
-                       alt="settings"
-                       class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
-               </div>`
-            : ""
-        }
+        <img src="/assets/logo.png" alt="PONG" class="h-12">
+        <div class="absolute right-4 flex items-center space-x-2">
+          <img src="${avatarSrc}"
+               id="avBtn"
+               alt="avatar"
+               class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 object-cover"/>
+          <img src="/assets/settings.png"
+               id="settingsBtn"
+               alt="settings"
+               class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
+        </div>
       </div>
     `;
 

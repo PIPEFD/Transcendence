@@ -26,15 +26,18 @@ ENV NODE_ENV=development
 
 EXPOSE 3000
 
-# Script de inicio optimizado
+# Script de inicio optimizado con watch mode
 USER root
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo 'set -e' >> /entrypoint.sh && \
     echo 'cd /app' >> /entrypoint.sh && \
     echo 'echo "🚀 Starting frontend as user node (non-root)"' >> /entrypoint.sh && \
-    echo 'echo "🔨 Building CSS..."' >> /entrypoint.sh && \
+    echo 'echo "🔨 Building project..."' >> /entrypoint.sh && \
     echo 'npm run build' >> /entrypoint.sh && \
     echo 'echo "✅ Build complete"' >> /entrypoint.sh && \
+    echo 'echo "👀 Starting watch mode for auto-recompile..."' >> /entrypoint.sh && \
+    echo 'npm run watch:css &' >> /entrypoint.sh && \
+    echo 'npm run watch:ts &' >> /entrypoint.sh && \
     echo 'echo "🌐 Starting development server on port 3000..."' >> /entrypoint.sh && \
     echo 'exec npx serve -s . -l 3000' >> /entrypoint.sh && \
     chmod +x /entrypoint.sh && \

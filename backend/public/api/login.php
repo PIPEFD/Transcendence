@@ -36,6 +36,40 @@ $email = $row['email'];
 if (!password_verify($passwordSent, $passwordStored))
     errorSend(401, 'Invalid username or password');
 
+// ⚠️ MODO TEST: Usuarios que empiecen con "testuser" no requieren 2FA
+if (strpos($username, 'testuser') === 0) {
+    // Generar JWT directamente para usuarios de prueba
+    require_once __DIR__ . '/../../vendor/autoload.php';
+    
+    $issuer = 'http://localhost:8081';
+    $audience = 'http://localhost:8081';
+    $issuedAt = time();
+    $expire = $issuedAt + 3600; // 1 hora
+    $payload = [
+        'iss' => $issuer,
+        'aud' => $audience,
+        'iat' => $issuedAt,
+        'exp' => $expire,
+        'data' => ['user_id' => $user_id]
+    ];
+    
+    $secretKey = getenv('JWTsecretKey');
+    $jwt = Firebase\JWT\JWT::encode($payload, $secretKey, 'HS256');
+    
+    // Marcar usuario como online
+    doQuery($database, "UPDATE users SET is_online = 1 WHERE user_id = :id", [':id', $user_id, SQLITE3_INTEGER]);
+    
+    // Devolver token directamente (sin 2FA)
+    echo json_encode([
+        'success' => 'Login successful (test mode)',
+        'details' => $jwt,
+        'user_id' => $user_id,
+        'test_mode' => true
+    ]);
+    exit;
+}
+
+// Flujo normal con 2FA para usuarios regulares
 $stmt_delete = $database->prepare('DELETE FROM twofa_codes WHERE user_id = :user_id');
 $stmt_delete->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 if (!$res_delete = $stmt_delete->execute())

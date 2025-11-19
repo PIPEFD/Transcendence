@@ -306,7 +306,7 @@ reset: down
 		rm -rf $(CONFIG_DIR)/cloudflare/certs; \
 		rm -rf $(LOGS_DIR)/*; \
 		echo -e "$(YELLOW)Eliminando volúmenes Docker...$(RESET)"; \
-		docker system prune -f --volume \
+		docker system prune -f --volumes; \
 		echo -e "$(GREEN)✓ Datos restablecidos. Utilice 'make init' para inicializar nuevamente.$(RESET)"; \
 	else \
 		echo -e "$(BLUE)Operación cancelada.$(RESET)"; \
