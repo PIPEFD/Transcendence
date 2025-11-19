@@ -60,7 +60,7 @@ export function AuthView(app: HTMLElement, state: any): void {
       localStorage.setItem("userId", String(id));
       localStorage.setItem("tokenUser", data.details); // Guardo token
 
-      navigate("/choose");
+      navigate("/");
     } catch (err) {
       console.error(err);
       alert("Error de conexión con el servidor");

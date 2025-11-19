@@ -24,6 +24,7 @@ import { GameVsAI } from "./views/vsIA.js";
 import { GameThree } from "./views/3players.js";
 import { WebSocketTestView } from "./views/WebSocketTest.js";
 import { wsService } from "./services/WebSocketService.js";
+import { ChooseView1 } from "./views/Choose1.js";
 
 
 
@@ -93,6 +94,9 @@ function router(): void {
     case "/choose":
       ChooseView(app, state);
       break;
+    case "/choose1":
+      ChooseView1(app, state);
+      break;
     case "/avatar":
       AvatarView(app, state);
       break;
@@ -148,7 +152,7 @@ function updateHeaderFooterVisibility(route: string) {
   const footer = document.querySelector("footer");
   if (!header || !footer) return;
 
-  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication"];
+  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1"];
   if (hiddenRoutes.includes(route)) {
     header.classList.add("hidden");
     footer.classList.add("hidden");
@@ -203,3 +207,5 @@ window.addEventListener('languageChanged', () => {
 });
 
 export {}; // para evitar conflictos TS
+
+// npx tsc --watch
