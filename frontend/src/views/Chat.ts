@@ -6,6 +6,7 @@ import { API_ENDPOINTS } from "../config/api.js";
 export function ChatView(app: HTMLElement, state: any) {
   const userId = localStorage.getItem("userId");
   const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+  let currentChatFriendId: number | null = null; // Trackear amigo actual
 
   app.innerHTML = `
     <div class="flex bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-4 rounded-2xl shadow-lg max-w-6xl mx-auto space-x-4" style="height: 600px;">
@@ -72,9 +73,11 @@ export function ChatView(app: HTMLElement, state: any) {
       .map((f: any, i: number) => {
         const status = wsService.getUserStatus(String(f.id)) || 'offline';
         const statusColor = status === 'online' ? 'bg-green-500' : 
-                           status === 'in-game' ? 'bg-yellow-500' : 'bg-gray-400';
+                           status === 'in-game' ? 'bg-yellow-500' : 
+                           status === 'away' ? 'bg-orange-500' : 'bg-gray-400';
         const statusText = status === 'online' ? '🟢' : 
-                          status === 'in-game' ? '🎮' : '⚫';
+                          status === 'in-game' ? '🎮' : 
+                          status === 'away' ? '🟠' : '⚫';
         
         return `
         <div class="friend-item flex items-center gap-3 p-2 bg-white bg-opacity-70 rounded cursor-pointer hover:bg-poke-blue hover:text-white transition"
@@ -96,9 +99,12 @@ export function ChatView(app: HTMLElement, state: any) {
 
   // Función para abrir el chat con un amigo
   const openChat = (friendId: number, friendName: string) => {
+    currentChatFriendId = friendId; // Guardar ID del amigo actual
+    console.log(`💬 Abriendo chat con ${friendName} (ID: ${friendId})`);
+    
     chatPanel.innerHTML = `
       <div class="flex flex-col w-full h-full">
-        <div class="border-b border-poke-dark pb-2 mb-2 font-bold">${friendName}</div>
+        <div class="border-b border-poke-dark pb-2 mb-2 font-bold" data-friend-id="${friendId}">${friendName}</div>
 
         <div id="messagesContainer" class="flex-1 overflow-y-auto space-y-2 text-left pr-2 bg-white bg-opacity-40 border border-poke-dark rounded p-3">
           <div class="text-center text-sm text-poke-dark opacity-70">${t("chat_welcome")} ${state.player.alias || t("player")}!</div>
@@ -119,31 +125,42 @@ export function ChatView(app: HTMLElement, state: any) {
       const text = msgInput.value.trim();
       if (!text) return;
       
-      // Mostrar mensaje localmente
-      const msgEl = document.createElement("div");
-      msgEl.className = "bg-poke-blue text-white p-2 rounded-xl max-w-[80%] ml-auto shadow";
-      msgEl.textContent = text;
-      msgContainer.appendChild(msgEl);
-      msgInput.value = "";
-      msgContainer.scrollTop = msgContainer.scrollHeight;
-      
-      // Enviar mensaje vía WebSocket
       const userId = localStorage.getItem('userId');
       if (!userId) {
-        console.error('No userId found');
+        console.error('❌ No userId found');
         return;
       }
       
+      // Verificar que el WebSocket esté conectado
+      if (!wsService.isConnected()) {
+        console.error('❌ WebSocket no conectado');
+        alert('Error: No hay conexión con el servidor. Reconectando...');
+        wsService.connect().then(() => {
+          console.log('✅ Reconectado, intenta enviar de nuevo');
+        });
+        return;
+      }
+      
+      // Enviar mensaje vía WebSocket
+      console.log(`📤 Enviando mensaje a ${currentChatFriendId}:`, text);
       const success = wsService.send({
         type: 'chat-friends',
         userId: userId,
-        receiverId: String(friendId),
+        receiverId: String(currentChatFriendId),
         message: text
       });
       
-      if (!success) {
-        console.error('Failed to send message via WebSocket');
-        // TODO: Mostrar error al usuario
+      if (success) {
+        // Mostrar mensaje localmente solo si se envió exitosamente
+        const msgEl = document.createElement("div");
+        msgEl.className = "bg-poke-blue text-white p-2 rounded-xl max-w-[80%] ml-auto shadow text-sm";
+        msgEl.textContent = text;
+        msgContainer.appendChild(msgEl);
+        msgInput.value = "";
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+      } else {
+        console.error('❌ Failed to send message via WebSocket');
+        alert('Error: No se pudo enviar el mensaje. Intenta de nuevo.');
       }
     };
 
@@ -163,21 +180,76 @@ export function ChatView(app: HTMLElement, state: any) {
   // Cargar lista de amigos al iniciar
   loadFriends();
   
-  // Solicitar lista de usuarios online al cargar
-  wsService.getOnlineUsers();
+  // Conectar WebSocket si no está conectado
+  if (!wsService.isConnected()) {
+    console.log('🔌 WebSocket no conectado, conectando...');
+    wsService.connect().then(() => {
+      console.log('✅ WebSocket conectado desde ChatView');
+      wsService.getOnlineUsers();
+    }).catch(err => {
+      console.error('❌ Error conectando WebSocket:', err);
+    });
+  } else {
+    console.log('✅ WebSocket ya conectado');
+    // Solicitar lista de usuarios online al cargar
+    wsService.getOnlineUsers();
+  }
   
   // Escuchar cambios de estado de usuarios
   const handleUserStatusChanged = (data: any) => {
-    console.log(`👤 Estado cambiado: ${data.username} está ${data.status}`);
-    // Recargar lista de amigos para actualizar estados
-    loadFriends();
+    console.log(`👤 Estado cambiado: ${data.username} (${data.userId}) está ${data.status}`);
+    
+    // Actualizar solo el círculo de estado del usuario específico
+    const friendItem = listContainer.querySelector(`[data-id="${data.userId}"]`);
+    if (friendItem) {
+      const statusCircle = friendItem.querySelector('.w-3.h-3') as HTMLElement;
+      if (statusCircle) {
+        // Remover clases anteriores
+        statusCircle.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-orange-500', 'bg-gray-400');
+        
+        // Añadir nueva clase según el estado
+        const newColor = data.status === 'online' ? 'bg-green-500' :
+                        data.status === 'in-game' ? 'bg-yellow-500' :
+                        data.status === 'away' ? 'bg-orange-500' : 'bg-gray-400';
+        statusCircle.classList.add(newColor);
+        statusCircle.setAttribute('title', data.status);
+        
+        // Actualizar emoji
+        const statusEmoji = friendItem.querySelector('.text-xs');
+        if (statusEmoji) {
+          statusEmoji.textContent = data.status === 'online' ? '🟢' :
+                                   data.status === 'in-game' ? '🎮' :
+                                   data.status === 'away' ? '🟠' : '⚫';
+        }
+      }
+    }
   };
   
   // Escuchar lista de usuarios online
   const handleOnlineUsers = (data: any) => {
     console.log(`👥 ${data.count} usuarios online`);
-    // Recargar lista de amigos para mostrar estados actualizados
-    loadFriends();
+    // Actualizar estados de todos los usuarios sin recargar
+    data.users?.forEach((user: any) => {
+      const friendItem = listContainer.querySelector(`[data-id="${user.userId}"]`);
+      if (friendItem) {
+        const statusCircle = friendItem.querySelector('.w-3.h-3') as HTMLElement;
+        if (statusCircle) {
+          statusCircle.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-orange-500', 'bg-gray-400');
+          const newColor = user.status === 'online' ? 'bg-green-500' :
+                          user.status === 'in-game' ? 'bg-yellow-500' :
+                          user.status === 'away' ? 'bg-orange-500' : 'bg-gray-400';
+          statusCircle.classList.add(newColor);
+          statusCircle.setAttribute('title', user.status);
+          
+          const statusEmoji = friendItem.querySelector('.text-xs');
+          if (statusEmoji) {
+            statusEmoji.textContent = user.status === 'online' ? '🟢' :
+                                     user.status === 'in-game' ? '🎮' :
+                                     user.status === 'away' ? '🟠' : '⚫';
+          }
+        }
+      }
+    });
   };
   
   wsService.on('user-status-changed', handleUserStatusChanged);
@@ -187,23 +259,30 @@ export function ChatView(app: HTMLElement, state: any) {
   const handleChatMessage = (data: any) => {
     console.log('📩 Mensaje de chat recibido:', data);
     
-    // Verificar si el mensaje es para el chat actual abierto
+    // Verificar si hay un chat abierto
     const messagesContainer = document.getElementById('messagesContainer');
-    if (!messagesContainer) return;
+    if (!messagesContainer || currentChatFriendId === null) {
+      console.log('⚠️ No hay chat abierto, mensaje ignorado');
+      return;
+    }
     
-    // Obtener el friendId actual del DOM si está disponible
-    const currentChatHeader = chatPanel.querySelector('.font-bold');
-    if (!currentChatHeader) return;
+    const myUserId = localStorage.getItem('userId');
+    const senderId = data.senderId || data.userId;
     
-    const currentFriendName = currentChatHeader.textContent;
+    // Verificar si el mensaje es del amigo actual o enviado a él
+    const isFromCurrentFriend = String(senderId) === String(currentChatFriendId);
+    const isToCurrentFriend = String(data.receiverId) === String(currentChatFriendId);
     
-    // Añadir mensaje al contenedor si coincide
-    if (data.userId || data.senderId) {
+    console.log(`🔍 Verificando mensaje: senderId=${senderId}, currentFriend=${currentChatFriendId}, isFrom=${isFromCurrentFriend}, isTo=${isToCurrentFriend}`);
+    
+    if (isFromCurrentFriend) {
+      // Mensaje recibido del amigo
       const msgDiv = document.createElement('div');
-      msgDiv.className = 'text-sm p-2 rounded bg-poke-blue text-white max-w-xs';
-      msgDiv.textContent = `${data.message || ''}`;
+      msgDiv.className = 'text-sm p-2 rounded-xl bg-gray-200 text-gray-800 max-w-[80%] shadow';
+      msgDiv.textContent = data.message || '';
       messagesContainer.appendChild(msgDiv);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      console.log('✅ Mensaje añadido al chat');
     }
   };
   

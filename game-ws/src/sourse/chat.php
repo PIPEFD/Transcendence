@@ -18,37 +18,67 @@ function handleChatGlobal($webSocket, $conn, $body) {
 }
 
 function handleChatFriends($webSocket, $conn, $body) {
-    $url = 'http://localhost:8085/api/friends?id=' . $body['sender_id'];
-    $friendList = $webSocket->httpClient->get($url, [
+    error_log("🔵 handleChatFriends llamado");
+    error_log("🔵 Body recibido: " . json_encode($body));
+    
+    // Soportar tanto sender_id/receiver_id como userId/receiverId
+    $senderId = $body['sender_id'] ?? $body['userId'] ?? null;
+    $receiverId = $body['receiver_id'] ?? $body['receiverId'] ?? null;
+    $message = $body['message'] ?? null;
+    
+    error_log("🔵 SenderId: $senderId, ReceiverId: $receiverId, Message: $message");
+    
+    if (!$senderId || !$receiverId || !$message) {
+        error_log("❌ Chat: Missing required fields. senderId=$senderId, receiverId=$receiverId");
+        return;
+    }
+    
+    // Verificar que sean amigos
+    $url = 'http://localhost:8085/api/friends?id=' . $senderId;
+    error_log("🔵 Verificando amistad en: $url");
+    
+    $friendList = $webSocket->apiRest->get($url, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $conn->authToken,
                 'Accept' => 'application/json'
             ]
         ])->getBody()->getContents();
-    $isFriend = searchInFriendList($friendList, $body);
+    
+    error_log("🔵 Friend list response: $friendList");
+    
+    $isFriend = searchInFriendList($friendList, $receiverId);
+    error_log("🔵 Are friends? " . ($isFriend ? "YES" : "NO"));
+    
     if ($isFriend) {
-        $receiverId = $body['receiver_id'] ?? null;
+        error_log("🔵 Verificando si receiver $receiverId está conectado...");
+        error_log("🔵 Usuarios conectados: " . json_encode(array_keys($webSocket->usersConns)));
+        
         if (isset($webSocket->usersConns[$receiverId])) {
             $receiverConnection = $webSocket->usersConns[$receiverId];
             $msg = [
-                'type' => 'chat',
-                'from' => $body['sender_id'],
-                'to'   => $receiverId,
-                'text' => $body['message'],
-                'time' => time()
+                'type' => 'chat-friends',
+                'senderId' => $senderId,
+                'receiverId' => $receiverId,
+                'message' => $message,
+                'timestamp' => time()
             ];
+            error_log("✅ Enviando mensaje: " . json_encode($msg));
             $receiverConnection->send(json_encode($msg));
+            error_log("✅ Chat: Message sent from $senderId to $receiverId");
+        } else {
+            error_log("❌ Chat: Receiver $receiverId is not connected");
         }
+    } else {
+        error_log("❌ Chat: Users $senderId and $receiverId are not friends");
     }
 }
 
-function searchInFriendList($friendListRaw, $body) {
-    $receiverId = $body['receiver_id'];
+function searchInFriendList($friendListRaw, $receiverId) {
     $friendList = json_decode($friendListRaw, true);
     if (!isset($friendList['success']))
         return false;
     foreach ($friendList['success'] as $friend) {
-        if ((int)$friend === $receiverId)
+        if ((int)$friend['user_id'] === (int)$receiverId)
             return true;
     }
     return false;

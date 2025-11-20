@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+import { wsService } from "../services/WebSocketService.js";
 
 export function LoginView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -92,13 +93,35 @@ export function LoginView(app: HTMLElement, state: any): void {
         console.log("🔍 Verificación - Token guardado:", !!savedToken);
         console.log("🔍 Verificación - UserId guardado:", savedUserId);
         
-        navigate("/choose");
+        // 🔌 CONECTAR WEBSOCKET después del login
+        console.log("🔌 Conectando WebSocket después del login...");
+        wsService.connect()
+          .then(() => {
+            console.log("✅ WebSocket conectado exitosamente");
+            navigate("/choose");
+          })
+          .catch((error) => {
+            console.error("❌ Error conectando WebSocket:", error);
+            // Navegar de todas formas, el chat intentará reconectar
+            navigate("/choose");
+          });
+        
         return;
       }
 
       // Guardar token JWT si viene en la respuesta (flujo normal)
       if (data.token) {
         localStorage.setItem("tokenUser", data.token);
+        
+        // 🔌 CONECTAR WEBSOCKET después del login normal
+        console.log("🔌 Conectando WebSocket después del login...");
+        wsService.connect()
+          .then(() => {
+            console.log("✅ WebSocket conectado exitosamente");
+          })
+          .catch((error) => {
+            console.error("❌ Error conectando WebSocket:", error);
+          });
       }
 
       // Si requiere 2FA

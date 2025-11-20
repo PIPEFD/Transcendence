@@ -8,7 +8,7 @@ require_once __DIR__ . '/status.php';
 
 class webSocket implements \Ratchet\MessageComponentInterface {
     public $client; // public para acceso desde funciones externas
-    protected $apiRest;
+    public $apiRest; // cambiado a public para acceso desde chat.php
     public $usersConns = []; // as client but in map :D (public para acceso desde funciones externas)
     public function __construct() {
         $this->client = new \SplObjectStorage;

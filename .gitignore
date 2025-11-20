@@ -7,3 +7,17 @@ OUT.txt
 # test reports
 reports/
 
+# Frontend build artifacts
+frontend/dist/
+**/node_modules/
+*.log
+npm-debug.log*
+
+# Compiled TypeScript
+frontend/src/**/*.js
+frontend/src/**/*.js.map
+
+# Build cache
+.cache/
+*.tsbuildinfo
+
