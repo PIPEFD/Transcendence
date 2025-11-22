@@ -227,71 +227,66 @@ export function FriendsView(app, state) {
        }; */
         const requestsList = () => __awaiter(this, void 0, void 0, function* () {
             const token = localStorage.getItem('tokenUser');
-            console.log("tt:", token);
+            console.log('🔍 requestsList - userId:', userIdPlaceholder, 'token:', token === null || token === void 0 ? void 0 : token.substring(0, 20));
             if (!token)
                 return `<p class="text-red-500">${t("error_no_login")}</p>`;
             try {
-                // Traer solicitudes de amistad
-                const response = yield apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${userIdPlaceholder}`, {
+                // Traer solicitudes de amistad pendientes
+                const url = `${API_ENDPOINTS.FRIEND_REQUEST}?id=${userIdPlaceholder}`;
+                console.log('📡 Fetching friend requests from:', url);
+                const response = yield apiFetch(url, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 });
+                console.log('📥 Response status:', response.status, response.ok);
                 const data = yield response.json();
+                console.log('📦 Friend requests data:', data);
                 if (!response.ok || !Array.isArray(data.success)) {
+                    console.error('❌ Invalid response format or error:', data);
                     return `<p class="text-red-500">Error al cargar solicitudes.</p>`;
                 }
                 const requests = data.success;
+                console.log('✅ Found', requests.length, 'friend requests');
                 if (requests.length === 0) {
                     return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
                 }
-                console.log("ee ");
-                // Traer usernames de cada sender_id
-                const usernames = yield Promise.all(requests.map((r) => __awaiter(this, void 0, void 0, function* () {
-                    var _a;
+                // Obtener información de cada sender
+                const usersInfo = yield Promise.all(requests.map((r) => __awaiter(this, void 0, void 0, function* () {
+                    var _a, _b;
                     try {
-                        const res = yield apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${r.sender_id}`, {
+                        const res = yield apiFetch(`${API_ENDPOINTS.USER_INFO}?id=${r.sender_id}`, {
                             method: 'GET',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                                 'Content-Type': 'application/json'
                             }
                         });
-                        /* if (!res.ok) throw new Error("Error al obtener username");
-                        const userData = await res.json();
-                        console.log("ee ", userData);
-                        return userData.username || `Usuario #${r.sender_id}`; */
-                        const text1 = yield res.text();
-                        console.log("Raw response:", text1);
-                        let dd;
-                        try {
-                            dd = JSON.parse(text1);
+                        if (!res.ok) {
+                            return { username: `User#${r.sender_id}`, avatar_url: '/assets/avatar1.png' };
                         }
-                        catch (_b) {
-                            console.error("No se pudo parsear JSON:", text1);
-                            dd = { error: "invalid_json", raw: text1 };
-                        }
-                        const receiverId = (_a = dd.success) === null || _a === void 0 ? void 0 : _a.username;
-                        return receiverId;
+                        const userData = yield res.json();
+                        return {
+                            username: ((_a = userData.success) === null || _a === void 0 ? void 0 : _a.username) || `User#${r.sender_id}`,
+                            avatar_url: ((_b = userData.success) === null || _b === void 0 ? void 0 : _b.avatar_url) || '/assets/avatar1.png'
+                        };
                     }
                     catch (_c) {
-                        console.log("sta mal ");
-                        return `Usuario #${r.sender_id}`;
+                        return { username: `User#${r.sender_id}`, avatar_url: '/assets/avatar1.png' };
                     }
                 })));
-                console.log("ee ", usernames[0]);
                 return `
             <h2 class="text-lg mb-3">${t("request_list")}</h2>
             <ul class="space-y-2">
                 ${requests.map((r, i) => `
                     <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                         <div class="flex items-center gap-3">
-                            <img src="/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                            <img src="${usersInfo[i].avatar_url}" class="w-10 h-10 rounded-full" />
                             <div class="text-left">
-                                <div class="text-sm font-medium">${usernames[i]}</div>
-                                <div class="text-sm text-poke-dark">${r.created_at}</div>
+                                <div class="text-sm font-medium">${usersInfo[i].username}</div>
+                                <div class="text-sm text-poke-dark">${new Date(r.created_at).toLocaleDateString()}</div>
                             </div>
                         </div>
                         <div class="flex gap-2">

@@ -8,6 +8,7 @@ import { AvatarView } from "./views/Avatar.js";
 import { AvatarView1 } from "./views/Avatarlogin.js";
 import { GameView } from "./views/Game.js";
 import { TournamentView } from "./views/Tournament.js";
+import { Tournament4View } from "./views/tournament4.js";
 import { ChatView } from "./views/Chat.js";
 import { HomeView } from "./views/Home.js";
 import { SettingsView } from "./views/Settings.js";
@@ -19,10 +20,15 @@ import { LoginView } from "./views/Login.js";
 import { MenuView } from "./views/Menu.js";
 import { FriendsView } from "./views/Friend.js";
 import { GameOne } from "./views/1v1.js";
+import { GameOneo } from "./views/1v1o.js";
 import { GameVsAI } from "./views/vsIA.js";
 import { GameThree } from "./views/3players.js";
+import { GameFour } from "./views/4players.js";
 import { WebSocketTestView } from "./views/WebSocketTest.js";
 import { wsService } from "./services/WebSocketService.js";
+import { ChooseView1 } from "./views/Choose1.js";
+import { Tournament4StartView } from "./views/tournament4start.js";
+import { GameTournament } from "./views/Tournament4Run.js";
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
@@ -67,6 +73,9 @@ function router() {
         case "/choose":
             ChooseView(app, state);
             break;
+        case "/choose1":
+            ChooseView1(app, state);
+            break;
         case "/avatar":
             AvatarView(app, state);
             break;
@@ -78,6 +87,15 @@ function router() {
             break;
         case "/tournament":
             TournamentView(app, state);
+            break;
+        case "/tournament4":
+            Tournament4View(app, state);
+            break;
+        case "/tournament4start":
+            Tournament4StartView(app, state);
+            break;
+        case "/game-tournament":
+            GameTournament(app, state);
             break;
         case "/chat":
             ChatView(app, state);
@@ -100,11 +118,17 @@ function router() {
         case "/1v1":
             GameOne(app, state);
             break;
+        case "/1v1o":
+            GameOneo(app, state);
+            break;
         case "/vsAI":
             GameVsAI(app, state);
             break;
         case "/3player":
             GameThree(app, state);
+            break;
+        case "/4player":
+            GameFour(app, state);
             break;
         case "/ws-test":
             WebSocketTestView(app, state);
@@ -121,7 +145,7 @@ function updateHeaderFooterVisibility(route) {
     const footer = document.querySelector("footer");
     if (!header || !footer)
         return;
-    const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication"];
+    const hiddenRoutes = ["/register", "/tournament4", "/tournament4start", "/game-tournament", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player", "/1v1", "/1v1o", "/vsAI", "/4player"];
     if (hiddenRoutes.includes(route)) {
         header.classList.add("hidden");
         footer.classList.add("hidden");
@@ -169,3 +193,4 @@ window.addEventListener('languageChanged', () => {
     router();
     updateHeader(state);
 });
+// npx tsc --watch

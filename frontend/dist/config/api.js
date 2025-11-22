@@ -39,6 +39,7 @@ export const API_ENDPOINTS = {
     VERIFY_2FA: `${API_BASE_URL}/api/verify_2fa.php`,
     // Usuarios
     USERS: `${API_BASE_URL}/api/users.php`,
+    USER_INFO: `${API_BASE_URL}/api/user_info.php`,
     // Avatares y uploads
     UPLOAD: `${API_BASE_URL}/api/upload.php`,
     AVATAR_PHOTO: `${API_BASE_URL}/api/avatar_photo.php`,

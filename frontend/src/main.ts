@@ -8,6 +8,7 @@ import { AvatarView } from "./views/Avatar.js";
 import { AvatarView1 } from "./views/Avatarlogin.js";
 import { GameView } from "./views/Game.js";
 import { TournamentView } from "./views/Tournament.js";
+import { Tournament4View } from "./views/tournament4.js";
 import { ChatView } from "./views/Chat.js";
 import { HomeView } from "./views/Home.js";
 import { SettingsView } from "./views/Settings.js";
@@ -27,6 +28,10 @@ import { GameFour } from "./views/4players.js";
 import { WebSocketTestView } from "./views/WebSocketTest.js";
 import { wsService } from "./services/WebSocketService.js";
 import { ChooseView1 } from "./views/Choose1.js";
+import { Tournament4StartView } from "./views/tournament4start.js";
+import { GameTournament } from "./views/Tournament4Run.js";
+
+
 
 
 
@@ -111,6 +116,15 @@ function router(): void {
     case "/tournament":
       TournamentView(app, state);
       break;
+    case "/tournament4":
+      Tournament4View(app, state);
+      break;
+      case "/tournament4start":
+    Tournament4StartView(app, state);
+      break;
+      case "/game-tournament":
+    GameTournament(app, state);
+      break;
     case "/chat":
       ChatView(app, state);
       break;
@@ -160,7 +174,7 @@ function updateHeaderFooterVisibility(route: string) {
   const footer = document.querySelector("footer");
   if (!header || !footer) return;
 
-  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player","/1v1","/1v1o","/vsAI", "/4player"];
+  const hiddenRoutes = ["/register","/tournament4","/tournament4start","/game-tournament", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player","/1v1","/1v1o","/vsAI", "/4player"];
   if (hiddenRoutes.includes(route)) {
     header.classList.add("hidden");
     footer.classList.add("hidden");
