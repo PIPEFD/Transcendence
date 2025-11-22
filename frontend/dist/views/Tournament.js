@@ -5,6 +5,7 @@ export function TournamentView(app, state) {
     app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
 
+<<<<<<< HEAD
       <h1 class="text-3xl text-poke-yellow font-bold">${t("tournament")}</h1>
 
       <div class="flex flex-col gap-4">
@@ -22,6 +23,25 @@ export function TournamentView(app, state) {
 
         <button id="btnBack" class="bg-poke-blue text-white py-2 px-6 rounded hover:bg-blue-600">
           ${t("goBack")}
+=======
+      <h1 class="text-3xl text-poke-yellow font-bold">Tournament</h1>
+
+      <div class="flex flex-col gap-4">
+        <button id="btn4" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
+          4 Players
+        </button>
+
+        <button id="btn8" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
+          8 Players
+        </button>
+
+        <button id="btn16" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
+          16 Players
+        </button>
+
+        <button id="btnBack" class="bg-poke-blue text-white py-2 px-6 rounded hover:bg-blue-600">
+          Back
+>>>>>>> frontEnd
         </button>
       </div>
 

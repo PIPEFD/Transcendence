@@ -30,7 +30,7 @@ export function GameView(app: HTMLElement, state?: any): void {
 
   // Button event listeners
   document.getElementById("btn1v1")?.addEventListener("click", () => navigate("/1v1"));
-  document.getElementById("btn1v1o")?.addEventListener("click", () => navigate("/1v1o"));
+  document.getElementById("btn1v1o")?.addEventListener("click", () => navigate("/invite_on"));
   document.getElementById("btnVsAI")?.addEventListener("click", () => navigate("/vsAI"));
   document.getElementById("btn3Player")?.addEventListener("click", () => navigate("/3player"));
   document.getElementById("btn4Player")?.addEventListener("click", () => navigate("/4player"));

@@ -29,6 +29,10 @@ import { wsService } from "./services/WebSocketService.js";
 import { ChooseView1 } from "./views/Choose1.js";
 import { Tournament4StartView } from "./views/tournament4start.js";
 import { GameTournament } from "./views/Tournament4Run.js";
+<<<<<<< HEAD
+=======
+import { InviteView } from "./views/invite_online.js";
+>>>>>>> frontEnd
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
@@ -135,6 +139,9 @@ function router() {
             break;
         case "/ws-test":
             WebSocketTestView(app, state);
+            break;
+        case "/invite_on":
+            InviteView(app);
             break;
         default: // Home
             HomeView(app, state);

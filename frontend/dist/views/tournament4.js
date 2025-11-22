@@ -1,9 +1,13 @@
 import { navigate } from "../main.js";
+<<<<<<< HEAD
 import { t } from "../translations/index.js";
+=======
+>>>>>>> frontEnd
 export function Tournament4View(app, state) {
     app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
 
+<<<<<<< HEAD
       <h1 class="text-2xl text-poke-yellow font-bold"> ${t("Player4Tournament")}</h1>
 
       <div class="bg-poke-light bg-opacity-20 p-6 rounded-lg shadow-lg flex flex-col gap-4 w-full max-w-sm">
@@ -18,18 +22,42 @@ export function Tournament4View(app, state) {
           class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
 
         <input id="p4" placeholder="${t("Player4")}" 
+=======
+      <h1 class="text-2xl text-poke-yellow font-bold">4 Player Tournament</h1>
+
+      <div class="bg-poke-light bg-opacity-20 p-6 rounded-lg shadow-lg flex flex-col gap-4 w-full max-w-sm">
+
+        <input id="p1" placeholder="Player 1" 
+          class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
+
+        <input id="p2" placeholder="Player 2" 
+          class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
+
+        <input id="p3" placeholder="Player 3" 
+          class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
+
+        <input id="p4" placeholder="Player 4" 
+>>>>>>> frontEnd
           class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
 
         <p id="errorMsg" class="text-red-500 text-center text-sm hidden"></p>
 
         <button id="startBtn"
           class="bg-poke-red text-white py-2 rounded hover:bg-red-600">
+<<<<<<< HEAD
           ${t("StartTournament")}
+=======
+          Start Tournament
+>>>>>>> frontEnd
         </button>
 
         <button id="backBtn"
           class="bg-poke-blue text-white py-2 rounded hover:bg-blue-600">
+<<<<<<< HEAD
           ${t("goBack")}
+=======
+          Back
+>>>>>>> frontEnd
         </button>
 
       </div>

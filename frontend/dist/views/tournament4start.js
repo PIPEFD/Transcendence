@@ -1,5 +1,8 @@
 import { navigate } from "../main.js";
+<<<<<<< HEAD
 import { t } from "../translations/index.js";
+=======
+>>>>>>> frontEnd
 export function Tournament4StartView(app, state) {
     if (!state.tournamentPlayers || state.tournamentPlayers.length !== 4) {
         navigate("/tournament");
@@ -77,7 +80,11 @@ export function Tournament4StartView(app, state) {
 
           ${M.final.winner
         ? `<p class="text-green-300 text-2xl font-bold drop-shadow-md">
+<<<<<<< HEAD
                    🏆Champion: ${M.final.winner}🏆
+=======
+                   🏆 Champion: ${M.final.winner} 🏆
+>>>>>>> frontEnd
                  </p>`
         : `
                 <p class="text-lg">
@@ -100,7 +107,11 @@ export function Tournament4StartView(app, state) {
 
         <button id="backBtn"
                 class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded-md mt-4">
+<<<<<<< HEAD
           ${t("goBack")}
+=======
+          Back
+>>>>>>> frontEnd
         </button>
 
       </div>

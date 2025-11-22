@@ -2,6 +2,7 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 
 export function TournamentView(app: HTMLElement, state?: any): void {
+export function TournamentView(app: HTMLElement, state?: any): void {
   app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
 
@@ -25,6 +26,8 @@ export function TournamentView(app: HTMLElement, state?: any): void {
         </button>
       </div>
 
+      </div>
+
     </div>
   `;
 
@@ -34,4 +37,11 @@ export function TournamentView(app: HTMLElement, state?: any): void {
   document.getElementById("btn16")?.addEventListener("click", () => navigate("/tournament16"));
 
   document.getElementById("btnBack")?.addEventListener("click", () => navigate("/"));
+  // botones
+  document.getElementById("btn4")?.addEventListener("click", () => navigate("/tournament4"));
+  document.getElementById("btn8")?.addEventListener("click", () => navigate("/tournament8"));
+  document.getElementById("btn16")?.addEventListener("click", () => navigate("/tournament16"));
+
+  document.getElementById("btnBack")?.addEventListener("click", () => navigate("/"));
 }
+

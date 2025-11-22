@@ -48,6 +48,38 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
 
     const content = document.getElementById("friendsContent") as HTMLElement;
 
+    const getRelatedUserIds = async (token: string, currentUserId: number): Promise<number[]> => {
+        let relatedIds: Set<number> = new Set();
+        
+        try {
+            // 1. Obtener Amigos Actuales
+            const friendsResponse = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${currentUserId}`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const friendsData = await friendsResponse.json();
+            const friends = Array.isArray(friendsData.success) ? friendsData.success : [];
+            friends.forEach((f: any) => relatedIds.add(f.id || f.user_id));
+
+            // 2. Obtener Solicitudes Recibidas (Sender IDs)
+            const requestsRecievedResponse = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}?id=${currentUserId}`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const requestsRecievedData = await requestsRecievedResponse.json();
+            const receivedRequests = Array.isArray(requestsRecievedData.success) ? requestsRecievedData.success : [];
+            receivedRequests.forEach((r: any) => relatedIds.add(r.sender_id));
+            
+        } catch (error) {
+            console.error("Error fetching related IDs:", error);
+        }
+        
+        // Añadir el propio ID del usuario
+        if (currentUserId) relatedIds.add(currentUserId);
+        
+        return Array.from(relatedIds) as number[];
+    };
+
     // --- LÓGICA ASÍNCRONA PARA CARGAR LA LISTA DE AMIGOS ---
     const fetchFriendList = async (): Promise<string> => {
         const token = localStorage.getItem('tokenUser');
@@ -228,10 +260,12 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
         }
 
+        console.log("error");
         // Obtener información de cada sender
         // Obtener información de cada sender
         const usersInfo = await Promise.all(
             requests.map(async r => {
+                console.log("sec");
                 const senderId = r.sender_id;
                 let username = `User#${senderId}`; // Valor por defecto
                 
@@ -241,34 +275,39 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                     const avatarSrc = avatarUrl || '/assets/avatar_39.png'; // Usar avatar por defecto si falla
                     
                     // 2. Opcional: Si necesitas el username, mantienes la llamada a USER_INFO
+                    console.log("sender id", senderId);
                     const res = await apiFetch(`${API_ENDPOINTS.USER_INFO}?id=${senderId}`, {
                         method: 'GET',
                         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
                     });
-                    
+                    console.log("ooooo", res);
                     if (res.ok) {
                         const userData = await res.json();
+                        console.log("ttttt ", userData);
                         // Asegura que la clave 'username' se obtiene correctamente de la respuesta
                         username = userData.success?.username || username;
                     }
-                    
+                    console.log("username ", username);
                     return {
                         username: username, // Se devuelve el nombre de usuario (o el valor por defecto)
+                        
                         avatar_url: avatarSrc // Usamos la URL generada por fetchAvatarUrl
                     };
                     
                 } catch (error) {
                     console.error(`Error fetching info for sender ${senderId}:`, error);
+                    console.log("username ", username);
                     return { username: username, avatar_url: '/assets/avatar_39.png' };
                 }
             })
         );
         
-        // 🟢 Generación del HTML usando usersInfo para obtener el nombre y el avatar
+        // Generación del HTML usando usersInfo para obtener el nombre y el avatar
         return `
             <h2 class="text-lg mb-3">${t("request_list")}</h2>
             <ul class="space-y-2">
-                ${requests.map((r, i) => `
+                ${requests.map((r, i) => 
+                    `
                     <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                         <div class="flex items-center gap-3">
                             <img src="${usersInfo[i].avatar_url}" class="w-10 h-10 rounded-full" />
@@ -295,74 +334,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
         return `<p class="text-red-500">${t("error_network")}</p>`;
     }
 };
- 
-
-    /* const requestsList = async (): Promise<string> => {
-        const token = localStorage.getItem('tokenUser');
-        if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
-
-        try {
-            const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const data: { success: { sender_id: number; created_at: string }[] } = await response.json();
-
-            if (!response.ok || !Array.isArray(data.success)) {
-                return `<p class="text-red-500">Error al cargar solicitudes.</p>`;
-            }
-
-            const requests = data.success;
-            if (requests.length === 0) {
-                return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
-            }
-
-            const usernames = await Promise.all(
-                requests.map(async (r) => {
-                    try {
-                        const res = await fetch(`http://localhost:8085/api/users.php?id=${r.sender_id}`);
-                        if (!res.ok) throw new Error("Error al obtener username");
-                        const userData = await res.json();
-                        return userData.username || `Usuario #${r.sender_id}`;
-                    } catch {
-                        return `Usuario #${r.sender_id}`;
-                    }
-                })
-            );
-
-            return `
-                <h2 class="text-lg mb-3">${t("request_list")}</h2>
-                <ul class="space-y-2">
-                    ${requests.map((r, i) => `
-                        <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
-                            <div class="flex items-center gap-3">
-                                <img src="/assets/avatar${(r.sender_id % 9) + 1}.png" class="w-10 h-10 rounded-full" />
-                                <div class="text-left">
-                                    <div class="text-sm font-medium">${usernames[i]}</div>
-                                    <div class="text-sm text-poke-dark">${r.created_at}</div>
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button class="accept-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded" data-sender-id="${r.sender_id}">
-                                    ${t("accept")}
-                                </button>
-                                <button class="decline-btn px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded" data-sender-id="${r.sender_id}">
-                                    ${t("decline")}
-                                </button>
-                            </div>
-                        </li>
-                    `).join('')}
-                </ul>
-            `;
-        } catch (err) {
-            console.error(err);
-            return `<p class="text-red-500">${t("error_network")}</p>`;
-        }
-    }; */
 
 
     const setupRequestListeners = (container: HTMLElement) => {
@@ -434,75 +405,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             });
         });
     };
-        
-    
-    
-    
-
-    /* const fetchFriendRequests = async () => {
-        const token = localStorage.getItem('tokenUser');
-        if (!token) {
-          return `<p class="text-red-500">${t("error_no_login") || "Error: No se ha iniciado sesión."}</p>`;
-        }
-      
-        try {
-          const response = await fetch(`http://localhost:8085/api/friend_request.php?id=${userIdPlaceholder}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          });
-      
-          const data = await response.json();
-          console.log("Friend Requests:", data);
-      
-          if (response.ok && Array.isArray(data.content)) {
-            const requests = data.content;
-      
-            if (requests.length === 0) {
-              return `
-                <h2 class="text-lg mb-3">${t("requests")}</h2>
-                <p class="mt-4 text-center text-poke-dark">
-                  ${t("no_friend_requests") || "No tienes solicitudes pendientes."}
-                </p>
-              `;
-            }
-      
-            // Renderiza las solicitudes
-            return `
-              <h2 class="text-lg mb-3">${t("requests")}</h2>
-              <ul class="space-y-3">
-                ${requests.map((req: any, i: number) => `
-                  <li class="p-3 rounded border border-poke-dark bg-white bg-opacity-80 flex justify-between items-center">
-                    <div>
-                      <div class="font-medium">${req.sender_name || "Usuario #" + req.sender_id}</div>
-                      <div class="text-xs text-poke-dark">${t("wants_to_be_your_friend") || "Quiere ser tu amigo"}</div>
-                    </div>
-                    <div class="flex gap-2">
-                      <button 
-                        class="accept-btn px-3 py-1 bg-poke-blue text-poke-light rounded" 
-                        data-sender-id="${req.sender_id}">
-                        ${t("accept")}
-                      </button>
-                      <button 
-                        class="decline-btn px-3 py-1 bg-poke-red text-poke-light rounded" 
-                        data-sender-id="${req.sender_id}">
-                        ${t("decline")}
-                      </button>
-                    </div>
-                  </li>
-                `).join('')}
-              </ul>
-            `;
-          } else {
-            return `<p class="text-red-500">${data.message || "Error al cargar las solicitudes."}</p>`;
-          }
-        } catch (error) {
-          console.error("Error fetching friend requests:", error);
-          return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;
-        }
-      }; */
 
     const sections = {
         // CONTENIDO DE LISTA: Se reemplaza por un estado de carga
@@ -585,53 +487,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
         return;
     }    
 
-      // Lógica para las otras pestañas ('add', 'requests')
-      /* setTimeout(() => {
-          inner.innerHTML = sections[tab];
-          inner.style.opacity = '1';
-  
-          if (tab === "add") {
-              const sendReqBtn = document.getElementById("sendReqBtn");
-              const r_id_Input = document.getElementById("friendName") as HTMLInputElement;
-              if (sendReqBtn) {
-                  sendReqBtn.addEventListener("click", async () => {
-                      const nameInput = document.getElementById("friendName") as HTMLInputElement | null;
-                      if (!nameInput || !nameInput.value.trim()) return;
-                      //alert("Request sent to " + nameInput.value.trim());
-                      //aqui meto el fetch
-                      const token = localStorage.getItem('tokenUser');
-                      const receiver_str = r_id_Input.value.trim();
-                      const receiver_id = receiver_str ? parseInt(receiver_str, 10) : null;
-                      console.log({
-                        token,
-                        userIdPlaceholder,
-                        receiver_id
-                      });
-                      try {
-                        const response = await fetch("http://localhost:8085/api/friend_request.php", {
-                            method: 'POST', // Tu backend usa POST para DELETE
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ sender_id: userIdPlaceholder, receiver_id : receiver_id })
-                        });
-                        if (!response.ok) {
-                            alert("Error en el fetch de request");
-                            return;
-                          }
-
-                        alert("Request realizada");
-                      }
-                      catch (err) {
-                        console.error(err);
-                        alert("Error de conexión con el servidor");
-                      }
-                      //nameInput.value = "";
-                  });
-              }
-          }
-      }, 120); */
       setTimeout(() => {
           inner.innerHTML = sections[tab];
           inner.style.opacity = '1';
@@ -643,23 +498,19 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                   sendReqBtn.addEventListener("click", async () => {
                       const nameInput = document.getElementById("friendName") as HTMLInputElement | null;
                       if (!nameInput || !nameInput.value.trim()) return;
-                      //alert("Request sent to " + nameInput.value.trim());
-                      //aqui meto el fetch
+                      
                       const token = localStorage.getItem('tokenUser');
                       const username = r_id_Input.value.trim();
                       
                      try {
-                        // 1. Buscar el user_id por username
+                        // Buscar el user_id por username
                         const getUserResponse = await apiFetch(`${API_ENDPOINTS.GET_USER_ID}?user=${username}`, {
                             method: 'GET',
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
-                                'Content-Type': 'application/json'
-                            }
+                            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
                         });
 
                         if (!getUserResponse.ok) {
-                            alert(`Usuario ${username} no encontrado`);
+                            alert(`Usuario "${username}" no encontrado.`);
                             return;
                         }
 
@@ -667,11 +518,22 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                         const receiverId = userData.success?.user_id;
 
                         if (!receiverId) {
-                            alert('Error: No se pudo obtener el ID del usuario');
+                            alert('Error: No se pudo obtener el ID del usuario.');
                             return;
                         }
-
-                        // 2. Enviar friend request
+                        const relatedIds = await getRelatedUserIds(token!, userIdPlaceholder!);
+                        
+                        if (relatedIds.includes(receiverId)) {
+                            if (receiverId === userIdPlaceholder) {
+                                alert('No puedes enviarte una solicitud a ti mismo.');
+                            } else {
+                                alert('Ya tienes una relación de amistad o una solicitud pendiente con este usuario.');
+                            }
+                            nameInput.value = "";
+                            return;
+                        }
+                        
+                        // Enviar friend request
                         const sendRequestResponse = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}`, {
                             method: 'POST',
                             headers: {
@@ -685,7 +547,9 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                         });
 
                         if (!sendRequestResponse.ok) {
-                            alert("Error al enviar solicitud de amistad");
+                            // Tu backend puede devolver errores específicos como "Ya existe una solicitud"
+                            const errorData = await sendRequestResponse.json();
+                            alert(errorData.message || "Error al enviar solicitud de amistad");
                             return;
                         }
 

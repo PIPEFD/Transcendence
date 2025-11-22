@@ -1,5 +1,8 @@
 import { navigate } from "../main.js";
+<<<<<<< HEAD
 import { t } from "../translations/index.js";
+=======
+>>>>>>> frontEnd
 export function GameOneo(app, state) {
     app.innerHTML = `
 	<div class="flex flex-col items-center w-full">
@@ -12,13 +15,21 @@ export function GameOneo(app, state) {
 		class="bg-black border-2 border-dashed border-poke-dark rounded-lg w-full max-w-[90vw] h-[28rem] flex flex-col items-center justify-center mb-6">
 		<canvas id="pongCanvas" width="720" height="400" class="bg-black"></canvas>
 		<div class="mt-3 flex gap-2">
+<<<<<<< HEAD
 		  <button id="restartBtn" class="bg-poke-red text-white py-1 px-3 rounded hover:bg-red-600 hidden">${t("Restart")}</button>
+=======
+		  <button id="restartBtn" class="bg-poke-red text-white py-1 px-3 rounded hover:bg-red-600 hidden">Restart</button>
+>>>>>>> frontEnd
 		</div>
 	  </div>
 
 	  <div class="text-center">
 		<button id="goBackBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 px-6 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 hover:border-b-red-800 active:animate-press active:border-b-red-800">
+<<<<<<< HEAD
 			${t("goBack")}
+=======
+			Go Back
+>>>>>>> frontEnd
 		</button>
 	  </div>
 	</div>
