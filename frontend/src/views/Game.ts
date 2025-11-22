@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 
 export function GameView(app: HTMLElement, state?: any): void {
+export function GameView(app: HTMLElement, state?: any): void {
   app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
       <h1 class="text-3xl text-poke-yellow font-bold">POKéMON PONG</h1>

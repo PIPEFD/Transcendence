@@ -47,12 +47,23 @@ function getUserAvatar(SQLite3 $db, int $id): void {
     if (!is_numeric($id))
         errorSend(400, 'bad petition');
     $sqlQuery = "SELECT avatar_url FROM users WHERE user_id = :id";
-    $res = doQuery($db, $sqlQuery, [':id', $id, SQLITE3_INTEGER]);
-    if (!$res)
+    $resultObject = doQuery($db, $sqlQuery, [':id', $id, SQLITE3_INTEGER]);
+    
+    if (!$resultObject) {
         errorSend(500, "Sqlite error: " . $db->lastErrorMsg());
-    if (!$res['avatar_url'])
+    }
+
+    // 1. EXTRAER EL ARRAY ASOCIATIVO de la fila del resultado
+    $row = $resultObject->fetchArray(SQLITE3_ASSOC); // $row es ahora un array o false/null
+
+    // 2. Comprobar si la fila existe Y si contiene la URL
+    if (!$row || empty($row['avatar_url'])) {
         errorSend(404, "avatar not found in db");
-    $avatarPath = __DIR__ . $result['avatar_url'];
+    }
+    
+    // 3. Usar el array $row (¡NO el objeto $res o $resultObject!)
+    $avatarPath = __DIR__ . $row['avatar_url']; // Usar $row en lugar de la variable antigua incorrecta
+    
     if (!file_exists($avatarPath))
         errorSend(404, "file not found");
 

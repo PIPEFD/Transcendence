@@ -11,7 +11,58 @@ import { navigate } from "../main.js";
 import { updateHeader } from "./Header.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+<<<<<<< HEAD
+=======
+/**
+ * Función reutilizable para manejar la lógica de subida de archivos de avatar al backend.
+ * @param file El objeto File (o Blob convertido a File) a subir.
+ * @param state El estado actual de la aplicación.
+ * @param previewElement Elemento opcional de vista previa a ocultar en caso de éxito.
+ * @param saveBtnElement Botón opcional de guardar a ocultar en caso de éxito.
+ */
+function uploadAvatarFile(file, state, previewElement, saveBtnElement) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const formData = new FormData();
+        // El nombre 'avatar' debe coincidir con lo que espera tu backend para el archivo
+        formData.append("avatar", file, file.name);
+        const userId = localStorage.getItem('userId');
+        const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+        formData.append("user_id", String(userIdPlaceholder));
+        const token = localStorage.getItem('tokenUser');
+        console.log("Iniciando subida: userId:", String(userIdPlaceholder), "token:", token);
+        try {
+            const response = yield apiFetch(API_ENDPOINTS.UPLOAD, {
+                method: 'POST',
+                // No incluimos 'Content-Type', el navegador lo añade automáticamente con FormData
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+            const text = yield response.text();
+            console.log("Server response:", text);
+            if (!response.ok) {
+                alert("Error al subir avatar. Revisa la consola para la respuesta del servidor.");
+                return;
+            }
+            // Éxito
+            updateHeader(state);
+            alert("Avatar subido correctamente!");
+            // Ocultar elementos si están presentes (principalmente para la subida de usuario)
+            previewElement === null || previewElement === void 0 ? void 0 : previewElement.classList.add("hidden");
+            saveBtnElement === null || saveBtnElement === void 0 ? void 0 : saveBtnElement.classList.add("hidden");
+            navigate("/settings");
+        }
+        catch (error) {
+            console.error("Error al subir avatar:", error);
+            alert(`${t("error_network") || "Error de red."}`);
+        }
+    });
+}
+// --- Inicio de la Vista ---
+>>>>>>> frontEnd
 export function AvatarView(app, state) {
+    // ... (Tu plantilla HTML sigue siendo la misma) ...
     app.innerHTML = `
     <div class="text-center mb-4">
         <h1 class="text-poke-yellow text-2xl">POKéMON</h1>
@@ -31,7 +82,6 @@ export function AvatarView(app, state) {
             `).join("")}
         </div>
 
-        <!-- Upload Avatar Section -->
         <div class="flex flex-col items-center">
           <input type="file" id="uploadAvatarInput" accept="image/*" class="hidden" />
           <button id="uploadAvatarBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 px-4 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press mb-4">
@@ -44,24 +94,39 @@ export function AvatarView(app, state) {
         </div>
     </div>
   `;
-    // Select pre-defined avatars
+    // --- 1. Lógica para avatares predefinidos (MODIFICADA) ---
     document.querySelectorAll("[data-avatar]").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const value = btn.getAttribute("data-avatar");
-            if (!value)
+        btn.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            const avatarId = btn.getAttribute("data-avatar");
+            if (!avatarId)
                 return;
-            state.player.avatar = Number(value);
-            updateHeader(state);
-            navigate("/settings");
-        });
+            const avatarPath = `/assets/avatar${avatarId}.png`;
+            try {
+                // 1. Obtener la imagen como un Blob/ArrayBuffer
+                const response = yield fetch(avatarPath);
+                if (!response.ok) {
+                    throw new Error(`Error al cargar el asset: ${response.statusText}`);
+                }
+                const blob = yield response.blob();
+                // 2. Crear un objeto File a partir del Blob
+                // Usamos un nombre de archivo único o descriptivo
+                const file = new File([blob], `avatar_predefinido_${avatarId}.png`, { type: blob.type });
+                // 3. Usar la función de subida común
+                yield uploadAvatarFile(file, state);
+            }
+            catch (error) {
+                console.error("Error al seleccionar y subir avatar predefinido:", error);
+                alert(`No se pudo cargar o subir la imagen predefinida`);
+            }
+        }));
     });
-    // Upload custom avatar
+    // --- 2. Lógica de Subida de Avatar Local (AJUSTADA) ---
     const uploadBtn = document.getElementById("uploadAvatarBtn");
     const uploadInput = document.getElementById("uploadAvatarInput");
     const preview = document.getElementById("previewAvatar");
     const saveBtn = document.getElementById("saveUploadBtn");
     uploadBtn === null || uploadBtn === void 0 ? void 0 : uploadBtn.addEventListener("click", () => {
-        uploadInput.click(); // trigger file picker
+        uploadInput.click();
     });
     uploadInput === null || uploadInput === void 0 ? void 0 : uploadInput.addEventListener("change", () => {
         if (!uploadInput.files || uploadInput.files.length === 0)
@@ -80,6 +145,7 @@ export function AvatarView(app, state) {
         if (!uploadInput.files || uploadInput.files.length === 0)
             return;
         const file = uploadInput.files[0];
+<<<<<<< HEAD
         const formData = new FormData();
         formData.append("avatar", file);
         const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
@@ -138,5 +204,9 @@ export function AvatarView(app, state) {
             console.error("Error fetching friend list:", error);
             return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;
         }
+=======
+        // Usar la función de subida común, pasando los elementos a ocultar
+        yield uploadAvatarFile(file, state, preview, saveBtn);
+>>>>>>> frontEnd
     }));
 }

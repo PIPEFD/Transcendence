@@ -9,12 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { navigate } from "../main.js";
 import { API_ENDPOINTS } from "../config/api.js";
+<<<<<<< HEAD
 // Función async para obtener la URL del avatar
 function fetchAvatarUrl(userId, token) {
+=======
+// --- fetchAvatarUrl (Corrección: Solo devuelve la URL temporal del Blob) ---
+export function fetchAvatarUrl(userId, token) {
+>>>>>>> frontEnd
     return __awaiter(this, void 0, void 0, function* () {
         if (!userId || !token)
             return null;
         try {
+<<<<<<< HEAD
             const response = yield fetch(API_ENDPOINTS.AVATAR_PHOTO, {
                 method: 'POST',
                 headers: {
@@ -41,6 +47,32 @@ function fetchAvatarUrl(userId, token) {
                 }
             }
             return avatarUrl;
+=======
+            const response = yield fetch(`${API_ENDPOINTS.USERS}?id=${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    // No necesitamos Content-Type: application/json si esperamos una imagen
+                },
+            });
+            if (!response.ok) {
+                console.error("Error fetching avatar:", response.status);
+                // El servidor envió un error (probablemente JSON)
+                return null;
+            }
+            // 1. Lee el cuerpo como datos binarios (lo que el PHP debería enviar)
+            const imageBlob = yield response.blob();
+            // 2. Si el Blob es un JSON, significa que el servidor falló.
+            if (imageBlob.type.includes('application/json')) {
+                // Si el Blob es JSON, léelo como texto para ver el error real
+                const jsonText = yield imageBlob.text();
+                console.error("El servidor envió un error JSON en lugar de la imagen:", jsonText);
+                return null;
+            }
+            // 3. Crea la URL temporal para usarla en el src del <img>
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            return imageObjectURL; // Devolvemos la URL temporal
+>>>>>>> frontEnd
         }
         catch (error) {
             console.error("Error fetching avatar:", error);
@@ -48,7 +80,11 @@ function fetchAvatarUrl(userId, token) {
         }
     });
 }
+<<<<<<< HEAD
 // Función normal que actualiza el header
+=======
+// --- updateHeader (Corrección: Usa la Blob URL en el HTML recién creado) ---
+>>>>>>> frontEnd
 export function updateHeader(state) {
     const header = document.querySelector("header");
     if (!header)
@@ -56,6 +92,7 @@ export function updateHeader(state) {
     const token = localStorage.getItem("tokenUser");
     const userId = localStorage.getItem('userId');
     const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+<<<<<<< HEAD
     console.log("id entrar hh: ", userId);
     console.log("token: ", token);
     // Llamamos a la función async sin usar await
@@ -76,6 +113,29 @@ export function updateHeader(state) {
                alt="settings"
                class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
         </div>
+=======
+    // Llamamos a la función async
+    fetchAvatarUrl(userIdPlaceholder, token).then((avatarUrl) => {
+        // 1. Usa la URL del Blob o un avatar por defecto
+        // Si avatarUrl es null (error o JSON), usa el avatar por defecto
+        let avatarSrc = avatarUrl || "/assets/avatar_39.png";
+        // 2. Reemplaza el header y asigna la URL temporal a avBtn
+        header.innerHTML = `
+      <div class="relative flex items-center justify-center">
+        <p class="text-lg font-bold">PONG</p>
+        ${avatarSrc
+            ? `<div class="absolute right-4 flex items-center space-x-2">
+                  <img src="${avatarSrc}"
+                       id="avBtn"
+                       alt="avatar"
+                       class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
+                  <img src="/assets/settings.png"
+                       id="settingsBtn"
+                       alt="settings"
+                       class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
+               </div>`
+            : ""}
+>>>>>>> frontEnd
       </div>
     `;
         const settingsBtn = document.getElementById("settingsBtn");

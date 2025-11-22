@@ -3,7 +3,67 @@ import { updateHeader } from "./Header.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
+/**
+ * Función reutilizable para manejar la lógica de subida de archivos de avatar al backend.
+ * @param file El objeto File (o Blob convertido a File) a subir.
+ * @param state El estado actual de la aplicación.
+ * @param previewElement Elemento opcional de vista previa a ocultar en caso de éxito.
+ * @param saveBtnElement Botón opcional de guardar a ocultar en caso de éxito.
+ */
+async function uploadAvatarFile(
+  file: File, 
+  state: any, 
+  previewElement?: HTMLElement, 
+  saveBtnElement?: HTMLElement
+) {
+  const formData = new FormData();
+  // El nombre 'avatar' debe coincidir con lo que espera tu backend para el archivo
+  formData.append("avatar", file, file.name); 
+
+  const userId = localStorage.getItem('userId');
+  const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+  formData.append("user_id", String(userIdPlaceholder)); 
+  
+  const token = localStorage.getItem('tokenUser');
+  console.log("Iniciando subida: userId:", String(userIdPlaceholder), "token:", token);
+  
+  try {
+    const response = await apiFetch(API_ENDPOINTS.UPLOAD, {
+      method: 'POST',
+      // No incluimos 'Content-Type', el navegador lo añade automáticamente con FormData
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    const text = await response.text();
+    console.log("Server response:", text);
+
+    if (!response.ok) {
+      alert("Error al subir avatar. Revisa la consola para la respuesta del servidor.");
+      return;
+    }
+
+    // Éxito
+    updateHeader(state);
+    alert("Avatar subido correctamente!");
+    
+    // Ocultar elementos si están presentes (principalmente para la subida de usuario)
+    previewElement?.classList.add("hidden"); 
+    saveBtnElement?.classList.add("hidden");
+
+    navigate("/settings"); 
+    
+  } catch (error) {
+    console.error("Error al subir avatar:", error);
+    alert(`${t("error_network") || "Error de red."}`);
+  }
+}
+
+// --- Inicio de la Vista ---
 export function AvatarView(app: HTMLElement, state: any): void {
+  // ... (Tu plantilla HTML sigue siendo la misma) ...
   app.innerHTML = `
     <div class="text-center mb-4">
         <h1 class="text-poke-yellow text-2xl">POKéMON</h1>
@@ -23,7 +83,6 @@ export function AvatarView(app: HTMLElement, state: any): void {
             `).join("")}
         </div>
 
-        <!-- Upload Avatar Section -->
         <div class="flex flex-col items-center">
           <input type="file" id="uploadAvatarInput" accept="image/*" class="hidden" />
           <button id="uploadAvatarBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 px-4 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press mb-4">
@@ -37,25 +96,45 @@ export function AvatarView(app: HTMLElement, state: any): void {
     </div>
   `;
 
-  // Select pre-defined avatars
+  // --- 1. Lógica para avatares predefinidos (MODIFICADA) ---
   document.querySelectorAll("[data-avatar]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const value = btn.getAttribute("data-avatar");
-      if (!value) return;
-      state.player.avatar = Number(value);
-      updateHeader(state);
-      navigate("/settings");
+    btn.addEventListener("click", async () => {
+      const avatarId = btn.getAttribute("data-avatar");
+      if (!avatarId) return;
+
+      const avatarPath = `/assets/avatar${avatarId}.png`;
+
+      try {
+        // 1. Obtener la imagen como un Blob/ArrayBuffer
+        const response = await fetch(avatarPath);
+        if (!response.ok) {
+          throw new Error(`Error al cargar el asset: ${response.statusText}`);
+        }
+        
+        const blob = await response.blob();
+        
+        // 2. Crear un objeto File a partir del Blob
+        // Usamos un nombre de archivo único o descriptivo
+        const file = new File([blob], `avatar_predefinido_${avatarId}.png`, { type: blob.type });
+
+        // 3. Usar la función de subida común
+        await uploadAvatarFile(file, state);
+
+      } catch (error) {
+        console.error("Error al seleccionar y subir avatar predefinido:", error);
+        alert(`No se pudo cargar o subir la imagen predefinida`);
+      }
     });
   });
-
-  // Upload custom avatar
+  
+  // --- 2. Lógica de Subida de Avatar Local (AJUSTADA) ---
   const uploadBtn = document.getElementById("uploadAvatarBtn");
   const uploadInput = document.getElementById("uploadAvatarInput") as HTMLInputElement;
   const preview = document.getElementById("previewAvatar") as HTMLImageElement;
   const saveBtn = document.getElementById("saveUploadBtn");
 
   uploadBtn?.addEventListener("click", () => {
-    uploadInput.click(); // trigger file picker
+    uploadInput.click();
   });
 
   uploadInput?.addEventListener("change", () => {
@@ -73,75 +152,8 @@ export function AvatarView(app: HTMLElement, state: any): void {
   saveBtn?.addEventListener("click", async () => {
     if (!uploadInput.files || uploadInput.files.length === 0) return;
     const file = uploadInput.files[0];
-  
-  const formData = new FormData();
-	formData.append("avatar", file);
-	const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
-  console.log("id entrar upload: ", userId);
-  const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
-	formData.append("user_id", String(userIdPlaceholder)); // asegúrate de tener el user ID
-  const token = localStorage.getItem('tokenUser');
-  console.log("userId:", String(userIdPlaceholder), "token:", token);
-
-    // try {
-    //   const res = await fetch("http://localhost:8085/api/upload.php", {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-  
-    //   const data = await res.json();
-  
-    //   if (!res.ok) {
-    //     alert("Error al subir el avatar: " + data.error);
-    //     return;
-    //   }
-  
-    //   // Guardar la ruta recibida desde el backend en el estado
-    //   state.player.avatar = data.path; 
-    //   updateHeader(state);
-  
-    //   alert("Avatar subido correctamente!");
-    //   navigate("/settings"); 
-  
-    // } catch (err) {
-    //   console.error("Error al subir avatar:", err);
-    //   alert("Error de conexión con el servidor");
-    // }
-	try {
-		const response = await apiFetch(API_ENDPOINTS.UPLOAD, {
-			method: 'POST', // Tu backend usa POST para DELETE
-			headers: {
-				'Authorization': `Bearer ${token}`
-			},
-         body: formData
-		});
-    // const responseText = await response.text();
-    // console.log("Server response:", responseText);
-
-		// const data = await response.json();
-		// console.log("Friends data:", data);
-
-  const text = await response.text();
-  console.log("Server response:", text);
-
-  // Mostrar mensaje genérico si no quieres parsear JSON
-  if (!response.ok) {
-    alert("Error uploading avatar. Check console for server output.");
-    return;
-  }
-
-  // Aquí no podemos parsear JSON porque PHP falla
-  // Podrías usar un mensaje genérico
-  alert("Avatar upload request sent (check server logs for details).");
-  preview.classList.add("hidden"); // ocultar preview si quieres
-  saveBtn?.classList.add("hidden");
-    alert("Avatar subido correctamente!");
-    navigate("/settings"); 
     
-	} catch (error) {
-            console.error("Error fetching friend list:", error);
-            return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;
-        }
+    // Usar la función de subida común, pasando los elementos a ocultar
+    await uploadAvatarFile(file, state, preview, saveBtn);
   });
-  
 }

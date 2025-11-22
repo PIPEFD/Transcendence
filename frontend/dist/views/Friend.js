@@ -11,6 +11,10 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { ChatView } from "./Chat.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+<<<<<<< HEAD
+=======
+import { fetchAvatarUrl } from "./Header.js";
+>>>>>>> frontEnd
 // !!! IMPORTANTE: REEMPLAZA ESTE VALOR !!!
 // Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
 export function FriendsView(app, state) {
@@ -80,25 +84,41 @@ export function FriendsView(app, state) {
                     <p class="mt-4 text-center text-poke-dark">${t("no_friends_yet") || "Aún no tienes amigos. ¡Añade algunos!"}</p>
                 `;
                 }
+<<<<<<< HEAD
+=======
+                const friendsWithAvatars = yield Promise.all(friends.map((friend) => __awaiter(this, void 0, void 0, function* () {
+                    const friendId = friend.id || friend.user_id;
+                    const avatarUrl = yield fetchAvatarUrl(friendId, token);
+                    const avatarSrc = avatarUrl || "/assets/avatar_39.png";
+                    return Object.assign(Object.assign({}, friend), { avatar_src: avatarSrc });
+                })));
+>>>>>>> frontEnd
                 // Genera el HTML con los datos de amigos reales
                 return `
                 <h2 class="text-lg mb-3">${t("friends_list")}</h2>
                 <ul class="space-y-2">
-                    ${friends.map((friend, i) => `
+                    ${friendsWithAvatars.map((friend) => {
+                    const idAmigo = friend.id || friend.user_id;
+                    return `
                         <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                             <div class="flex items-center gap-3">
-                                <img src="/assets/avatar${(i % 9) + 1}.png" class="w-10 h-10 rounded-full" />
+                                <img src="${friend.avatar_src}" class="w-10 h-10 rounded-full" />
                                 <div class="text-left">
                                     <div class="text-sm font-medium">${friend.username}</div>
                                     <div class="text-xs text-poke-dark">Online</div>
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button id="msg-${friend.id}" class="msg-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press">${t("message")}</button>
-                                <button data-friend-id="${friend.id}" class="remove-friend-btn px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded border-2 border-poke-red active:animate-press">${t("remove")}</button>
+                                <button id="msg-${idAmigo}" class="msg-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press">${t("message")}</button>
+                                <button 
+                                    data-friend-id="${idAmigo}" 
+                                    class="remove-friend-btn px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded border-2 border-poke-red active:animate-press">
+                                    ${t("remove")}
+                                </button>
                             </div>
                         </li>
-                    `).join('')}
+                    `;
+                }).join('')}
                 </ul>
             `;
             }
@@ -109,20 +129,30 @@ export function FriendsView(app, state) {
         });
         // --- FUNCIÓN PARA ASIGNAR LISTENERS DESPUÉS DE LA CARGA ---
         const setupListListeners = (container) => {
+<<<<<<< HEAD
             // Configura el evento para ir al chat
+=======
+>>>>>>> frontEnd
             container.querySelectorAll('.msg-btn').forEach(btn => {
                 btn.addEventListener("click", (e) => {
                     const chatContainer = document.getElementById("chatSection");
                     if (!chatContainer)
                         return;
+<<<<<<< HEAD
                     chatContainer.classList.remove("hidden"); // Muestra el chat
                     chatContainer.innerHTML = ""; // Limpia por si acaso
                     ChatView(chatContainer, state); // Renderiza el chat en ese contenedor
+=======
+                    chatContainer.classList.remove("hidden");
+                    chatContainer.innerHTML = "";
+                    ChatView(chatContainer, state);
+>>>>>>> frontEnd
                 });
             });
             // Configura el evento para eliminar amigo
             container.querySelectorAll('.remove-friend-btn').forEach(btn => {
                 btn.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
                     var _a;
                     const friendId = e.currentTarget.dataset.friendId;
                     if (!friendId)
@@ -163,6 +193,34 @@ export function FriendsView(app, state) {
                             }
                             else {
                                 alert(data.message || `Error al hacer remove`);
+=======
+                    const targetButton = e.currentTarget;
+                    const friendId = targetButton.dataset.friendId;
+                    console.log("friendId LEÍDO del botón:", friendId);
+                    if (!friendId || friendId.trim() === "") {
+                        console.error("ERROR: friendId es nulo o vacío. Deteniendo remoción.");
+                        alert("No se pudo obtener el ID del amigo a eliminar.");
+                        return;
+                    }
+                    if (confirm(t("confirm_remove_friend") || `¿Estás seguro de que quieres eliminar al amigo con ID ${friendId}?`)) {
+                        const token = localStorage.getItem('tokenUser');
+                        try {
+                            const response = yield apiFetch(`${API_ENDPOINTS.FRIENDS}`, {
+                                method: 'POST',
+                                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ user_id: userIdPlaceholder, friend_id: friendId })
+                            });
+                            const data = yield response.json();
+                            if (response.ok) {
+                                alert(data.message || `Amigo eliminado correctamente.`);
+                                // Refrescar lista de amigos
+                                const listHtml = yield fetchFriendList();
+                                container.innerHTML = listHtml;
+                                setupListListeners(container);
+>>>>>>> frontEnd
+                            }
+                            else {
+                                alert(data.message || `Error al hacer remove`);
                             }
                         }
                         catch (error) {
@@ -172,6 +230,7 @@ export function FriendsView(app, state) {
                 }));
             });
         };
+<<<<<<< HEAD
         /* const requestsList = async (): Promise<string> => {
            const token = localStorage.getItem('tokenUser');
            if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
@@ -225,6 +284,8 @@ export function FriendsView(app, state) {
                return `<p class="text-red-500">${t("error_network")}</p>`;
            }
        }; */
+=======
+>>>>>>> frontEnd
         const requestsList = () => __awaiter(this, void 0, void 0, function* () {
             const token = localStorage.getItem('tokenUser');
             console.log('🔍 requestsList - userId:', userIdPlaceholder, 'token:', token === null || token === void 0 ? void 0 : token.substring(0, 20));
@@ -254,6 +315,7 @@ export function FriendsView(app, state) {
                     return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
                 }
                 // Obtener información de cada sender
+<<<<<<< HEAD
                 const usersInfo = yield Promise.all(requests.map((r) => __awaiter(this, void 0, void 0, function* () {
                     var _a, _b;
                     try {
@@ -277,6 +339,38 @@ export function FriendsView(app, state) {
                         return { username: `User#${r.sender_id}`, avatar_url: '/assets/avatar1.png' };
                     }
                 })));
+=======
+                // Obtener información de cada sender
+                const usersInfo = yield Promise.all(requests.map((r) => __awaiter(this, void 0, void 0, function* () {
+                    var _a;
+                    const senderId = r.sender_id;
+                    let username = `User#${senderId}`; // Valor por defecto
+                    try {
+                        // 1. Obtener el avatar usando tu función específica
+                        const avatarUrl = yield fetchAvatarUrl(senderId, token);
+                        const avatarSrc = avatarUrl || '/assets/avatar_39.png'; // Usar avatar por defecto si falla
+                        // 2. Opcional: Si necesitas el username, mantienes la llamada a USER_INFO
+                        const res = yield apiFetch(`${API_ENDPOINTS.USER_INFO}?id=${senderId}`, {
+                            method: 'GET',
+                            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                        });
+                        if (res.ok) {
+                            const userData = yield res.json();
+                            // Asegura que la clave 'username' se obtiene correctamente de la respuesta
+                            username = ((_a = userData.success) === null || _a === void 0 ? void 0 : _a.username) || username;
+                        }
+                        return {
+                            username: username, // Se devuelve el nombre de usuario (o el valor por defecto)
+                            avatar_url: avatarSrc // Usamos la URL generada por fetchAvatarUrl
+                        };
+                    }
+                    catch (error) {
+                        console.error(`Error fetching info for sender ${senderId}:`, error);
+                        return { username: username, avatar_url: '/assets/avatar_39.png' };
+                    }
+                })));
+                // 🟢 Generación del HTML usando usersInfo para obtener el nombre y el avatar
+>>>>>>> frontEnd
                 return `
             <h2 class="text-lg mb-3">${t("request_list")}</h2>
             <ul class="space-y-2">
