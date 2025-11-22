@@ -1,8 +1,19 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 export function HomeView(app, state) {
-    var _a, _b, _c;
-    app.innerHTML = `
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c;
+        app.innerHTML = `
     <div class="text-center mb-4">
         <h1 class="text-poke-yellow text-2xl">POKéMON</h1>
         <p class="text-poke-light text-xs">PONG</p>
@@ -10,7 +21,7 @@ export function HomeView(app, state) {
 
     <div class="bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-4 rounded-lg shadow-lg">
         <h1 class="text-sm leading-relaxed mb-4">${t("subtitle")}</h1>
-        <p class="text-sm leading-relaxed mb-4">${t("welcome")}, ${state.player.user || "Player"}!</p>
+        <p class="text-sm leading-relaxed mb-4">${t("welcome")}, <span id="userNameDisplay">Cargando...</span>!</p>
 
         <button id="gameBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 hover:border-b-red-800 active:animate-press active:border-b-red-800">
             ${t("game")}
@@ -25,10 +36,43 @@ export function HomeView(app, state) {
         </button>
     </div>
   `;
-    (_a = document.getElementById("gameBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/game"));
-    (_b = document.getElementById("tournamentBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/tournament"));
-    (_c = document.getElementById("chatBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => navigate("/chat"));
-    const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
-    console.log("id entrar home: ", userId);
-    const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+        (_a = document.getElementById("gameBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/game"));
+        (_b = document.getElementById("tournamentBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/tournament"));
+        (_c = document.getElementById("chatBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => navigate("/chat"));
+        const userId = localStorage.getItem('userId');
+        const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+        // Obtener y mostrar el nombre de usuario
+        if (userIdPlaceholder) {
+            const token = localStorage.getItem('tokenUser');
+            const userNameDisplay = document.getElementById("userNameDisplay");
+            if (!token || !userNameDisplay) {
+                userNameDisplay.textContent = "Error de sesión";
+                return;
+            }
+            try {
+                const response = yield apiFetch(`${API_ENDPOINTS.USER_INFO}?id=${userIdPlaceholder}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const data = yield response.json();
+                if (response.ok && data.success && data.success.username) {
+                    userNameDisplay.textContent = data.success.username;
+                }
+                else {
+                    console.error("No se pudo obtener el nombre de usuario:", data);
+                    userNameDisplay.textContent = "Usuario (Error API)";
+                }
+            }
+            catch (error) {
+                console.error("Error fetching user info:", error);
+                userNameDisplay.textContent = "Usuario (Error Red)";
+            }
+        }
+        else {
+            // Usuario no logueado
+            document.getElementById("userNameDisplay").textContent = "Invitado";
+        }
+    });
 }
