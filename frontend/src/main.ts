@@ -20,8 +20,10 @@ import { setLanguage } from "./translations/index.js";
 import { MenuView } from "./views/Menu.js";
 import { FriendsView } from "./views/Friend.js";
 import { GameOne } from "./views/1v1.js";
+import { GameOneo } from "./views/1v1o.js";
 import { GameVsAI } from "./views/vsIA.js";
 import { GameThree } from "./views/3players.js";
+import { GameFour } from "./views/4players.js";
 import { WebSocketTestView } from "./views/WebSocketTest.js";
 import { wsService } from "./services/WebSocketService.js";
 import { ChooseView1 } from "./views/Choose1.js";
@@ -129,12 +131,18 @@ function router(): void {
         break;
       case "/1v1":
         GameOne(app, state);
-        break;  
+        break;
+      case "/1v1o":
+        GameOneo(app, state);
+        break;
     case "/vsAI":
       GameVsAI(app, state);
       break;
     case "/3player":
       GameThree(app, state);
+      break;
+      case "/4player":
+      GameFour(app, state);
       break;
     case "/ws-test":
       WebSocketTestView(app, state);
@@ -152,7 +160,7 @@ function updateHeaderFooterVisibility(route: string) {
   const footer = document.querySelector("footer");
   if (!header || !footer) return;
 
-  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player","/1v1","/vsAI"];
+  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player","/1v1","/1v1o","/vsAI", "/4player"];
   if (hiddenRoutes.includes(route)) {
     header.classList.add("hidden");
     footer.classList.add("hidden");

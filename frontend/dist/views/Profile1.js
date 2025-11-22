@@ -77,7 +77,7 @@ export function Profile1View(app, state) {
             alert("Usuario creado correctamente");
             state.player.user = username;
             localStorage.setItem("player", JSON.stringify(state.player));
-            navigate("/choose1");
+            navigate("/login");
         }
         catch (err) {
             console.error(err);
