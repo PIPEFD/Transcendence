@@ -73,7 +73,7 @@ export function Profile1View(app: HTMLElement, state: any): void {
       state.player.user = username;
       localStorage.setItem("player", JSON.stringify(state.player));
 
-      navigate("/choose1");
+      navigate("/register");
     } catch (err) {
       console.error(err);
       alert("Error de conexión con el servidor");
