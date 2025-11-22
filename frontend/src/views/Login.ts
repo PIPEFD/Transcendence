@@ -1,5 +1,6 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 export function LoginView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -47,7 +48,7 @@ export function LoginView(app: HTMLElement, state: any): void {
     }
 
     try {
-      const response = await fetch("http://localhost:8085/api/login.php", {
+      const response = await apiFetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, pass }),
@@ -65,18 +66,46 @@ export function LoginView(app: HTMLElement, state: any): void {
         throw new Error("Invalid JSON response from backend");
       }
 
+      console.log("📦 Response data:", data);
+
       // Aquí comprobamos si hay error y lo mostramos
       if (data.error) {
         errorDiv.textContent = data.error;
         return; // ¡detenemos la navegación!
       }
 
+      // Guardar userId siempre
+      if (data.user_id) {
+        localStorage.setItem("userId", String(data.user_id));
+        console.log("✅ userId guardado:", data.user_id);
+      }
+
+      // ⚠️ MODO TEST: Si el backend devuelve el token directamente (sin 2FA)
+      if (data.details && data.test_mode) {
+        localStorage.setItem("tokenUser", data.details);
+        console.log("✅ Login en modo test (sin 2FA)");
+        console.log("✅ Token guardado:", data.details.substring(0, 50) + "...");
+        
+        // Verificar que se guardó
+        const savedToken = localStorage.getItem("tokenUser");
+        const savedUserId = localStorage.getItem("userId");
+        console.log("🔍 Verificación - Token guardado:", !!savedToken);
+        console.log("🔍 Verificación - UserId guardado:", savedUserId);
+        
+        navigate("/choose");
+        return;
+      }
+
+      // Guardar token JWT si viene en la respuesta (flujo normal)
+      if (data.token) {
+        localStorage.setItem("tokenUser", data.token);
+      }
+
       // Si requiere 2FA
       if (data.pending_2fa) {
-        localStorage.setItem("userId", data.user_id);
         navigate("/authentication");
       } else {
-        navigate("/"); // login exitoso
+        navigate("/choose"); // login exitoso directo
       }
 
     } catch (err) {

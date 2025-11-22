@@ -18,8 +18,7 @@ if (!checkBodyData($body, 'username', 'pass'))
 $username = $body['username'];
 $passwordSent = $body['pass'];
 
-// Ajuste: usar 'id' en el SELECT
-$sqlQuery = "SELECT id, pass, email FROM users WHERE username = :username";
+$sqlQuery = "SELECT user_id, pass, email FROM users WHERE username = :username";
 $bind1 = [':username', $username, SQLITE3_TEXT];
 $res1 = doQuery($database, $sqlQuery, $bind1);
 
@@ -30,20 +29,52 @@ $row = $res1->fetchArray(SQLITE3_ASSOC);
 if (!$row)
     errorSend(401, 'Invalid username or password');
 
-$user_id = $row['id'];          // <-- cambio aquí de 'user_id' a 'id'
+$user_id = $row['user_id'];
 $passwordStored = $row['pass'];
 $email = $row['email'];
 
 if (!password_verify($passwordSent, $passwordStored))
     errorSend(401, 'Invalid username or password');
 
-// Limpiamos códigos 2FA previos
+// ⚠️ MODO TEST: Usuarios que empiecen con "testuser" no requieren 2FA
+if (strpos($username, 'testuser') === 0) {
+    // Generar JWT directamente para usuarios de prueba
+    require_once __DIR__ . '/../../vendor/autoload.php';
+    
+    $issuer = 'http://localhost:8081';
+    $audience = 'http://localhost:8081';
+    $issuedAt = time();
+    $expire = $issuedAt + 3600; // 1 hora
+    $payload = [
+        'iss' => $issuer,
+        'aud' => $audience,
+        'iat' => $issuedAt,
+        'exp' => $expire,
+        'data' => ['user_id' => $user_id]
+    ];
+    
+    $secretKey = getenv('JWTsecretKey');
+    $jwt = Firebase\JWT\JWT::encode($payload, $secretKey, 'HS256');
+    
+    // Marcar usuario como online
+    doQuery($database, "UPDATE users SET is_online = 1 WHERE user_id = :id", [':id', $user_id, SQLITE3_INTEGER]);
+    
+    // Devolver token directamente (sin 2FA)
+    echo json_encode([
+        'success' => 'Login successful (test mode)',
+        'details' => $jwt,
+        'user_id' => $user_id,
+        'test_mode' => true
+    ]);
+    exit;
+}
+
+// Flujo normal con 2FA para usuarios regulares
 $stmt_delete = $database->prepare('DELETE FROM twofa_codes WHERE user_id = :user_id');
 $stmt_delete->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 if (!$res_delete = $stmt_delete->execute())
     errorSend(500, "SQLite Error: " . $database->lastErrorMsg());
 
-// Generamos nuevo código 2FA
 $two_fa_code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
 $stmt_insert = $database->prepare('INSERT OR REPLACE INTO twofa_codes (user_id, code) VALUES (:user_id, :code)');
@@ -52,11 +83,14 @@ $stmt_insert->bindValue(':code', $two_fa_code, SQLITE3_TEXT);
 if ($stmt_insert->execute() === false)
     errorSend(500, 'couldn`t insert two_fa_code');
 
-// Enviamos el código por email
 if (!sendMailGmailAPI($user_id, $email, $two_fa_code))
     errorSend(500, 'couldn\'t send mail with Gmail API');
-
-// Respuesta JSON
 echo json_encode(['pending_2fa' => true, 'user_id' => $user_id]);
 exit;
+/*
+    en esta primera parte del login se comprobaran las credenciales
+    basicas (nombre de usuario y contrasenha) para retornar el valor 1
+    en pending_2fa y enviar un correo con la API de google [gmail]
+*/
+
 ?>

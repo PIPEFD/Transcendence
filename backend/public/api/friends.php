@@ -7,6 +7,8 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
 error_log(print_r($queryId, true));
+// entorno de vars 
+
 switch ($requestMethod) 
 {
 	case 'GET':
@@ -25,13 +27,20 @@ switch ($requestMethod)
 	default:
 		errorSend(405, 'unauthorized method');
 }
+/*
+    router de gestion de amigos, cubriendo:
+        - peticion GET con queryParam ?id="id" retorna la lista de amigos
+        del usuario "id"
+        - peticion POST con body { user_id, friend_id } para eliminar
+        al amigo friend_id de user_id
+*/
 
 function getFriendList(SQLite3 $database, int $queryId): void 
 {
     $sqlQuery = "
-		SELECT u.id, u.username, u.email
+		SELECT u.user_id, u.username, u.email
 		FROM users u
-		WHERE u.id IN (
+		WHERE u.user_id IN (
 			SELECT f.friend_id FROM friends f WHERE f.user_id = :id
 			UNION
 			SELECT f.user_id FROM friends f WHERE f.friend_id = :id
@@ -50,9 +59,11 @@ function getFriendList(SQLite3 $database, int $queryId): void
     successSend($content);
     exit;
 }
-
-
-
+/*
+    el id se comprueba antes de llamar a esta funcion, esta solo
+    ejecutara la query en la cual se seleccionan a los amigos del
+    usuario de la queryParam
+*/
 
 function deleteFriend(SQLite3 $database, array $body, int $user_id): void
 {
@@ -83,7 +94,10 @@ function deleteFriend(SQLite3 $database, array $body, int $user_id): void
 
     successSend('friend deleted');
 }
-
-
+/*
+    trato de ejecutar en la base de datos un delete
+    sobre el id que llega en friend_id, en caso de no existir se
+    recoje el error de la db
+*/
 
 ?>

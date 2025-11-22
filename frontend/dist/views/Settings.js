@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 export function SettingsView(app, state) {
     var _a, _b, _c, _d, _e, _f;
     app.innerHTML = `
@@ -47,14 +48,16 @@ export function SettingsView(app, state) {
     (_e = document.getElementById("gbcBtn")) === null || _e === void 0 ? void 0 : _e.addEventListener("click", () => navigate("/"));
     (_f = document.getElementById("logoutBtn")) === null || _f === void 0 ? void 0 : _f.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch("http://localhost:8085/api/logout.php", {
+            const user_id = localStorage.getItem("userId");
+            const response = yield apiFetch(`${API_ENDPOINTS.LOGOUT}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id }),
             });
             const data = yield response.json();
             console.log("Logout response:", data);
             // Borrar JWT del localStorage y volver al inicio
-            localStorage.removeItem("JWT");
+            localStorage.removeItem('tokenUser');
             navigate("/register");
         }
         catch (err) {

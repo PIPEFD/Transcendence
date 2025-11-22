@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { navigate } from "../main.js";
 import { updateHeader } from "./Header.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 export function AvatarView1(app, state) {
     app.innerHTML = `
 	<div class="text-center mb-4">
@@ -81,26 +82,49 @@ export function AvatarView1(app, state) {
         const file = uploadInput.files[0];
         const formData = new FormData();
         formData.append("avatar", file);
-        formData.append("user_id", String(state.player.id)); // asegúrate de tener el user ID
+        const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+        console.log("id entrar upload: ", userId);
+        const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+        formData.append("user_id", String(userId)); // asegúrate de tener el user ID
+        const token = localStorage.getItem('tokenUser');
+        // try {
+        //   const res = await fetch("http://localhost:8085/api/upload.php", {
+        // 	method: "POST",
+        // 	body: formData,
+        //   });
+        //   const data = await res.json();
+        //   if (!res.ok) {
+        // 	alert("Error al subir el avatar: " + data.error);
+        // 	return;
+        //   }
+        //   // Guardar la ruta recibida desde el backend en el estado
+        //   state.player.avatar = data.path; 
+        //   updateHeader(state);
+        //   alert("Avatar subido correctamente!");
+        //   navigate("/register"); 
+        // } catch (err) {
+        //   console.error("Error al subir avatar:", err);
+        //   alert("Error de conexión con el servidor");
+        // }
         try {
-            const res = yield fetch("/api/upload.php", {
-                method: "POST",
-                body: formData,
+            const response = yield apiFetch(API_ENDPOINTS.UPLOAD, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userIdPlaceholder,
+                    avatar: file,
+                })
             });
-            const data = yield res.json();
-            if (!res.ok) {
-                alert("Error al subir el avatar: " + data.error);
-                return;
-            }
-            // Guardar la ruta recibida desde el backend en el estado
-            state.player.avatar = data.path;
-            updateHeader(state);
-            alert("Avatar subido correctamente!");
-            navigate("/register");
+            const data = yield response.json();
+            console.log("Friends data:", data);
+            yield updateHeader(state);
         }
-        catch (err) {
-            console.error("Error al subir avatar:", err);
-            alert("Error de conexión con el servidor");
+        catch (error) {
+            console.error("Error fetching friend list:", error);
+            return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;
         }
     }));
 }

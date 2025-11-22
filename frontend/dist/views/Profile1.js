@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 export function Profile1View(app, state) {
     var _a;
     app.innerHTML = `
@@ -43,7 +44,7 @@ export function Profile1View(app, state) {
     </div>
   `;
     const backBtn = document.getElementById("back");
-    backBtn === null || backBtn === void 0 ? void 0 : backBtn.addEventListener("click", () => navigate("/avatar1"));
+    backBtn === null || backBtn === void 0 ? void 0 : backBtn.addEventListener("click", () => navigate("/register"));
     (_a = document.getElementById("userButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         const usernameInput = document.getElementById("userEnter");
         const emailInput = document.getElementById("mailEnter");
@@ -56,9 +57,8 @@ export function Profile1View(app, state) {
             return;
         }
         try {
-            const response = yield fetch("http://localhost:8085/api/users.php", {
+            const response = yield apiFetch(API_ENDPOINTS.USERS, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, pass })
             });
             const text = yield response.text();
@@ -77,7 +77,7 @@ export function Profile1View(app, state) {
             alert("Usuario creado correctamente");
             state.player.user = username;
             localStorage.setItem("player", JSON.stringify(state.player));
-            navigate("/avatar1");
+            navigate("/choose1");
         }
         catch (err) {
             console.error(err);

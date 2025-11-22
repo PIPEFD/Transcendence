@@ -28,4 +28,7 @@ export function HomeView(app, state) {
     (_a = document.getElementById("gameBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => navigate("/game"));
     (_b = document.getElementById("tournamentBtn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => navigate("/tournament"));
     (_c = document.getElementById("chatBtn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => navigate("/chat"));
+    const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
+    console.log("id entrar home: ", userId);
+    const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 }

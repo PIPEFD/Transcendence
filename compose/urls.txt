@@ -1,3 +1,0 @@
-WAF: http://localhost:8000
-Direct Nginx: http://localhost:8080
-Frontend directly: http://localhost:3000

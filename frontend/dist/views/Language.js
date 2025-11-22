@@ -27,15 +27,12 @@ export function LanguageView(app, state) {
   `;
     (_a = document.getElementById("lang-en")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
         setLanguage("en");
-        navigate("/settings");
     });
     (_b = document.getElementById("lang-fr")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
         setLanguage("fr");
-        navigate("/settings");
     });
     (_c = document.getElementById("lang-es")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => {
         setLanguage("es");
-        navigate("/settings");
     });
     (_d = document.getElementById("lang-back")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", () => navigate("/settings"));
 }

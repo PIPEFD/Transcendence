@@ -2,7 +2,7 @@
 import { RegisterView } from "./views/Register.js";
 import { ProfileView } from "./views/Profile.js";
 import { Profile1View } from "./views/Profile1.js";
-import { AuthView } from "./views/Authenticaction.js";
+import { AuthView } from "./views/Authentication.js";
 import { ChooseView } from "./views/Choose.js";
 import { AvatarView } from "./views/Avatar.js";
 import { AvatarView1 } from "./views/Avatarlogin.js";
@@ -19,6 +19,14 @@ import { LoginView } from "./views/Login.js";
 import { setLanguage } from "./translations/index.js";
 import { MenuView } from "./views/Menu.js";
 import { FriendsView } from "./views/Friend.js";
+import { GameOne } from "./views/1v1.js";
+import { GameVsAI } from "./views/vsIA.js";
+import { GameThree } from "./views/3players.js";
+import { WebSocketTestView } from "./views/WebSocketTest.js";
+import { wsService } from "./services/WebSocketService.js";
+import { ChooseView1 } from "./views/Choose1.js";
+
+
 
 
 
@@ -86,6 +94,9 @@ function router(): void {
     case "/choose":
       ChooseView(app, state);
       break;
+    case "/choose1":
+      ChooseView1(app, state);
+      break;
     case "/avatar":
       AvatarView(app, state);
       break;
@@ -116,6 +127,18 @@ function router(): void {
       case "/friends":
         FriendsView(app, state);
         break;
+      case "/1v1":
+        GameOne(app, state);
+        break;  
+    case "/vsAI":
+      GameVsAI(app, state);
+      break;
+          case "/3player":
+      GameThree(app, state);
+      break;
+    case "/ws-test":
+      WebSocketTestView(app, state);
+      break;   
     default: // Home
       HomeView(app, state);
       break;
@@ -129,7 +152,7 @@ function updateHeaderFooterVisibility(route: string) {
   const footer = document.querySelector("footer");
   if (!header || !footer) return;
 
-  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication"];
+  const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1"];
   if (hiddenRoutes.includes(route)) {
     header.classList.add("hidden");
     footer.classList.add("hidden");
@@ -151,94 +174,38 @@ window.addEventListener("load", () => {
   } else {
     router();
   }
+
+  // Conectar al WebSocket si el usuario está autenticado
+  const token = localStorage.getItem('tokenUser');
+  const userId = localStorage.getItem('userId');
+  
+  if (token && userId) {
+    console.log('🔌 Usuario autenticado detectado. Conectando WebSocket...');
+    wsService.connect()
+      .then(() => {
+        console.log('✅ WebSocket conectado y autenticado');
+        
+        // Configurar ping cada 30 segundos para mantener conexión
+        setInterval(() => {
+          if (wsService.isConnected()) {
+            wsService.ping();
+          }
+        }, 30000);
+      })
+      .catch((error) => {
+        console.error('❌ Error conectando WebSocket:', error);
+      });
+  }
 });
 
 window.addEventListener("popstate", router);
 
-const clearDbBtn = document.createElement('button');
-clearDbBtn.textContent = "🧹 Borrar toda la base de datos (Test)";
-clearDbBtn.className = `
-  bg-gradient-to-b from-red-500 to-red-700 
-  text-poke-light py-2 px-4 border-3 border-red-900 border-b-red-900 
-  rounded hover:from-red-600 hover:to-red-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-clearDbBtn.addEventListener('click', async () => {
-  if (!confirm("Esto borrará toda la base de datos. ¿Seguro?")) return;
-
-  try {
-    const response = await fetch("http://localhost:8085/api/delete_all.php", {
-      method: 'POST'
-    });
-
-    const data = await response.json();
-    alert(data.success || data.error);
-  } catch (err) {
-    console.error(err);
-    alert("Error borrando la base de datos");
-  }
+// Actualizar UI cuando cambia el idioma
+window.addEventListener('languageChanged', () => {
+  router();
+  updateHeader(state);
 });
 
-const esDbBtn = document.createElement('button');
-esDbBtn.textContent = "Spanish";
-esDbBtn.className = `
-  bg-gradient-to-b from-blue-500 to-blue-700 
-  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
-  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
+export {}; // para evitar conflictos TS
 
-esDbBtn.addEventListener('click', async () => {
-  setLanguage("es");
-});
-
-const frDbBtn = document.createElement('button');
-frDbBtn.textContent = "French";
-frDbBtn.className = `
-  bg-gradient-to-b from-blue-500 to-blue-700 
-  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
-  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-frDbBtn.addEventListener('click', async () => {
-  setLanguage("fr");
-});
-
-const enDbBtn = document.createElement('button');
-enDbBtn.textContent = "English";
-enDbBtn.className = `
-  bg-gradient-to-b from-blue-500 to-blue-700 
-  text-poke-light py-2 px-4 border-3 border-blue-900 border-b-blue-900 
-  rounded hover:from-blue-600 hover:to-blue-800 active:animate-press
-  mt-4 mx-auto block
-  shadow-lg
-  text-sm
-`;
-
-enDbBtn.addEventListener('click', async () => {
-  setLanguage("en");
-});
-
-const langContainer = document.createElement("div");
-langContainer.className = "flex gap-2 justify-center mt-4"; // flex horizontal + espacio entre botones
-
-// Añadir los botones al contenedor
-langContainer.appendChild(clearDbBtn);
-langContainer.appendChild(esDbBtn);
-langContainer.appendChild(frDbBtn);
-langContainer.appendChild(enDbBtn);
-
-// Añadir el botón al final del body o a un contenedor específico
-document.body.appendChild(langContainer);
-
-export {}; // para evitar conflictos TS  
-
-  //npx tsc --watch
+// npx tsc --watch

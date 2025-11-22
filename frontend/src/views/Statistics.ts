@@ -1,8 +1,13 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
-export function StatsView(app: HTMLElement, state: any): void {
+export async function StatsView(app: HTMLElement, state: any): Promise <void> {
   // Determine avatar source
+  const token = localStorage.getItem('tokenUser');
+  const user_id = localStorage.getItem('userId');
+  console.log("id entrar stats: ", user_id);
+  console.log("token al entrar stats", token);
   let avatarSrc = "";
   if (state.player.avatar !== null && state.player.avatar !== undefined) {
     if (typeof state.player.avatar === "number") {
@@ -11,6 +16,16 @@ export function StatsView(app: HTMLElement, state: any): void {
       avatarSrc = state.player.avatar; // uploaded
     }
   }
+  const response = await apiFetch(API_ENDPOINTS.MATCHES, {
+    method: "PATCH",
+    headers: {'Authorization': `Bearer ${token}`},
+    body: JSON.stringify({user_id: user_id})
+  })
+  const stats = await response.json();
+  const data = JSON.parse(stats.details);
+  state.player.matches = data.matches;
+  state.player.victories = data.victories;
+  state.player.defeats = data.defeats;
 
   app.innerHTML = `
     <div class="bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-6 rounded-lg shadow-lg max-w-sm mx-auto flex flex-col items-center text-center">
