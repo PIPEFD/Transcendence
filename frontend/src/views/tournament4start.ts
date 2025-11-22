@@ -1,4 +1,5 @@
 import { navigate } from "../main.js";
+import { t } from "../translations/index.js";
 
 export function Tournament4StartView(app: HTMLElement, state: any) {
   if (!state.tournamentPlayers || state.tournamentPlayers.length !== 4) {
@@ -85,7 +86,7 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
           ${
             M.final.winner
               ? `<p class="text-green-300 text-2xl font-bold drop-shadow-md">
-                   🏆 Champion: ${M.final.winner} 🏆
+                   🏆Champion: ${M.final.winner}🏆
                  </p>`
               : `
                 <p class="text-lg">
@@ -111,7 +112,7 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
 
         <button id="backBtn"
                 class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded-md mt-4">
-          Back
+          ${t("goBack")}
         </button>
 
       </div>

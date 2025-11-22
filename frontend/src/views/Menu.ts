@@ -35,7 +35,7 @@ export function MenuView(app: HTMLElement, state: any): void {
             ${t("matchHistory")}
           </button>
           <button id="friends" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press active:border-b-red-800">
-            ${t("Friends")}
+            ${t("friends")}
           </button>
           <button id="gostats" class="bg-poke-blue bg-opacity-80 text-poke-light py-2 border-3 border-poke-blue border-b-blue-800 rounded hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 active:animate-press active:border-b-blue-800">
             ${t("Stats")}

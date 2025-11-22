@@ -1,4 +1,5 @@
 import { navigate } from "../main.js";
+import { t } from "../translations/index.js";
 
 export function GameView(app: HTMLElement, state?: any): void {
   app.innerHTML = `
@@ -6,22 +7,22 @@ export function GameView(app: HTMLElement, state?: any): void {
       <h1 class="text-3xl text-poke-yellow font-bold">POKéMON PONG</h1>
       <div class="flex flex-col gap-4">
         <button id="btn1v1" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          1v1 Local
+          ${t("vLocal")}
         </button>
         <button id="btn1v1o" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          1v1 Online
+           ${t("vOnline")}
         </button>
         <button id="btnVsAI" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          Play vs AI
+          ${t("PlayvsAI")}
         </button>
         <button id="btn3Player" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          3 Players
+          ${t("Plyers")}
         </button>
         <button id="btn4Player" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          4 Players
+          ${t("Players")}
         </button>
         <button id="btnBack" class="bg-poke-blue text-white py-2 px-6 rounded hover:bg-blue-600">
-          Back
+          ${t("goBack")}
         </button>
       </div>
     </div>

@@ -1,35 +1,36 @@
 import { navigate } from "../main.js";
+import { t } from "../translations/index.js";
 
 export function Tournament4View(app: HTMLElement, state?: any): void {
   app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
 
-      <h1 class="text-2xl text-poke-yellow font-bold">4 Player Tournament</h1>
+      <h1 class="text-2xl text-poke-yellow font-bold"> ${t("Player4Tournament")}</h1>
 
       <div class="bg-poke-light bg-opacity-20 p-6 rounded-lg shadow-lg flex flex-col gap-4 w-full max-w-sm">
 
-        <input id="p1" placeholder="Player 1" 
+        <input id="p1" placeholder="${t("Player1")}" 
           class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
 
-        <input id="p2" placeholder="Player 2" 
+        <input id="p2" placeholder="${t("Player2")}" 
+          class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
+ 
+        <input id="p3" placeholder="${t("Player3")}" 
           class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
 
-        <input id="p3" placeholder="Player 3" 
-          class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
-
-        <input id="p4" placeholder="Player 4" 
+        <input id="p4" placeholder="${t("Player4")}" 
           class="py-2 px-3 rounded border border-poke-dark bg-white text-black"/>
 
         <p id="errorMsg" class="text-red-500 text-center text-sm hidden"></p>
 
         <button id="startBtn"
           class="bg-poke-red text-white py-2 rounded hover:bg-red-600">
-          Start Tournament
+          ${t("StartTournament")}
         </button>
 
         <button id="backBtn"
           class="bg-poke-blue text-white py-2 rounded hover:bg-blue-600">
-          Back
+          ${t("goBack")}
         </button>
 
       </div>

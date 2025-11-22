@@ -1,4 +1,5 @@
 import { navigate } from "../main.js";
+import { t } from "../translations/index.js";
 // The core game logic adapted for tournament use
 export function GameTournament(app, state) {
     var _a;
@@ -25,7 +26,7 @@ export function GameTournament(app, state) {
 
       <div class="text-center">
         <button id="goBackBtn" class="bg-gray-700 bg-opacity-80 text-poke-light py-2 px-6 border-3 border-gray-700 border-b-gray-800 rounded hover:bg-gradient-to-b hover:from-gray-500 hover:to-gray-600 active:animate-press active:border-b-gray-800">
-            Cancel Match
+            ${t("Cancel_Match")}
         </button>
       </div>
     </div>

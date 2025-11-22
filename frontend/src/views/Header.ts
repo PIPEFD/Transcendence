@@ -1,5 +1,6 @@
 import { navigate } from "../main.js";
 import { API_ENDPOINTS } from "../config/api.js";
+import { t } from "../translations/index.js";
 
 // --- fetchAvatarUrl (Corrección: Solo devuelve la URL temporal del Blob) ---
 

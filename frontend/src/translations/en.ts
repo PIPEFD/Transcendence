@@ -53,5 +53,23 @@ export default {
   enter_code_mail: "Enter the code you received by email",
   email_code: "Code",
   enter_code: "Validate the code",
+  disconect : "Log out ",
+  Me : "Me",
+  upload_avatar : "Upload avatar",
+  Restart : "Restart",
+  Cancel_Match : "Cancel match",
+  Players : "4 Players",
+  Plaayers : "8 Players",
+  Plaaayers : "16 Players",
+  Plyers :"3 Players",
+    vLocal : "1v1 local",
+  vOnline : "1v1 Online",
+  PlayvsAI : "PLay vs IA",
+  PLayer1: "Player 1",
+  PLayer2: "Player 2",
+  PLayer3: "Player 3",
+  PLayer4: "Player 4",
+  StartTournament : "Start Tournament",
+
 
 };

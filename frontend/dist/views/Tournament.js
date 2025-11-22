@@ -1,26 +1,27 @@
 import { navigate } from "../main.js";
+import { t } from "../translations/index.js";
 export function TournamentView(app, state) {
     var _a, _b, _c, _d;
     app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
 
-      <h1 class="text-3xl text-poke-yellow font-bold">Tournament</h1>
+      <h1 class="text-3xl text-poke-yellow font-bold">${t("tournament")}</h1>
 
       <div class="flex flex-col gap-4">
         <button id="btn4" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          4 Players
+          ${t("Players")}
         </button>
 
         <button id="btn8" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          8 Players
+          ${t("Plaayers")}
         </button>
 
         <button id="btn16" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          16 Players
+          ${t("Plaaayers")}
         </button>
 
         <button id="btnBack" class="bg-poke-blue text-white py-2 px-6 rounded hover:bg-blue-600">
-          Back
+          ${t("goBack")}
         </button>
       </div>
 
