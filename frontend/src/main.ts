@@ -3,7 +3,6 @@ import { RegisterView } from "./views/Register.js";
 import { ProfileView } from "./views/Profile.js";
 import { Profile1View } from "./views/Profile1.js";
 import { AuthView } from "./views/Authentication.js";
-import { AuthView } from "./views/Authentication.js";
 import { ChooseView } from "./views/Choose.js";
 import { AvatarView } from "./views/Avatar.js";
 import { AvatarView1 } from "./views/Avatarlogin.js";

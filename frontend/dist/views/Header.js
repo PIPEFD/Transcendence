@@ -9,45 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { navigate } from "../main.js";
 import { API_ENDPOINTS } from "../config/api.js";
-<<<<<<< HEAD
-// Función async para obtener la URL del avatar
-function fetchAvatarUrl(userId, token) {
-=======
 // --- fetchAvatarUrl (Corrección: Solo devuelve la URL temporal del Blob) ---
 export function fetchAvatarUrl(userId, token) {
->>>>>>> frontEnd
     return __awaiter(this, void 0, void 0, function* () {
         if (!userId || !token)
             return null;
         try {
-<<<<<<< HEAD
-            const response = yield fetch(API_ENDPOINTS.AVATAR_PHOTO, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id: userId }),
-            });
-            if (!response.ok) {
-                console.error("Error fetching avatar:", response.status);
-                return null;
-            }
-            const data = yield response.json();
-            console.log("Avatar response:", data);
-            // El backend puede devolver diferentes formatos:
-            // { success: { avatar_url: "..." } } o { success: "..." }
-            let avatarUrl = null;
-            if (data.success) {
-                if (typeof data.success === 'object' && data.success.avatar_url) {
-                    avatarUrl = data.success.avatar_url;
-                }
-                else if (typeof data.success === 'string') {
-                    avatarUrl = data.success;
-                }
-            }
-            return avatarUrl;
-=======
             const response = yield fetch(`${API_ENDPOINTS.USERS}?id=${userId}`, {
                 method: 'PATCH',
                 headers: {
@@ -72,7 +39,6 @@ export function fetchAvatarUrl(userId, token) {
             // 3. Crea la URL temporal para usarla en el src del <img>
             const imageObjectURL = URL.createObjectURL(imageBlob);
             return imageObjectURL; // Devolvemos la URL temporal
->>>>>>> frontEnd
         }
         catch (error) {
             console.error("Error fetching avatar:", error);
@@ -80,11 +46,7 @@ export function fetchAvatarUrl(userId, token) {
         }
     });
 }
-<<<<<<< HEAD
-// Función normal que actualiza el header
-=======
 // --- updateHeader (Corrección: Usa la Blob URL en el HTML recién creado) ---
->>>>>>> frontEnd
 export function updateHeader(state) {
     const header = document.querySelector("header");
     if (!header)
@@ -92,28 +54,6 @@ export function updateHeader(state) {
     const token = localStorage.getItem("tokenUser");
     const userId = localStorage.getItem('userId');
     const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
-<<<<<<< HEAD
-    console.log("id entrar hh: ", userId);
-    console.log("token: ", token);
-    // Llamamos a la función async sin usar await
-    fetchAvatarUrl(userIdPlaceholder, token).then((avatarUrl) => {
-        console.log("Avatar URL obtenida:", avatarUrl);
-        // Usar el avatar del endpoint si existe
-        let avatarSrc = avatarUrl || "/assets/avatar_39.png"; // Avatar por defecto si no hay
-        header.innerHTML = `
-      <div class="relative flex items-center justify-center">
-        <img src="/assets/logo.png" alt="PONG" class="h-12">
-        <div class="absolute right-4 flex items-center space-x-2">
-          <img src="${avatarSrc}"
-               id="avBtn"
-               alt="avatar"
-               class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 object-cover"/>
-          <img src="/assets/settings.png"
-               id="settingsBtn"
-               alt="settings"
-               class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
-        </div>
-=======
     // Llamamos a la función async
     fetchAvatarUrl(userIdPlaceholder, token).then((avatarUrl) => {
         // 1. Usa la URL del Blob o un avatar por defecto
@@ -135,7 +75,6 @@ export function updateHeader(state) {
                        class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"/>
                </div>`
             : ""}
->>>>>>> frontEnd
       </div>
     `;
         const settingsBtn = document.getElementById("settingsBtn");

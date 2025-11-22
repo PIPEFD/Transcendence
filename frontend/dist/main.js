@@ -20,7 +20,6 @@ import { LoginView } from "./views/Login.js";
 import { MenuView } from "./views/Menu.js";
 import { FriendsView } from "./views/Friend.js";
 import { GameOne } from "./views/1v1.js";
-<<<<<<< HEAD
 import { GameOneo } from "./views/1v1o.js";
 import { GameVsAI } from "./views/vsIA.js";
 import { GameThree } from "./views/3players.js";
@@ -30,13 +29,6 @@ import { wsService } from "./services/WebSocketService.js";
 import { ChooseView1 } from "./views/Choose1.js";
 import { Tournament4StartView } from "./views/tournament4start.js";
 import { GameTournament } from "./views/Tournament4Run.js";
-=======
-import { GameVsAI } from "./views/vsIA.js";
-import { GameThree } from "./views/3players.js";
-import { WebSocketTestView } from "./views/WebSocketTest.js";
-import { wsService } from "./services/WebSocketService.js";
-import { ChooseView1 } from "./views/Choose1.js";
->>>>>>> frontEnd
 const state = {
     player: { alias: "", user: "", avatar: 0, matches: 10, victories: 7, defeats: 8 }
 };
@@ -84,6 +76,9 @@ function router() {
         case "/choose1":
             ChooseView1(app, state);
             break;
+        case "/choose1":
+            ChooseView1(app, state);
+            break;
         case "/avatar":
             AvatarView(app, state);
             break;
@@ -126,24 +121,18 @@ function router() {
         case "/1v1":
             GameOne(app, state);
             break;
-<<<<<<< HEAD
         case "/1v1o":
             GameOneo(app, state);
             break;
-=======
->>>>>>> frontEnd
         case "/vsAI":
             GameVsAI(app, state);
             break;
         case "/3player":
             GameThree(app, state);
             break;
-<<<<<<< HEAD
         case "/4player":
             GameFour(app, state);
             break;
-=======
->>>>>>> frontEnd
         case "/ws-test":
             WebSocketTestView(app, state);
             break;
@@ -159,11 +148,7 @@ function updateHeaderFooterVisibility(route) {
     const footer = document.querySelector("footer");
     if (!header || !footer)
         return;
-<<<<<<< HEAD
     const hiddenRoutes = ["/register", "/tournament4", "/tournament4start", "/game-tournament", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1", "/3player", "/1v1", "/1v1o", "/vsAI", "/4player"];
-=======
-    const hiddenRoutes = ["/register", "/profile", "/choose", "/avatar", "/login", "/profile1", "/authentication", "/choose1", "/avatar1"];
->>>>>>> frontEnd
     if (hiddenRoutes.includes(route)) {
         header.classList.add("hidden");
         footer.classList.add("hidden");
