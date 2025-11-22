@@ -2,7 +2,6 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 
 export function TournamentView(app: HTMLElement, state?: any): void {
-export function TournamentView(app: HTMLElement, state?: any): void {
   app.innerHTML = `
     <div class="flex flex-col items-center justify-center h-full space-y-6">
 
