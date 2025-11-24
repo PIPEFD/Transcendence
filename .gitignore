@@ -7,3 +7,24 @@ OUT.txt
 # test reports
 reports/
 
+# Archivos generados durante el despliegue
+# Certificados SSL/TLS
+config/ssl/*.pem
+config/cloudflare/certs/*.pem
+
+# Secretos y configuración sensible
+config/secrets/*.secret
+config/auth/
+
+# Archivos compilados del frontend
+frontend/dist/
+frontend/node_modules/
+
+# Uploads y archivos de usuario
+backend/public/api/uploads/
+
+# Logs y archivos temporales
+nohup.out
+logs/
+*.log
+
