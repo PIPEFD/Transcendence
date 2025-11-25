@@ -3,6 +3,7 @@ import { t } from "../translations/index.js";
 import { ChatView } from "./Chat.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { fetchAvatarUrl } from "./Header.js";
+import { wsService } from "../services/WebSocketService.js";
 
 // !!! IMPORTANTE: REEMPLAZA ESTE VALOR !!!
 // Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
@@ -122,9 +123,18 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                     
                     const avatarSrc = avatarUrl || "/assets/avatar_39.png";
                     
+                    // Obtener estado del usuario desde WebSocket
+                    const status = wsService.getUserStatus(String(friendId)) || 'offline';
+                    const statusText = status === 'online' ? 'Online' : 
+                                      status === 'in-game' ? 'In Game' : 'Offline';
+                    const statusColor = status === 'online' ? 'text-green-600' : 
+                                       status === 'in-game' ? 'text-yellow-600' : 'text-gray-500';
+                    
                     return { 
                         ...friend, 
-                        avatar_src: avatarSrc 
+                        avatar_src: avatarSrc,
+                        status_text: statusText,
+                        status_color: statusColor
                     };
                 })
             );
@@ -139,10 +149,10 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                         return `
                         <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark">
                             <div class="flex items-center gap-3">
-                                <img src="${friend.avatar_src}" class="w-10 h-10 rounded-full" />
+                                <img src="${friend.avatar_src}" class="w-10 h-10 rounded-full object-cover" />
                                 <div class="text-left">
                                     <div class="text-sm font-medium">${friend.username}</div>
-                                    <div class="text-xs text-poke-dark">Online</div>
+                                    <div class="text-xs ${friend.status_color}">${friend.status_text}</div>
                                 </div>
                             </div>
                             <div class="flex gap-2">

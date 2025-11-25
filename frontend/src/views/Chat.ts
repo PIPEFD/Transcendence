@@ -2,6 +2,7 @@
 import { t } from "../translations/index.js";
 import { wsService } from "../services/WebSocketService.js";
 import { API_ENDPOINTS } from "../config/api.js";
+import { fetchAvatarUrl } from "./Header.js";
 
 export function ChatView(app: HTMLElement, state: any) {
   const userId = localStorage.getItem("userId");
@@ -59,7 +60,7 @@ export function ChatView(app: HTMLElement, state: any) {
         return;
       }
 
-      renderFriendsList(friends);
+      await renderFriendsList(friends);
     } catch (err) {
       console.error(err);
       listContainer.innerHTML = `<p class="text-red-500">${t("error_network")}</p>`;
@@ -67,26 +68,43 @@ export function ChatView(app: HTMLElement, state: any) {
   };
 
   // Función para renderizar lista de amigos con estados
-  const renderFriendsList = (friends: any[]) => {
-    listContainer.innerHTML = friends
-      .map((f: any, i: number) => {
-        const status = wsService.getUserStatus(String(f.id)) || 'offline';
+  const renderFriendsList = async (friends: any[]) => {
+    const token = localStorage.getItem("tokenUser");
+    
+    // Obtener avatares para todos los amigos
+    const friendsWithAvatars = await Promise.all(
+      friends.map(async (f: any) => {
+        const friendId = f.id || f.user_id;
+        const avatarUrl = await fetchAvatarUrl(friendId, token || '');
+        const avatarSrc = avatarUrl || "/assets/avatar_39.png";
+        
+        return {
+          ...f,
+          avatar_src: avatarSrc
+        };
+      })
+    );
+    
+    listContainer.innerHTML = friendsWithAvatars
+      .map((f: any) => {
+        const friendId = f.id || f.user_id;
+        const status = wsService.getUserStatus(String(friendId)) || 'offline';
         const statusColor = status === 'online' ? 'bg-green-500' : 
                            status === 'in-game' ? 'bg-yellow-500' : 'bg-gray-400';
-        const statusText = status === 'online' ? '🟢' : 
-                          status === 'in-game' ? '🎮' : '⚫';
+        const statusText = status === 'online' ? 'Online' : 
+                          status === 'in-game' ? 'In Game' : 'Offline';
         
         return `
         <div class="friend-item flex items-center gap-3 p-2 bg-white bg-opacity-70 rounded cursor-pointer hover:bg-poke-blue hover:text-white transition"
-             data-id="${f.id}" data-username="${f.username}">
+             data-id="${friendId}" data-username="${f.username}">
           <div class="relative">
-            <img src="/assets/avatar${(i % 9) + 1}.png" class="w-8 h-8 rounded-full" />
+            <img src="${f.avatar_src}" class="w-8 h-8 rounded-full object-cover" />
             <div class="absolute -bottom-1 -right-1 w-3 h-3 ${statusColor} rounded-full border-2 border-white" 
                  title="${status}"></div>
           </div>
           <div class="flex-1">
             <span class="font-medium">${f.username}</span>
-            <span class="text-xs ml-2">${statusText}</span>
+            <span class="text-xs ml-2 opacity-70">${statusText}</span>
           </div>
         </div>
       `;

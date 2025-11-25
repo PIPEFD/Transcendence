@@ -8,35 +8,57 @@ export async function fetchAvatarUrl(userId: number | null, token: string | null
     if (!userId || !token) return null;
 
     try {
+        // Primero intentar obtener la URL del avatar desde avatar_photo.php
+        const avatarInfoResponse = await fetch(`${API_ENDPOINTS.AVATAR_PHOTO}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: userId })
+        });
+
+        if (avatarInfoResponse.ok) {
+            const avatarData = await avatarInfoResponse.json();
+            const avatarUrl = avatarData.success?.avatar_url;
+            
+            if (avatarUrl) {
+                // Si es una URL de uploads, construir la URL completa
+                if (avatarUrl.startsWith('/uploads/')) {
+                    return `${API_ENDPOINTS.USERS.replace('/api/users.php', '')}${avatarUrl}`;
+                }
+                // Si es una URL completa o un path de assets
+                return avatarUrl;
+            }
+        }
+
+        // Si no hay avatar personalizado, intentar obtener la imagen del endpoint PATCH
         const response = await fetch(`${API_ENDPOINTS.USERS}?id=${userId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                // No necesitamos Content-Type: application/json si esperamos una imagen
             },
         });
 
         if (!response.ok) {
             console.error("Error fetching avatar:", response.status);
-            // El servidor envió un error (probablemente JSON)
             return null; 
         }
 
-        // 1. Lee el cuerpo como datos binarios (lo que el PHP debería enviar)
+        // Lee el cuerpo como datos binarios
         const imageBlob = await response.blob();
         
-        // 2. Si el Blob es un JSON, significa que el servidor falló.
+        // Si el Blob es un JSON, significa que el servidor falló
         if (imageBlob.type.includes('application/json')) {
-             // Si el Blob es JSON, léelo como texto para ver el error real
              const jsonText = await imageBlob.text();
              console.error("El servidor envió un error JSON en lugar de la imagen:", jsonText);
              return null;
         }
 
-        // 3. Crea la URL temporal para usarla en el src del <img>
+        // Crea la URL temporal para usarla en el src del <img>
         const imageObjectURL = URL.createObjectURL(imageBlob);
         
-        return imageObjectURL; // Devolvemos la URL temporal
+        return imageObjectURL;
         
     } catch (error) {
         console.error("Error fetching avatar:", error);
