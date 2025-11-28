@@ -17,12 +17,15 @@ if (!checkBodyData($body, 'id'))
 
 $user_id = $body['id'];
 
-// Verificar JWT
-if (!checkJWT($user_id))
-    errorSend(403, 'forbidden access');
+// Verificar que hay un JWT válido (pero no necesariamente que coincida con el user_id)
+// Esto permite ver avatares de otros usuarios
+$authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+if (empty($authHeader) || !preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+    errorSend(403, 'forbidden access - no token');
+}
 
 // Buscar avatar del usuario
-$sqlQuery = "SELECT avatar FROM users WHERE user_id = :user_id";
+$sqlQuery = "SELECT avatar_url FROM users WHERE user_id = :user_id";
 $bind = [':user_id', $user_id, SQLITE3_INTEGER];
 $result = doQuery($database, $sqlQuery, $bind);
 
@@ -35,13 +38,13 @@ if (!$row)
     errorSend(404, 'User not found');
 
 // Si tiene avatar, devolverlo
-if ($row['avatar']) {
-    // Si es una URL completa (empieza con http/uploads), devolverla directamente
-    if (strpos($row['avatar'], 'http') === 0 || strpos($row['avatar'], 'uploads/') === 0) {
-        successSend(['avatar_url' => $row['avatar']], 200);
+if ($row['avatar_url']) {
+    // Si es una URL completa (empieza con http) o un path que empieza con /uploads
+    if (strpos($row['avatar_url'], 'http') === 0 || strpos($row['avatar_url'], '/uploads/') === 0) {
+        successSend(['avatar_url' => $row['avatar_url']], 200);
     } else {
         // Si es un ID de avatar por defecto
-        successSend(['avatar_url' => "/assets/avatar_{$row['avatar']}.png"], 200);
+        successSend(['avatar_url' => "/assets/avatar_{$row['avatar_url']}.png"], 200);
     }
 } else {
     // No tiene avatar

@@ -20,16 +20,24 @@ export async function fetchAvatarUrl(userId: number | null, token: string | null
 
         if (avatarInfoResponse.ok) {
             const avatarData = await avatarInfoResponse.json();
+            console.log('🖼️ Avatar data received:', avatarData);
             const avatarUrl = avatarData.success?.avatar_url;
+            
+            console.log('🖼️ Avatar URL from API:', avatarUrl);
             
             if (avatarUrl) {
                 // Si es una URL de uploads, construir la URL completa
                 if (avatarUrl.startsWith('/uploads/')) {
-                    return `${API_ENDPOINTS.USERS.replace('/api/users.php', '')}${avatarUrl}`;
+                    const fullUrl = `${window.location.protocol}//${window.location.host}${avatarUrl}`;
+                    console.log('🖼️ Full avatar URL:', fullUrl);
+                    return fullUrl;
                 }
                 // Si es una URL completa o un path de assets
+                console.log('🖼️ Using avatar URL as-is:', avatarUrl);
                 return avatarUrl;
             }
+        } else {
+            console.error('❌ Avatar API response not OK:', avatarInfoResponse.status);
         }
 
         // Si no hay avatar personalizado, intentar obtener la imagen del endpoint PATCH
