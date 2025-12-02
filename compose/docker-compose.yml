@@ -23,6 +23,7 @@ services:
       - ../config/auth:/etc/nginx/auth:ro
       - ../backend/public:/var/www/html/public:ro
       - ../docker/nginx/docker-entrypoint.sh:/docker-entrypoint.sh:ro
+      - ../logs/nginx:/var/log/nginx  # Logs para ELK
       - type: bind
         source: ../config/ssl/fullchain.pem
         target: /etc/ssl/fullchain.pem
@@ -474,6 +475,77 @@ services:
     restart: unless-stopped
     profiles: ["monitoring","dev"]
 
+  # ELK Stack - Log Management and Analysis
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: transcendence-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - cluster.name=ft_transcendence
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+      - ../elk/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "127.0.0.1:${ELASTICSEARCH_PORT:-9200}:9200"
+    networks:
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    profiles: ["elk"]
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: transcendence-logstash
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ../elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ../logs/nginx:/var/log/nginx:ro
+    environment:
+      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
+    networks:
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    profiles: ["elk"]
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: transcendence-kibana
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ../elk/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "127.0.0.1:${KIBANA_PORT:-5601}:5601"
+    networks:
+      - monitoring
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+    profiles: ["elk"]
+
 
 # Redes definidas
 networks:
@@ -495,6 +567,8 @@ volumes:
   prometheus_data:
     driver: local
   grafana_data:
+    driver: local
+  elasticsearch_data:
     driver: local
   frontend_node_modules:
     driver: local
