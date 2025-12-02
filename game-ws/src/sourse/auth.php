@@ -10,10 +10,38 @@ function handleAuth($webSocket, $conn, $body) {
         return;
     }
     try {
-        $conn->userId = $body['id'] ?? 0;
+        // Decodificar JWT para obtener user_id
+        // Leer secret desde archivo de Docker secrets o variable de entorno
+        $secretKey = null;
+        if (file_exists('/run/secrets/jwt_secret')) {
+            $secretKey = trim(file_get_contents('/run/secrets/jwt_secret'));
+        } else {
+            $secretKey = getenv('JWTsecretKey');
+        }
         
-        // TODO: Validar token contra la API real
-        // Por ahora, aceptamos cualquier token para testing
+        if ($secretKey === false || empty($secretKey)) {
+            error_log('FATAL: JWT_SECRET_KEY no está configurada');
+            $conn->send(json_encode(['type' => 'auth-failed', 'reason' => 'server configuration error']));
+            $conn->close();
+            return;
+        }
+
+        try {
+            $decoded = \Firebase\JWT\JWT::decode($conn->authToken, new \Firebase\JWT\Key($secretKey, 'HS256'));
+            $conn->userId = $decoded->data->user_id ?? null;
+            
+            if (!$conn->userId) {
+                $conn->send(json_encode(['type' => 'auth-failed', 'reason' => 'invalid token - no user_id']));
+                $conn->close();
+                return;
+            }
+        } catch (\Exception $e) {
+            error_log('JWT decode error: ' . $e->getMessage());
+            $conn->send(json_encode(['type' => 'auth-failed', 'reason' => 'invalid token', 'error' => $e->getMessage()]));
+            $conn->close();
+            return;
+        }
+        
         $conn->auth = true;
         $conn->userName = 'User' . $conn->userId; // Nombre temporal
         $conn->status = 'online'; // Estados: online, offline, in-game
@@ -26,7 +54,7 @@ function handleAuth($webSocket, $conn, $body) {
         }
     } catch (\Exception $e) {
         error_log('Auth error: ' . $e->getMessage());
-        $conn->send(json_encode(['type' => 'auth-failed', 'reason' => 'invalid token', 'error' => $e->getMessage()]));
+        $conn->send(json_encode(['type' => 'auth-failed', 'reason' => 'internal error', 'error' => $e->getMessage()]));
         $conn->close();
     }
 }

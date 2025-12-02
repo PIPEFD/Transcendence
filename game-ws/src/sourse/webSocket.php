@@ -29,7 +29,7 @@ class webSocket implements \Ratchet\MessageComponentInterface {
     public function onMessage(\Ratchet\ConnectionInterface $conn, $data) {
         $body = json_decode($data, true);
         if (!$conn->auth && ($body['type'] ?? '') !== 'auth') {
-            $conn->send(json_encode(['unauthorized']));
+            $conn->send(json_encode(['type' => 'error', 'message' => 'Authentication required. Please send auth message first.']));
             return ;
         }
         switch ($body['type'] ?? '') {
@@ -55,12 +55,13 @@ class webSocket implements \Ratchet\MessageComponentInterface {
                 handleNewGame($this, $conn, $body);
                 break ;
             default:
-                $conn->send(json_encode(['type' => '400', 'message' => 'bad request']));
+                $conn->send(json_encode(['type' => 'error', 'message' => 'Unknown message type']));
                 break ;
         }
     }
     public function onError(\Ratchet\ConnectionInterface $conn, \Exception $exc) {
-        $conn->send(json_encode(['type' => '500', 'message' => 'web socket connection error.']));
+        error_log("WebSocket Error: " . $exc->getMessage());
+        $conn->send(json_encode(['type' => 'error', 'message' => 'Internal server error']));
         $conn->close();
     }
     public function onClose(\Ratchet\ConnectionInterface $conn) {

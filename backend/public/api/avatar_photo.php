@@ -5,17 +5,13 @@ require_once __DIR__ . '/header.php';
 $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-if ($requestMethod !== 'POST')
+if ($requestMethod !== 'GET')
     errorSend(405, 'unauthorized method');
 
-$body = json_decode(file_get_contents('php://input'), true);
-if (!is_array($body))
-    errorSend(400, 'invalid json');
+$user_id = $_GET['user_id'] ?? null;
 
-if (!checkBodyData($body, 'id'))
-    errorSend(400, 'Bad request. Missing user id');
-
-$user_id = $body['id'];
+if (!$user_id)
+    errorSend(400, 'Bad request. Missing user_id parameter');
 
 // Verificar que hay un JWT válido (pero no necesariamente que coincida con el user_id)
 // Esto permite ver avatares de otros usuarios

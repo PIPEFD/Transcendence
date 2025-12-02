@@ -172,6 +172,8 @@ services:
     container_name: transcendence-game-ws
     expose:
       - "${GAME_WS_CONTAINER_PORT:-8080}"
+    secrets:
+      - jwt_secret
     volumes:
       - ../game-ws:/app
       - /app/vendor
@@ -179,7 +181,7 @@ services:
       - "app=transcendence"
       - "tier=websocket"
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:${GAME_WS_CONTAINER_PORT:-8080}/health"]
+      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"localhost\", ${GAME_WS_CONTAINER_PORT:-8080}) ? 0 : 1);'"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -515,11 +517,11 @@ services:
     networks:
       - monitoring
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9600 || exit 1"]
+      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"localhost\", 8080) ? 0 : 1);'"]
       interval: 30s
       timeout: 10s
-      retries: 5
-      start_period: 60s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
     profiles: ["elk"]
 

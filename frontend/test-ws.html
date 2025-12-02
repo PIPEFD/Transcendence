@@ -19,9 +19,17 @@
         <button onclick="connect()">Connect</button>
         <button onclick="disconnect()">Disconnect</button>
     </div>
+    
     <div style="margin-top: 20px;">
-        <input type="text" id="message" placeholder='{"type": "ping"}'>
-        <button onclick="sendMessage()">Send Message</button>
+        <h3>Quick Actions:</h3>
+        <button onclick="sendAuth()">🔐 Send Auth (testuser1)</button>
+        <button onclick="sendPing()">📡 Send Ping</button>
+        <button onclick="getOnlineUsers()">👥 Get Online Users</button>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <input type="text" id="message" placeholder='{"type": "ping"}' style="width: 500px;">
+        <button onclick="sendMessage()">Send Custom Message</button>
     </div>
     <div style="margin-top: 20px;">
         <button onclick="clearLogs()">Clear Logs</button>
@@ -95,6 +103,64 @@
             } catch (error) {
                 log(`❌ Error enviando mensaje: ${error.message}`, 'error');
             }
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+
+        async function sendAuth() {
+            // Primero hacer login para obtener el token
+            try {
+                const response = await fetch('https://localhost:9443/api/login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: 'testuser1', pass: 'Test123!' })
+                });
+                
+                const data = await response.json();
+                const token = data.details || data.token;
+                
+                if (!token) {
+                    log('❌ No se pudo obtener token', 'error');
+                    return;
+                }
+                
+                log(`✅ Token obtenido: ${token.substring(0, 50)}...`, 'success');
+                
+                // Enviar auth al WebSocket
+                const authMsg = JSON.stringify({
+                    type: 'auth',
+                    token: token
+                });
+                
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(authMsg);
+                    log(`📤 Auth enviado`, 'success');
+                } else {
+                    log('❌ WebSocket no está conectado', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error en auth: ${error.message}`, 'error');
+            }
+        }
+
+        function sendPing() {
+            sendCustomMessage({ type: 'ping' });
+        }
+
+        function getOnlineUsers() {
+            sendCustomMessage({ type: 'get-online-users' });
+        }
+
+        function sendCustomMessage(obj) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log('❌ WebSocket no está conectado', 'error');
+                return;
+            }
+            const message = JSON.stringify(obj);
+            ws.send(message);
+            log(`📤 Enviado: ${message}`, 'success');
         }
 
         function clearLogs() {

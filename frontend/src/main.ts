@@ -198,17 +198,18 @@ window.addEventListener("load", () => {
   }
   updateHeader(state);
 
-  if (!state.player.alias) {
-    navigate("/register");
-  } else {
-    router();
-  }
-
-  // Conectar al WebSocket si el usuario está autenticado
+  // Verificar autenticación por token JWT en lugar de alias
   const token = localStorage.getItem('tokenUser');
   const userId = localStorage.getItem('userId');
   
-  if (token && userId) {
+  if (!token || !userId) {
+    // No hay sesión activa, redirigir a login
+    navigate("/login");
+  } else {
+    // Hay sesión activa, navegar a la ruta actual
+    router();
+    
+    // Conectar al WebSocket si el usuario está autenticado
     console.log('🔌 Usuario autenticado detectado. Conectando WebSocket...');
     wsService.connect()
       .then(() => {

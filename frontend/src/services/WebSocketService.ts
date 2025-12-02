@@ -80,14 +80,14 @@ class WebSocketService {
             
             // Manejar cambios de estado de usuario
             if (data.type === 'user-status-changed') {
-              this.userStatus.set(data.userId, data.status);
+              this.userStatus.set(String(data.userId), data.status);
               console.log(`👤 ${data.username} ahora está ${data.status}`);
             }
             
             // Manejar lista de usuarios online
             if (data.type === 'online-users') {
               data.users.forEach((user: any) => {
-                this.userStatus.set(user.userId, user.status);
+                this.userStatus.set(String(user.userId), user.status);
               });
               console.log(`👥 ${data.count} usuarios online`);
             }

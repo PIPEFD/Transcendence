@@ -9,8 +9,12 @@ echo "===================================================="
 # Base URL de la API
 API_URL="https://localhost:9443/api"
 
+# Obtener directorio raíz del proyecto
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
 # Directorio de avatares
-AVATAR_DIR="frontend/assets"
+AVATAR_DIR="$PROJECT_ROOT/frontend/assets"
 
 # Array de usuarios de prueba con sus avatares
 declare -a USERS=(

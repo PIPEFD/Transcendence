@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+import { wsService } from "../services/WebSocketService.js";
 
 export function LoginView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -92,6 +93,9 @@ export function LoginView(app: HTMLElement, state: any): void {
         console.log("🔍 Verificación - Token guardado:", !!savedToken);
         console.log("🔍 Verificación - UserId guardado:", savedUserId);
         
+        // Conectar WebSocket después del login
+        wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
+        
         navigate("/choose");
         return;
       }
@@ -105,6 +109,8 @@ export function LoginView(app: HTMLElement, state: any): void {
       if (data.pending_2fa) {
         navigate("/authentication");
       } else {
+        // Conectar WebSocket después del login exitoso
+        wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
         navigate("/choose"); // login exitoso directo
       }
 
