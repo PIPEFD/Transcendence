@@ -77,6 +77,7 @@ export function LoginView(app: HTMLElement, state: any): void {
 
       // Guardar userId siempre
       if (data.user_id) {
+        localStorage.setItem("username", String(username));
         localStorage.setItem("userId", String(data.user_id));
         console.log("✅ userId guardado:", data.user_id);
       }

@@ -52,6 +52,7 @@ export function SettingsView(app: HTMLElement, state: any): void {
 
       // Borrar JWT del localStorage y volver al inicio
       localStorage.removeItem('tokenUser');
+      localStorage.removeItem('userId');
       navigate("/register");
     } catch (err) {
       console.error("Error during logout:", err);

@@ -20,6 +20,7 @@ class WebSocketService {
     return new Promise((resolve, reject) => {
       const token = localStorage.getItem('tokenUser');
       const userId = localStorage.getItem('userId');
+      const username = localStorage.getItem('username');
 
       if (!token || !userId) {
         console.warn('No hay token o userId. No se puede conectar al WebSocket.');
@@ -39,7 +40,8 @@ class WebSocketService {
           this.send({
             type: 'auth',
             token: token,
-            id: userId
+            id: userId,
+            username: username
           });
 
           // Esperar respuesta de autenticación

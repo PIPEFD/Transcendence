@@ -13,7 +13,7 @@ class webSocket implements \Ratchet\MessageComponentInterface {
     public function __construct() {
         $this->client = new \SplObjectStorage;
         $this->apiRest = new \GuzzleHttp\Client([
-            'base_uri' => 'http://localhost:8085/api', // url api
+            'base_uri' => 'http://localhost:9000/api', // url api
             'timeout' => 5.0,
         ]);
     }

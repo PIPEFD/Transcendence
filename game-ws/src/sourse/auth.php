@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 function handleAuth($webSocket, $conn, $body) {
+    error_log(print_r($body));
     $conn->authToken = $body['token'] ?? null;
     if (!$conn->authToken) {
         $conn->send(json_encode(['type'=>'auth-failed','reason'=>'missing token']));
@@ -10,8 +11,6 @@ function handleAuth($webSocket, $conn, $body) {
         return;
     }
     try {
-        // Decodificar JWT para obtener user_id
-        // Leer secret desde archivo de Docker secrets o variable de entorno
         $secretKey = null;
         if (file_exists('/run/secrets/jwt_secret')) {
             $secretKey = trim(file_get_contents('/run/secrets/jwt_secret'));
@@ -43,7 +42,7 @@ function handleAuth($webSocket, $conn, $body) {
         }
         
         $conn->auth = true;
-        $conn->userName = 'User' . $conn->userId; // Nombre temporal
+        $conn->userName = $body['username'] ?? null;
         $conn->status = 'online'; // Estados: online, offline, in-game
         $webSocket->usersConns[$conn->userId] = $conn;
         $conn->send(json_encode(['type' => 'auth-ok', 'userId' => $conn->userId, 'username' => $conn->userName]));

@@ -203,27 +203,33 @@ export function ChatView(app: HTMLElement, state: any) {
   
   // Escuchar mensajes de chat del WebSocket global
   const handleChatMessage = (data: any) => {
-    console.log('📩 Mensaje de chat recibido:', data);
-    
-    // Verificar si el mensaje es para el chat actual abierto
+    console.log("📩 Mensaje recibido:", data);
+
+  // Chat actual abierto
     const messagesContainer = document.getElementById('messagesContainer');
-    if (!messagesContainer) return;
-    
-    // Obtener el friendId actual del DOM si está disponible
-    const currentChatHeader = chatPanel.querySelector('.font-bold');
-    if (!currentChatHeader) return;
-    
-    const currentFriendName = currentChatHeader.textContent;
-    
-    // Añadir mensaje al contenedor si coincide
-    if (data.userId || data.senderId) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'text-sm p-2 rounded bg-poke-blue text-white max-w-xs';
-      msgDiv.textContent = `${data.message || ''}`;
-      messagesContainer.appendChild(msgDiv);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    const chatHeader = chatPanel.querySelector('.font-bold');
+
+    if (!messagesContainer || !chatHeader) return;
+
+  // Extraer ID del amigo actual
+    const currentFriendName = chatHeader.textContent;
+  
+  // Si no coincide el nombre, ignorar
+    if (data.username !== currentFriendName && data.senderName !== currentFriendName) {
+      console.log("➡ Mensaje ignorado (pertenece a otro chat)");
+      return;
     }
+
+  // Dibujar mensaje entrante
+    const msgDiv = document.createElement('div');
+    msgDiv.className = "bg-gray-200 text-poke-dark p-2 rounded-xl max-w-[80%] mr-auto shadow";
+    msgDiv.textContent = data.message;
+    messagesContainer.appendChild(msgDiv);
+
+    // Auto-scroll
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   };
+
   
   // Registrar handler para mensajes de chat
   wsService.on('chat-friends', handleChatMessage);
