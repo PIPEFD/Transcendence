@@ -1,5 +1,26 @@
 import { navigate } from "../main.js";
 import { wsService } from "../services/WebSocketService.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+
+async function updateEloTs(winner: {score: number}, loser: {score: number}) {
+  try {
+    const response = await fetch('/api/game/update-elo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        winner_id: winner,
+        loser_id: loser,
+        game_result: "5 - 0"
+      })
+    });
+
+    if (!response.ok) throw new Error('Failed to update Elo');
+    const data = await response.json();
+    console.log('✅ Elo updated:', data);
+  } catch (error) {
+    console.error('❌ Error updating Elo:', error);
+  }
+}
 
 export function GameOneo(app: HTMLElement) {
   const selfId = localStorage.getItem("userId");
@@ -27,6 +48,7 @@ export function GameOneo(app: HTMLElement) {
   const playerSpeed = 6;
   const maxScore = 5;
 
+  // ===== Estados locales de jugadores =====
   const player = { x: 0, y: canvas.height/2 - paddleHeight/2, score: 0 };
   const opponent = { x: 0, y: canvas.height/2 - paddleHeight/2, score: 0 };
   const ball = { x: canvas.width/2, y: canvas.height/2, vx: 0, vy: 0 };
@@ -74,7 +96,7 @@ export function GameOneo(app: HTMLElement) {
     if(isHost && data.player2Y !== undefined) opponent.y = data.player2Y;
     else if(!isHost && data.player1Y !== undefined) opponent.y = data.player1Y;
 
-    // Pelota y puntuación en cliente
+    // Solo cliente actualiza pelota y marcador del host
     if(!isHost){
       if(data.ball){
         ball.x = data.ball.x;
@@ -83,8 +105,14 @@ export function GameOneo(app: HTMLElement) {
         ball.vy = data.ball.vy;
       }
       if(data.score){
-        player.score = isHost ? data.score.player1 : data.score.player2;
-        opponent.score = isHost ? data.score.player2 : data.score.player1;
+        // Cada jugador mantiene su puntuación local correcta
+        if(selfId == msg.fromPlayerId){ // "self" score
+          player.score = data.score.self;
+          opponent.score = data.score.opponent;
+        } else {
+          player.score = data.score.opponent;
+          opponent.score = data.score.self;
+        }
       }
     }
   });
@@ -105,13 +133,25 @@ export function GameOneo(app: HTMLElement) {
     if(down && player.y+paddleHeight<canvas.height) player.y+=playerSpeed;
 
     if(gameId && wsService.isConnected()){
-      wsService.send({
-        type: "game-action",
-        gameId: gameId,
-        action: "move",
-        data: isHost ? { player1Y: player.y, ball, score: {player1: player.score, player2: opponent.score} } 
-                     : { player2Y: player.y }
-      });
+      if(isHost){
+        wsService.send({
+          type: "game-action",
+          gameId: gameId,
+          action: "move",
+          data: {
+            player1Y: player.y,
+            ball: { ...ball },
+            score: { self: player.score, opponent: opponent.score }
+          }
+        });
+      } else {
+        wsService.send({
+          type: "game-action",
+          gameId: gameId,
+          action: "move",
+          data: { player2Y: player.y }
+        });
+      }
     }
   };
 
@@ -141,11 +181,16 @@ export function GameOneo(app: HTMLElement) {
       if(ball.x - ballRadius < 0){ opponent.score++; resetBall(); }
       if(ball.x + ballRadius > canvas.width){ player.score++; resetBall(); }
 
-      // Fin de juego
+      // ===== FINAL DE LA PARTIDA: gestionar historial aquí =====
       if(player.score >= maxScore || opponent.score >= maxScore){
         gameRunning = false;
         ctx.clearRect(0,0,canvas.width,canvas.height);
         drawText(player.score >= maxScore ? "You Win! 🏆" : "You Lose! 💀", canvas.width/2-60, canvas.height/2, "yellow", 24);
+        if (player.score == maxScore && isHost) {
+            updateEloTs(player, opponent);
+        } else if (opponent.score == maxScore && isHost) {
+            updateEloTs(opponent, player);
+        }
         return;
       }
     }
