@@ -13,6 +13,9 @@ class WebSocketService {
   private shouldReconnect = true;
   private userStatus: Map<string, string> = new Map(); // userId -> status
 
+  // Guarda el último game-start recibido
+  public lastGameStart: any = null;
+
   /**
    * Conecta al WebSocket y autentica automáticamente si hay token
    */
@@ -28,7 +31,7 @@ class WebSocketService {
         return;
       }
 
-      const wsUrl = WS_BASE_URL; // WS_BASE_URL ya incluye /ws/
+      const wsUrl = WS_BASE_URL;
       console.log('🔌 Conectando a WebSocket:', wsUrl);
 
       try {
@@ -36,26 +39,18 @@ class WebSocketService {
 
         this.ws.onopen = () => {
           console.log('✅ WebSocket conectado. Enviando autenticación...');
-          // Enviar autenticación automáticamente
-          this.send({
-            type: 'auth',
-            token: token,
-            id: userId,
-            username: username
-          });
+          this.send({ type: 'auth', token, id: userId, username });
 
-          // Esperar respuesta de autenticación
           const authTimeout = setTimeout(() => {
             console.error('❌ Timeout esperando autenticación');
             reject(new Error('Auth timeout'));
           }, 5000);
 
-          // Handler temporal para auth
           const tempHandler = (event: MessageEvent) => {
             try {
               const data = JSON.parse(event.data);
               clearTimeout(authTimeout);
-              
+
               if (data.type === 'auth-ok') {
                 console.log('✅ Autenticación exitosa');
                 this.isAuthenticated = true;
@@ -68,7 +63,7 @@ class WebSocketService {
                 reject(new Error(data.reason || 'Auth failed'));
               }
             } catch (e) {
-              // No es JSON o no es mensaje de auth
+              // Ignorar
             }
           };
 
@@ -79,29 +74,35 @@ class WebSocketService {
           try {
             const data = JSON.parse(event.data);
             console.log('📩 Mensaje recibido:', data);
-            
-            // Manejar cambios de estado de usuario
+
+            // Guardar el último game-start
+            if (data.type === "game-start") {
+              this.lastGameStart = data;
+            }
+
+            // Cambios de estado de usuario
             if (data.type === 'user-status-changed') {
               this.userStatus.set(String(data.userId), data.status);
               console.log(`👤 ${data.username} ahora está ${data.status}`);
             }
-            
-            // Manejar lista de usuarios online
+
+            // Lista de usuarios online
             if (data.type === 'online-users') {
               data.users.forEach((user: any) => {
                 this.userStatus.set(String(user.userId), user.status);
               });
               console.log(`👥 ${data.count} usuarios online`);
             }
-            
-            // Distribuir a los handlers registrados
+
+            // Distribuir a handlers registrados
             const type = data.type || 'unknown';
             const handlers = this.messageHandlers.get(type) || [];
             handlers.forEach(handler => handler(data));
-            
-            // También llamar a los handlers genéricos
+
+            // Handlers genéricos
             const genericHandlers = this.messageHandlers.get('*') || [];
             genericHandlers.forEach(handler => handler(data));
+
           } catch (e) {
             console.error('Error parseando mensaje:', e);
           }
@@ -115,7 +116,7 @@ class WebSocketService {
         this.ws.onclose = (event) => {
           console.log('🔌 WebSocket cerrado:', event.code, event.reason);
           this.isAuthenticated = false;
-          
+
           if (this.shouldReconnect && this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
             console.log(`🔄 Reintentando conexión (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`);

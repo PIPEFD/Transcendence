@@ -1,141 +1,146 @@
-import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { fetchAvatarUrl } from "./Header.js";
+import { wsService } from "../services/WebSocketService.js";
+import { navigate } from "../main.js";
 
-// ... (Resto de las importaciones) ...
+// Tipos
+type Friend = {
+    id?: number;
+    user_id?: number;
+    username: string;
+};
 
-export async function InviteView(app: HTMLElement): Promise<void> {
-    app.innerHTML = `
-        <div class="flex justify-center gap-6 max-w-6xl mx-auto">
-        <div id="friendsSection" class="flex-1 bg-poke-light bg-opacity-60 text-poke-dark border-3 border-poke-dark p-8 rounded-2xl shadow-lg flex flex-col items-center text-center space-y-4 max-w-3xl">
-            <h1 class="text-xl font-bold mb-4">${t("Choose a friend")}</h1>
-    
-            <div id="friendsContentOuter" class="w-full bg-white bg-opacity-40 border-2 border-poke-dark rounded-lg p-4 overflow-hidden" style="height: 400px;">
-                <div id="friendsContent" class="w-full h-full overflow-y-auto pr-2 space-y-2">
-                    <p class="text-center mt-8">${t("loading_friends") || "Cargando amigos..."}</p>
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-poke-blue mx-auto mt-4"></div>
-                </div>
-            </div>
-    
-            <button id="backBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 mt-6 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press">
-                ${t("goBack")}
-            </button>
-        </div>
-    
-        <div id="chatSection" class="flex-1 hidden">
-        </div>
-        </div>
-    `;
-  
-    const userId = localStorage.getItem('userId');
-    const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+export default async function loadFriends() {
+    const selfId = localStorage.getItem("userId");
+    const token = localStorage.getItem("tokenUser");
 
-    const content = document.getElementById("friendsContent") as HTMLElement;
+    if (!selfId || !token) {
+        console.error("Missing user credentials");
+        return;
+    }
 
-    // --- LÓGICA ASÍNCRONA PARA CARGAR LA LISTA DE AMIGOS ---
-    const fetchFriendList = async (): Promise<string> => {
-        const token = localStorage.getItem('tokenUser');
-        if (!token) {
-            return `<p class="text-red-500">${t("error_no_login") || "Error: No se ha iniciado sesión."}</p>`;
+    // --- Crear la estructura HTML si no existe ---
+    let content = document.getElementById("friendsContent");
+    if (!content) {
+        const app = document.getElementById("app");
+        if (!app) {
+            console.error("App container not found");
+            return;
         }
-        
-        const currentUserId = localStorage.getItem('userId');
-        const currentUserIdPlaceholder = currentUserId ? parseInt(currentUserId, 10) : null;
-            
-        try {
-            const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${currentUserIdPlaceholder}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-    
-            const data = await response.json();
-            const friends = Array.isArray(data.success) ? data.success : [];
-    
-            if (friends.length === 0) {
-                return `
-                    <h2 class="text-lg mb-3">${t("friends_list")}</h2>
-                    <p class="mt-4 text-center text-poke-dark">${t("no_friends_yet") || "Aún no tienes amigos. ¡Añade algunos!"}</p>
-                `;
-            }
 
-            const friendsWithAvatars = await Promise.all(
-                friends.map(async (friend: any) => {
-                    const friendId = friend.id || friend.user_id;
-                    const avatarUrl = await fetchAvatarUrl(friendId, token);
-                    const avatarSrc = avatarUrl || "/assets/avatar_39.png";
-                    
-                    return { 
-                        ...friend, 
-                        avatar_src: avatarSrc 
+        app.innerHTML = `
+            <div class="max-w-3xl mx-auto p-4">
+                <h1 class="text-xl font-bold mb-4">${t("Choose a friend")}</h1>
+                <div id="friendsContent" class="h-96 overflow-y-auto bg-white bg-opacity-40 rounded border p-2">
+                    <p class="text-center mt-4">${t("loading_friends")}</p>
+                </div>
+                <button id="backBtn" class="mt-4 px-4 py-2 bg-red-600 text-white rounded">${t("goBack")}</button>
+            </div>
+        `;
+        content = document.getElementById("friendsContent");
+        if (!content) {
+            console.error("friendsContent could not be created");
+            return;
+        }
+    }
+
+    // --- Función para obtener amigos ---
+    async function fetchFriends(): Promise<string> {
+        try {
+            const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${selfId}`, {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = await response.json();
+            const friends: Friend[] = Array.isArray(data.success) ? data.success : [];
+
+            if (friends.length === 0) return `<p>${t("no_friends_yet")}</p>`;
+
+            const mapped = await Promise.all(
+                friends.map(async (friendData: Friend) => {
+                    const uid: number | null = friendData.id ?? friendData.user_id ?? null;
+                    return {
+                        ...friendData,
+                        avatar_src: await fetchAvatarUrl(uid, token) || "/assets/avatar_39.png"
                     };
                 })
             );
-    
-            // Genera el HTML con los datos de amigos reales
-            return `
-                <h2 class="text-lg mb-3">${t("friends_list")}</h2>
-                <ul class="space-y-2">
-                    ${friendsWithAvatars.map((friend: any) => {
-                        const idAmigo = friend.id || friend.user_id; 
-                        
-                        return `
-                        <li class="flex items-center justify-between bg-white bg-opacity-70 p-3 rounded border border-poke-dark gap-6">
-                            
-                            <div class="flex items-center gap-3 flex-grow mr-6"> 
-                                <img src="${friend.avatar_src}" class="w-10 h-10 rounded-full" />
-                                <div class="text-left">
-                                    <div class="text-sm font-medium">${friend.username}</div>
-                                    <div class="text-xs text-poke-dark">Online</div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex gap-2 flex-shrink-0">
-                                <button 
-                                    data-friend-id="${idAmigo}" 
-                                    class="invite-friend-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press">
-                                    ${t("invite")}
-                                </button>
-                            </div>
-                        </li>
-                    `;
-                    }).join('')}
-                </ul>
-            `;
-    
+
+            return mapped
+                .map(friend => `
+                    <div class="flex justify-between items-center p-2 bg-white bg-opacity-60 rounded border mb-2">
+                        <div class="flex items-center gap-3">
+                            <img src="${friend.avatar_src}" class="w-10 h-10 rounded-full">
+                            <span>${friend.username}</span>
+                        </div>
+                        <button data-id="${friend.id ?? friend.user_id}" class="invite-btn bg-blue-600 text-white px-3 py-1 rounded">
+                            ${t("invite")}
+                        </button>
+                    </div>
+                `)
+                .join("");
+
         } catch (error) {
-            console.error("Error fetching friend list:", error);
-            return `<p class="text-red-500">${t("error_network") || "Error de red."}</p>`;
+            console.error("Error fetching friends:", error);
+            return `<p>${t("error_network")}</p>`;
         }
-    };
+    }
 
-    const setupListListeners = (container: HTMLElement) => {
+    // --- Insertar la lista de amigos ---
+    content.innerHTML = await fetchFriends();
 
-        // Configura el evento para invitar amigo
-        container.querySelectorAll('.invite-friend-btn').forEach(btn => {
-            btn.addEventListener("click", async (e) => {
-                const targetButton = e.currentTarget as HTMLButtonElement; 
-                const friendId = targetButton.dataset.friendId;
-                
-                console.log("friendId LEÍDO del botón:", friendId);
+    // --- Configurar botones de invitación ---
+    content.querySelectorAll<HTMLButtonElement>(".invite-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const to = btn.dataset.id;
+            if (!to) return;
 
-                if (!friendId || friendId.trim() === "") {
-                    console.error("ERROR: friendId es nulo o vacío. Deteniendo acción.");
-                    alert("No se pudo obtener el ID del amigo a invitar.");
-                    return; 
-                }
-                    
-                // LOGICA DESPUES DE INVITAR
-
-                navigate("/1v1o"); 
+            wsService.send({
+                type: "game-invite",
+                from: parseInt(selfId, 10),
+                to: parseInt(to, 10)
             });
         });
-    };
+    });
 
-    document.getElementById("backBtn")?.addEventListener("click", () => navigate("/"));
-    const friendListHtml = await fetchFriendList();
-    content.innerHTML = friendListHtml;
-    setupListListeners(content);
+    // --- WebSocket events ---
+    wsService.on("game-invite-sent", (msg: any) => {
+        alert(`Invitation sent to ${msg.to}`);
+    });
+
+    wsService.on("game-start", () => {
+        navigate("/1v1o");
+    });
+
+    wsService.on("game-invite-rejected", () => {
+        alert("Your invitation was rejected");
+    });
+    wsService.on("game-invite", (msg: any) => {
+    const fromId = msg.from;
+    const inviteId = msg.inviteId;
+
+    // Puedes usar alert simple
+    const accept = confirm(`Player ${fromId} invites you to a game. Accept?`);
+
+    // Enviar respuesta al servidor
+    wsService.send({
+        type: "game-invite-response",
+        inviteId,
+        response: accept
+    });
+
+    if (accept) {
+        // Opcional: navegar a la pantalla de juego
+        navigate("/1v1o");
+    } else {
+        alert("Invitation declined.");
+    }
+    });
+
+    // --- Botón back ---
+    const backBtn = document.getElementById("backBtn");
+    if (backBtn) {
+        backBtn.onclick = () => navigate("/");
+    }
 }

@@ -47,7 +47,6 @@ function handleAuth($webSocket, $conn, $body) {
         $webSocket->usersConns[$conn->userId] = $conn;
         $conn->send(json_encode(['type' => 'auth-ok', 'userId' => $conn->userId, 'username' => $conn->userName]));
         
-        // Notificar a todos los usuarios conectados que este usuario está online
         if (function_exists('broadcastUserStatus')) {
             broadcastUserStatus($webSocket, $conn->userId, $conn->userName, 'online');
         }

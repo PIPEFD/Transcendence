@@ -5,11 +5,14 @@ require_once __DIR__ . '/chat.php';
 require_once __DIR__ . '/game.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/status.php';
+require_once __DIR__ . '/invites.php';
 
 class webSocket implements \Ratchet\MessageComponentInterface {
     public $client; // public para acceso desde funciones externas
     protected $apiRest;
     public $usersConns = []; // as client but in map :D (public para acceso desde funciones externas)
+    public $pendingInvites = [];
+    public $activeGames = [];
     public function __construct() {
         $this->client = new \SplObjectStorage;
         $this->apiRest = new \GuzzleHttp\Client([
@@ -51,9 +54,20 @@ class webSocket implements \Ratchet\MessageComponentInterface {
             case 'chat-global':
                 handleChatGlobal($this, $conn, $body);
                 break ;
+            case 'game-action':
+                handleGameAction($this, $conn, $body);
+                break ;
             case 'game':
                 handleNewGame($this, $conn, $body);
                 break ;
+            case 'game-invite':
+                handleGameInvite($this, $conn, $body);
+                break ;
+            case 'game-invite-response':
+                handleInviteResponse($this, $conn, $body);
+                break ;
+            case 'player-ready':
+                handlePlayerReady($this, $conn, $body);
             default:
                 $conn->send(json_encode(['type' => 'error', 'message' => 'Unknown message type']));
                 break ;
