@@ -378,6 +378,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.2'
+          memory: 128M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "monitoring", "prod"]
@@ -395,6 +410,21 @@ services:
     read_only: true
     cap_drop:
       - ALL
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 64M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "monitoring", "prod"]
@@ -413,6 +443,21 @@ services:
     read_only: true
     cap_drop:
       - ALL
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 64M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "monitoring", "prod"]
@@ -433,6 +478,21 @@ services:
     read_only: true
     cap_drop:
       - ALL
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 64M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "monitoring", "prod"]
@@ -556,6 +616,21 @@ services:
       - backend
       - monitoring
       - game
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "2"
     restart: unless-stopped
     profiles: ["monitoring","dev"]
 
@@ -566,7 +641,7 @@ services:
     environment:
       - discovery.type=single-node
       - cluster.name=ft_transcendence
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx512m"
       - xpack.security.enabled=false
       - xpack.security.enrollment.enabled=false
     volumes:
@@ -576,6 +651,21 @@ services:
       - "127.0.0.1:${ELASTICSEARCH_PORT:-9200}:9200"
     networks:
       - monitoring
+    # Resource limits (Elasticsearch necesita más recursos)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
       interval: 30s
@@ -595,11 +685,26 @@ services:
       - ../elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
       - ../logs/nginx:/var/log/nginx:ro
     environment:
-      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
+      - "LS_JAVA_OPTS=-Xmx256m -Xms128m"
     networks:
       - monitoring
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "2"
     healthcheck:
-      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"localhost\", 8080) ? 0 : 1);'"]
+      test: ["CMD-SHELL", "curl -f http://localhost:9600 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -621,6 +726,22 @@ services:
       - monitoring
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - NODE_OPTIONS="--max-old-space-size=512"
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 768M
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "2"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
       interval: 30s
