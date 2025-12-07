@@ -3,7 +3,7 @@ import websocket
 
 @pytest.mark.integration
 def test_ws_handshake_and_ping(ws_url):
-    ws = websocket.create_connection(ws_url, timeout=8, header=["Origin: http://nginx"])
+    ws = websocket.create_connection(ws_url, timeout=8, header=["Origin: http://nginx"], sslopt={"cert_reqs": 0})
     try:
         ws.send("ping")
         msg = ws.recv()
