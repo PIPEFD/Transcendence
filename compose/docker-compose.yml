@@ -66,6 +66,13 @@ services:
         condition: service_healthy
       frontend:
         condition: service_healthy
+    # Configuración de logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "tier,app"
     # Mejoras de seguridad
     cap_drop:
       - ALL
@@ -82,6 +89,15 @@ services:
       nofile:
         soft: 1024
         hard: 1024
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "prod", "dev", "monitoring"]
@@ -120,6 +136,13 @@ services:
       - monitoring
     # Ejecutar como usuario root para resolver problemas de permisos
     user: root
+    # Configuración de logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "tier,app"
     # Mejoras de seguridad
     cap_drop:
       - ALL
@@ -128,6 +151,15 @@ services:
       - SETGID
     security_opt:
       - no-new-privileges:true
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "prod", "dev", "monitoring"]
@@ -156,11 +188,27 @@ services:
       start_period: 30s
     networks: 
       - frontend
+    # Configuración de logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "tier,app"
     # Mejoras de seguridad
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "prod", "dev", "monitoring"]
@@ -189,11 +237,27 @@ services:
     networks: 
       - backend
       - game
+    # Configuración de logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "tier,app"
     # Mejoras de seguridad
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "prod", "dev"]
@@ -229,6 +293,15 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "monitoring", "prod"]
@@ -268,6 +341,15 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     # Reinicio automático
     restart: unless-stopped
     profiles: ["default", "monitoring", "prod"]
