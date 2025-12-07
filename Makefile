@@ -6,9 +6,12 @@
 COMPOSE      := docker compose -f ./compose/docker-compose.yml --profile default
 COMPOSE_DEV  := docker compose -f ./compose/docker-compose.yml --profile dev
 COMPOSE_PROD := docker compose -f ./compose/docker-compose.yml --profile prod
+COMPOSE_MON  := docker compose -f ./compose/docker-compose.yml --profile monitoring
 COMPOSE_WAF  := docker compose -f ./compose/docker-compose.yml --profile waf
 COMPOSE_TEST := docker compose -f ./compose/docker-compose.yml --profile test
-COMPOSE_SCOPE := docker compose -f ./compose/docker-compose.yml --profile monitoring
+COMPOSE_ELK  := docker compose -f ./compose/docker-compose.yml --profile elk
+COMPOSE_SCOPE := docker compose -f ./compose/docker-compose.yml --profile scope-host
+COMPOSE_ALL  := docker compose -f ./compose/docker-compose.yml --profile default --profile monitoring
 
 # Rutas importantes
 CONFIG_DIR   := ./config
@@ -43,6 +46,7 @@ help:
 	@echo -e "  $(GREEN)make$(RESET)              Muestra esta ayuda"
 	@echo -e "  $(GREEN)make init$(RESET)         Inicializa el entorno completo (primera vez)"
 	@echo -e "  $(GREEN)make up$(RESET)           Inicia todos los servicios (perfil default)"
+	@echo -e "  $(GREEN)make up-full$(RESET)      Inicia servicios + monitoreo completo"
 	@echo -e "  $(GREEN)make up-dev$(RESET)       Inicia servicios en modo desarrollo (puertos directos)"
 	@echo -e "  $(GREEN)make up-prod$(RESET)      Inicia servicios en modo producción"
 	@echo -e "  $(GREEN)make up-monitoring$(RESET) Inicia servicios de monitorización"
@@ -50,6 +54,7 @@ help:
 	@echo -e "  $(GREEN)make down$(RESET)         Detiene todos los servicios"
 	@echo -e "  $(GREEN)make restart$(RESET)      Reinicia todos los servicios"
 	@echo -e "  $(GREEN)make logs$(RESET)         Muestra los logs de todos los servicios"
+	@echo -e "  $(GREEN)make status$(RESET)       Muestra el estado de todos los servicios"
 	@echo -e "  $(GREEN)make ports$(RESET)        Muestra los puertos efectivos publicados"
 	@echo ""
 	@echo -e "$(CYAN)SERVICIOS INDIVIDUALES:$(RESET)"
@@ -60,13 +65,19 @@ help:
 	@echo ""
 	@echo -e "$(CYAN)FUNCIONES DE DESARROLLO:$(RESET)"
 	@echo -e "  $(GREEN)make build$(RESET)        Construye todos los servicios"
+	@echo -e "  $(GREEN)make rebuild$(RESET)      Reconstruye sin cache"
 	@echo -e "  $(GREEN)make test$(RESET)         Ejecuta pruebas automáticas"
+	@echo -e "  $(GREEN)make test-docker$(RESET)  Ejecuta tests con Docker"
 	@echo -e "  $(GREEN)make up-waf$(RESET)       Inicia el Web Application Firewall"
 	@echo -e "  $(GREEN)make reset$(RESET)        Limpia completamente el entorno (elimina datos)"
 	@echo -e "  $(GREEN)make cleanup-files$(RESET) Elimina archivos temporales e innecesarios"
 	@echo -e "  $(GREEN)make clean-all$(RESET)    Limpieza total (reset + eliminación de archivos temporales)"
 	@echo ""
-	@echo -e "$(CYAN)MONITORIZACIÓN:$(RESET)"
+	@echo -e "$(CYAN)MONITORIZACIÓN Y MÉTRICAS:$(RESET)"
+	@echo -e "  $(GREEN)make metrics$(RESET)      Muestra estadísticas de recursos de contenedores"
+	@echo -e "  $(GREEN)make exporters-check$(RESET) Verifica que los exporters funcionan"
+	@echo -e "  $(GREEN)make prometheus-ui$(RESET) Abre la UI de Prometheus"
+	@echo -e "  $(GREEN)make grafana-ui$(RESET)   Abre la UI de Grafana"
 	@echo -e "  $(GREEN)make scope-up$(RESET)     Inicia Weave Scope (modo host)"
 	@echo -e "  $(GREEN)make scope-bridge-up$(RESET) Inicia Weave Scope (modo bridge)"
 	@echo -e "  $(GREEN)make scope-down$(RESET)   Detiene Weave Scope"
@@ -155,11 +166,11 @@ up-dev:
 # Iniciar servicios de monitorización
 up-monitoring:
 	@echo -e "$(YELLOW)Iniciando servicios de monitorización...$(RESET)"
-	@$(COMPOSE_SCOPE) up -d --remove-orphans
+	@$(COMPOSE_MON) up -d --remove-orphans
 	@echo -e "$(GREEN)✓ Servicios de monitorización iniciados correctamente$(RESET)"
-	@echo -e "$(BLUE)Prometheus: $(WHITE)http://localhost:${PROMETHEUS_PORT:-9190}$(RESET)"
-	@echo -e "$(BLUE)Grafana: $(WHITE)http://localhost:${GRAFANA_PORT:-9191}$(RESET)"
-	@echo -e "$(BLUE)Weave Scope: $(WHITE)http://localhost:${SCOPE_PORT:-9584}$(RESET)"
+	@echo -e "$(BLUE)Prometheus: $(WHITE)http://localhost:${PROMETHEUS_PORT:-9090}$(RESET)"
+	@echo -e "$(BLUE)Grafana: $(WHITE)http://localhost:${GRAFANA_PORT:-3001}$(RESET)"
+	@echo -e "$(BLUE)cAdvisor: $(WHITE)http://localhost:${CADVISOR_PORT:-8081}/cadvisor$(RESET)"
 
 # Iniciar servicios en modo producción
 up-prod:
@@ -167,6 +178,15 @@ up-prod:
 	@$(COMPOSE_PROD) up -d --remove-orphans
 	@echo -e "$(GREEN)✓ Servicios de producción iniciados correctamente$(RESET)"
 	@echo -e "$(BLUE)Accede a la aplicación en: $(WHITE)https://localhost:${NGINX_HTTPS_PORT:-9443}$(RESET)"
+
+# Iniciar todos los servicios con monitoreo completo
+up-full:
+	@echo -e "$(YELLOW)Iniciando servicios completos (default + monitoring)...$(RESET)"
+	@$(COMPOSE_ALL) up -d --remove-orphans
+	@echo -e "$(GREEN)✓ Servicios completos iniciados correctamente$(RESET)"
+	@echo -e "$(BLUE)Aplicación: $(WHITE)https://localhost:${NGINX_HTTPS_PORT:-9443}$(RESET)"
+	@echo -e "$(BLUE)Prometheus: $(WHITE)http://localhost:${PROMETHEUS_PORT:-9090}$(RESET)"
+	@echo -e "$(BLUE)Grafana: $(WHITE)http://localhost:${GRAFANA_PORT:-3001}$(RESET)"
 
 # Iniciar servicios con WAF
 up-waf:
@@ -313,4 +333,61 @@ reset: down
 	fi
 
 # Marca los objetivos que no son archivos
-.PHONY: help init create-dirs generate-secrets create-certs create-env up up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps test test-unit test-integration clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs
+.PHONY: help init create-dirs generate-secrets create-certs create-env up up-full up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps status metrics exporters-check prometheus-ui grafana-ui test test-unit test-integration test-docker clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs
+
+# ======================================
+# Nuevos comandos de monitoreo y métricas
+# ======================================
+
+# Mostrar estado de los servicios
+status:
+	@echo -e "$(CYAN)═══════════════════════════════════════════════$(RESET)"
+	@echo -e "$(CYAN)        ESTADO DE LOS SERVICIOS                $(RESET)"
+	@echo -e "$(CYAN)═══════════════════════════════════════════════$(RESET)"
+	@docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | head -15
+
+# Mostrar métricas de recursos de contenedores
+metrics:
+	@echo -e "$(CYAN)═══════════════════════════════════════════════$(RESET)"
+	@echo -e "$(CYAN)      MÉTRICAS DE RECURSOS (TIEMPO REAL)       $(RESET)"
+	@echo -e "$(CYAN)═══════════════════════════════════════════════$(RESET)"
+	@docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}"
+
+# Verificar que los exporters funcionan
+exporters-check:
+	@echo -e "$(CYAN)═══════════════════════════════════════════════$(RESET)"
+	@echo -e "$(CYAN)    VERIFICACIÓN DE EXPORTERS DE MÉTRICAS      $(RESET)"
+	@echo -e "$(CYAN)═══════════════════════════════════════════════$(RESET)"
+	@echo -e "$(YELLOW)Verificando nginx-exporter...$(RESET)"
+	@docker exec transcendence-prometheus wget -qO- http://nginx-exporter:9113/metrics 2>/dev/null | head -3 && echo -e "$(GREEN)✓ nginx-exporter OK$(RESET)" || echo -e "$(RED)✗ nginx-exporter FAIL$(RESET)"
+	@echo ""
+	@echo -e "$(YELLOW)Verificando php-fpm-exporter...$(RESET)"
+	@docker exec transcendence-prometheus wget -qO- http://php-fpm-exporter:9253/metrics 2>/dev/null | head -3 && echo -e "$(GREEN)✓ php-fpm-exporter OK$(RESET)" || echo -e "$(RED)✗ php-fpm-exporter FAIL$(RESET)"
+	@echo ""
+	@echo -e "$(YELLOW)Verificando node-exporter...$(RESET)"
+	@docker exec transcendence-prometheus wget -qO- http://node-exporter:9100/metrics 2>/dev/null | head -3 && echo -e "$(GREEN)✓ node-exporter OK$(RESET)" || echo -e "$(RED)✗ node-exporter FAIL$(RESET)"
+	@echo ""
+	@echo -e "$(YELLOW)Verificando cadvisor...$(RESET)"
+	@docker exec transcendence-prometheus wget -qO- http://cadvisor:8080/metrics 2>/dev/null | head -3 && echo -e "$(GREEN)✓ cadvisor OK$(RESET)" || echo -e "$(RED)✗ cadvisor FAIL$(RESET)"
+	@echo ""
+	@echo -e "$(GREEN)═══════════════════════════════════════════════$(RESET)"
+
+# Abrir Prometheus UI
+prometheus-ui:
+	@echo -e "$(BLUE)Abriendo Prometheus UI...$(RESET)"
+	@open http://localhost:${PROMETHEUS_PORT:-9090} 2>/dev/null || xdg-open http://localhost:${PROMETHEUS_PORT:-9090} 2>/dev/null || echo -e "$(YELLOW)URL: http://localhost:${PROMETHEUS_PORT:-9090}$(RESET)"
+
+# Abrir Grafana UI
+grafana-ui:
+	@echo -e "$(BLUE)Abriendo Grafana UI...$(RESET)"
+	@echo -e "$(YELLOW)Usuario: admin$(RESET)"
+	@echo -e "$(YELLOW)Contraseña: Ver config/secrets/grafana_admin_password.secret$(RESET)"
+	@open http://localhost:${GRAFANA_PORT:-3001} 2>/dev/null || xdg-open http://localhost:${GRAFANA_PORT:-3001} 2>/dev/null || echo -e "$(YELLOW)URL: http://localhost:${GRAFANA_PORT:-3001}$(RESET)"
+
+# Ejecutar tests con Docker
+test-docker:
+	@echo -e "$(YELLOW)Construyendo imagen de tests...$(RESET)"
+	@docker build -q -t transcendence-tests tests/
+	@echo -e "$(YELLOW)Ejecutando tests de integración...$(RESET)"
+	@docker run --rm --network host transcendence-tests pytest -v --tb=line
+	@echo -e "$(GREEN)✓ Tests completados$(RESET)"
