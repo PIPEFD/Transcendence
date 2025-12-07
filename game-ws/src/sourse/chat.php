@@ -18,28 +18,48 @@ function handleChatGlobal($webSocket, $conn, $body) {
 }
 
 function handleChatFriends($webSocket, $conn, $body) {
-    $url = 'http://localhost:8085/api/friends?id=' . $body['sender_id'];
-    $friendList = $webSocket->httpClient->get($url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $conn->authToken,
-                'Accept' => 'application/json'
-            ]
-        ])->getBody()->getContents();
-    $isFriend = searchInFriendList($friendList, $body);
-    if ($isFriend) {
-        $receiverId = $body['receiver_id'] ?? null;
-        if (isset($webSocket->usersConns[$receiverId])) {
-            $receiverConnection = $webSocket->usersConns[$receiverId];
-            $msg = [
-                'type' => 'chat',
-                'from' => $body['sender_id'],
-                'to'   => $receiverId,
-                'text' => $body['message'],
-                'time' => time()
-            ];
-            $receiverConnection->send(json_encode($msg));
-        }
+    $senderId = $body['userId'] ?? $conn->userId;
+    $receiverId = $body['receiverId'] ?? null;
+    $message = $body['message'] ?? null;
+
+    if (!$receiverId || !$message) {
+        $conn->send(json_encode([
+            'type' => 'error',
+            'message' => 'Missing receiverId or message'
+        ]));
+        return;
     }
+
+    if (!isset($webSocket->usersConns[$receiverId])) {
+        $conn->send(json_encode([
+            'type' => 'error',
+            'message' => 'Receiver not connected'
+        ]));
+        return;
+    }
+
+    $receiverConn = $webSocket->usersConns[$receiverId];
+
+    $packet = [
+        'type' => 'chat-friends',
+        'senderId' => $senderId,
+        'senderName' => $conn->userName,
+        'receiverId' => $receiverId,
+        'message' => $message,
+        'time' => time()
+    ];
+
+    $receiverConn->send(json_encode($packet));
+
+    $conn->send(json_encode([
+        'type' => 'chat-friends',
+        'senderId' => $senderId,
+        'senderName' => $conn->userName,
+        'receiverId' => $receiverId,
+        'message' => $message,
+        'time' => time(),
+        'self' => true
+    ]));
 }
 
 function searchInFriendList($friendListRaw, $body) {

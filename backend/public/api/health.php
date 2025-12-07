@@ -21,7 +21,7 @@ try {
 }
 
 $response = [
-    'status' => 'ok',
+    'status' => 'healthy',
     'service' => 'transcendence-backend',
     'timestamp' => date('Y-m-d H:i:s'),
     'database' => $db_status,

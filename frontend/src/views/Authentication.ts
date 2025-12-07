@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+import { wsService } from "../services/WebSocketService.js";
 
 export function AuthView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -59,7 +60,7 @@ export function AuthView(app: HTMLElement, state: any): void {
 
       localStorage.setItem("userId", String(id));
       localStorage.setItem("tokenUser", data.details); // Guardo token
-
+      wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
       navigate("/");
     } catch (err) {
       console.error(err);

@@ -9,13 +9,11 @@ export async function fetchAvatarUrl(userId: number | null, token: string | null
 
     try {
         // Primero intentar obtener la URL del avatar desde avatar_photo.php
-        const avatarInfoResponse = await fetch(`${API_ENDPOINTS.AVATAR_PHOTO}`, {
-            method: 'POST',
+        const avatarInfoResponse = await fetch(`${API_ENDPOINTS.AVATAR_PHOTO}?user_id=${userId}`, {
+            method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: userId })
+                'Authorization': `Bearer ${token}`
+            }
         });
 
         if (avatarInfoResponse.ok) {

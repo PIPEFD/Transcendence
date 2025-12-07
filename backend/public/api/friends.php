@@ -6,13 +6,23 @@ $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
 $queryId = $_GET['id'] ?? null;
+$action = $_GET['action'] ?? null;
 error_log(print_r($queryId, true));
 // entorno de vars 
 
 switch ($requestMethod) 
 {
 	case 'GET':
-		if (!checkJWT($queryId))
+		// Si action=list, obtener user_id del token JWT
+		if ($action === 'list') {
+			$authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+			if (empty($authHeader)) errorSend(403, 'forbidden access - no token');
+			$decodedJWT = getDecodedJWT($authHeader);
+			if (!$decodedJWT) errorSend(403, 'forbidden access - invalid token');
+			$queryId = $decodedJWT->data->user_id ?? null;
+			if (!$queryId) errorSend(403, 'forbidden access - no user_id in token');
+		}
+		if (!$queryId || !checkJWT($queryId))
 			errorSend(403, 'forbidden access');
 		getFriendList($database, $queryId);
 		break;

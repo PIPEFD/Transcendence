@@ -5,7 +5,7 @@ require_once __DIR__ . '/header.php';
 $database = connectDatabase();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $body = json_decode(file_get_contents('php://input'), true);
-$user_id = $body['user_id'];
+$user_id = $body['user_id'] ?? NULL;
 
 if ($requestMethod != 'POST')
 	errorSend(405, 'Method Not Allowed');

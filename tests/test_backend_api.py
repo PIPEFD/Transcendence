@@ -15,6 +15,6 @@ def test_api_through_nginx(base_url):
     for method, path in API_PATHS:
         url = f"{base_url}{path}"
         data = {"username": "test", "password": "test"} if method == "POST" else None
-        r = requests.request(method, url, json=data, timeout=8)
+        r = requests.request(method, url, json=data, timeout=8, verify=False)
         assert_not_gateway_error(r)
         assert r.status_code < 500 or r.status_code == 501, f"{url} -> {r.status_code}"

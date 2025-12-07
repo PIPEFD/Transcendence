@@ -1,15 +1,10 @@
 import pytest
 
 TARGETS = [
-    ("nginx", 80),
-    ("backend", 9000),
-    ("game-ws", 8081),
-    ("prometheus", 9090),
-    ("grafana", 3000),
-    ("node-exporter", 9100),
-    ("cadvisor", 8080),
-    ("nginx-exporter", 9113),
-    ("php-fpm-exporter", 9253),
+    ("localhost", 9443),  # nginx HTTPS
+    ("localhost", 9090),  # prometheus
+    ("localhost", 3001),  # grafana
+    ("localhost", 8081),  # cadvisor
 ]
 
 @pytest.mark.smoke

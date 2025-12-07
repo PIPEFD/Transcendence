@@ -53,7 +53,7 @@ if (strpos($username, 'testuser') === 0) {
         'data' => ['user_id' => $user_id]
     ];
     
-    $secretKey = getenv('JWTsecretKey');
+    $secretKey = getJWTSecret();
     $jwt = Firebase\JWT\JWT::encode($payload, $secretKey, 'HS256');
     
     // Marcar usuario como online

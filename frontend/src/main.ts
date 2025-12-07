@@ -30,7 +30,7 @@ import { wsService } from "./services/WebSocketService.js";
 import { ChooseView1 } from "./views/Choose1.js";
 import { Tournament4StartView } from "./views/tournament4start.js";
 import { GameTournament } from "./views/Tournament4Run.js";
-import { InviteView } from "./views/invite_online.js"
+import InviteView from "./views/invite_online.js";
 
 
 
@@ -151,7 +151,7 @@ function router(): void {
         GameOne(app, state);
         break;
       case "/1v1o":
-        GameOneo(app, state);
+        GameOneo(app);
         break;
     case "/vsAI":
       GameVsAI(app, state);
@@ -166,7 +166,7 @@ function router(): void {
       WebSocketTestView(app, state);
       break;
     case "/invite_on":
-      InviteView(app);
+      InviteView();
       break; 
     default: // Home
       HomeView(app, state);
@@ -198,17 +198,18 @@ window.addEventListener("load", () => {
   }
   updateHeader(state);
 
-  if (!state.player.alias) {
-    navigate("/register");
-  } else {
-    router();
-  }
-
-  // Conectar al WebSocket si el usuario está autenticado
+  // Verificar autenticación por token JWT en lugar de alias
   const token = localStorage.getItem('tokenUser');
   const userId = localStorage.getItem('userId');
   
-  if (token && userId) {
+  if (!token || !userId) {
+    // No hay sesión activa, redirigir a login
+    navigate("/login");
+  } else {
+    // Hay sesión activa, navegar a la ruta actual
+    router();
+    
+    // Conectar al WebSocket si el usuario está autenticado
     console.log('🔌 Usuario autenticado detectado. Conectando WebSocket...');
     wsService.connect()
       .then(() => {

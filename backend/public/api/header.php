@@ -81,6 +81,22 @@ function checkJWT(int $id): bool
 }
 // funcion que comprueba que el token sea correcto ademas de que coincide con el id del usuario
 
+function getJWTSecret(): string {
+    // Leer desde Docker secret si existe
+    if (file_exists('/run/secrets/jwt_secret')) {
+        $secret = trim(file_get_contents('/run/secrets/jwt_secret'));
+        if (!empty($secret)) {
+            return $secret;
+        }
+    }
+    // Fallback a variable de entorno
+    $secret = getenv('JWTsecretKey');
+    if ($secret === false) {
+        errorSend(500, "FATAL: JWT_SECRET_KEY no está configurada");
+    }
+    return $secret;
+}
+
 function getDecodedJWT(string $JWT): ?object
 {
     list($jwt) = sscanf($JWT, 'Bearer %s');
@@ -88,8 +104,7 @@ function getDecodedJWT(string $JWT): ?object
         error_log(print_r(" no hay token en el bearer %s "));
         return null;
     }
-    $secretKey = getenv('JWTsecretKey');
-    if ($secretKey === false) errorSend(500, "FATAL: JWT_SECRET_KEY no está configurada en el entorno.");
+    $secretKey = getJWTSecret();
     try {
         $decodedToken = Firebase\JWT\JWT::decode($jwt, new Firebase\JWT\Key($secretKey, 'HS256'));
         return $decodedToken;
