@@ -43,7 +43,7 @@ function handleAuth($webSocket, $conn, $body) {
         
         $conn->auth = true;
         $conn->userName = $body['username'] ?? null;
-        $conn->status = 'online'; // Estados: online, offline, in-game
+        $conn->status = 'online';
         $webSocket->usersConns[$conn->userId] = $conn;
         $conn->send(json_encode(['type' => 'auth-ok', 'userId' => $conn->userId, 'username' => $conn->userName]));
         

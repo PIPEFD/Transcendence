@@ -8,15 +8,15 @@ require_once __DIR__ . '/status.php';
 require_once __DIR__ . '/invites.php';
 
 class webSocket implements \Ratchet\MessageComponentInterface {
-    public $client; // public para acceso desde funciones externas
+    public $client;
     protected $apiRest;
-    public $usersConns = []; // as client but in map :D (public para acceso desde funciones externas)
+    public $usersConns = [];
     public $pendingInvites = [];
     public $activeGames = [];
     public function __construct() {
         $this->client = new \SplObjectStorage;
         $this->apiRest = new \GuzzleHttp\Client([
-            'base_uri' => 'http://localhost:9000/api', // url api
+            'base_uri' => 'http://localhost:9000/api',
             'timeout' => 5.0,
         ]);
     }
@@ -68,6 +68,10 @@ class webSocket implements \Ratchet\MessageComponentInterface {
                 break ;
             case 'player-ready':
                 handlePlayerReady($this, $conn, $body);
+                break ;
+            case 'game-end':
+                handleGameEnd($this, $conn, $body);
+                break ;
             default:
                 $conn->send(json_encode(['type' => 'error', 'message' => 'Unknown message type']));
                 break ;
@@ -79,24 +83,16 @@ class webSocket implements \Ratchet\MessageComponentInterface {
         $conn->close();
     }
     public function onClose(\Ratchet\ConnectionInterface $conn) {
-        // Notificar a todos que el usuario se desconectó
         if (isset($conn->userId) && isset($conn->userName)) {
             broadcastUserStatus($this, $conn->userId, $conn->userName, 'offline');
         }
-        
-        // mandar peticion de logOut
+        if (isset($conn->userId)) {
+            handleDisconnect($this, $conn);
+        }
         $this->client->detach($conn);
         if (isset($conn->userId))
             unset($this->usersConns[$conn->userId]);
     }
 }
-
-// { "type": "auth", "token": "$token", "id": "$userId" }
-
-// { "type": "chat-friends", "userId": "$idEnviador", "receiverId": "$idRecibidor", "message": "$mensaje" }
-
-// { "type": "chat-global", "userId": "$idUsuario", "message": "mensahe" }
-
-// { "type": "game", "player1": "$idPlayer1", "player2": "$idPlayer2" }
 
 ?>

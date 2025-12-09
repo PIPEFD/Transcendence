@@ -21,7 +21,7 @@ switch ($requestMethod)
 		$winner_id = $body['winner_id'];
 		$loser_id = $body['loser_id'];
 		$game_result = $body['result'];
-		if (!(checkJWT($winner_id) || checkJWT($loser_id)))
+		if (!(checkJWT($winner_id)))
 			errorSend(403, 'forbidden access');
 		updateElo($database, $winner_id, $loser_id, $game_result);
 		break;

@@ -2,15 +2,18 @@ import { navigate } from "../main.js";
 import { wsService } from "../services/WebSocketService.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
+let gameEndedByServer = false;
+
 async function updateEloTs(winner: {score: number}, loser: {score: number}) {
   try {
-    const response = await fetch('/api/game/update-elo', {
+    const res = `${winner.score} - ${loser.score}`;
+    const response = await apiFetch(API_ENDPOINTS.MATCHES, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         winner_id: winner,
         loser_id: loser,
-        game_result: "5 - 0"
+        result: res
       })
     });
 
@@ -58,12 +61,10 @@ export function GameOneo(app: HTMLElement) {
   let gameRunning = false;
   let gameId: string;
 
-  // ===== Dibujo =====
   const drawRect = (x:number,y:number,w:number,h:number,color:string)=>{ ctx.fillStyle=color; ctx.fillRect(x,y,w,h); };
   const drawCircle = (x:number,y:number,r:number,color:string)=>{ ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); };
   const drawText = (text:string,x:number,y:number,color:string,size=20)=>{ ctx.fillStyle=color; ctx.font=`${size}px monospace`; ctx.fillText(text,x,y); };
 
-  // ===== Inicialización desde game-start =====
   const initFromGameStart = (msg:any) => {
     if(msg.type !== "game-start") return;
 
@@ -86,17 +87,14 @@ export function GameOneo(app: HTMLElement) {
     requestAnimationFrame(gameLoop);
   };
 
-  // ===== Recibir updates =====
   wsService.on("game-update", (msg:any) => {
     if(msg.gameId !== gameId) return;
     const data = msg.data;
     if(!data) return;
 
-    // Posición del jugador remoto
     if(isHost && data.player2Y !== undefined) opponent.y = data.player2Y;
     else if(!isHost && data.player1Y !== undefined) opponent.y = data.player1Y;
 
-    // Solo cliente actualiza pelota y marcador del host
     if(!isHost){
       if(data.ball){
         ball.x = data.ball.x;
@@ -105,7 +103,6 @@ export function GameOneo(app: HTMLElement) {
         ball.vy = data.ball.vy;
       }
       if(data.score){
-        // Cada jugador mantiene su puntuación local correcta
         if(selfId == msg.fromPlayerId){ // "self" score
           player.score = data.score.self;
           opponent.score = data.score.opponent;
@@ -117,6 +114,29 @@ export function GameOneo(app: HTMLElement) {
     }
   });
 
+  wsService.on("game-ended", (msg:any) => {
+    if (msg.gameId !== gameId) return;
+    
+    gameEndedByServer = true;
+    gameRunning = false;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const youWon = player.score > opponent.score;
+    
+    drawText(
+      youWon ? "You Win! 🏆" : "You Lose! 💀",
+      canvas.width / 2 - 60,
+      canvas.height / 2,
+      "yellow",
+      24
+    );
+
+    console.log("Partida finalizada");
+  });
+
+
+
   // ===== Controles =====
   document.addEventListener("keydown", e => {
     if(e.key === "ArrowUp" || e.key === "w") up = true;
@@ -127,8 +147,8 @@ export function GameOneo(app: HTMLElement) {
     if(e.key === "ArrowDown" || e.key === "s") down = false;
   });
 
-  // ===== Movimiento jugador y envío WS =====
   const updatePlayer = () => {
+    if (!gameRunning || gameEndedByServer ) return ;
     if(up && player.y>0) player.y-=playerSpeed;
     if(down && player.y+paddleHeight<canvas.height) player.y+=playerSpeed;
 
@@ -157,54 +177,92 @@ export function GameOneo(app: HTMLElement) {
 
   // ===== Loop del juego =====
   const gameLoop = () => {
-    if(!gameRunning) return;
+  if (!gameRunning) return;
 
-    updatePlayer();
+  updatePlayer();
 
-    if(isHost){
-      // Host mueve la pelota
-      ball.x += ball.vx;
-      ball.y += ball.vy;
+  // ==============================
+  // HOST SIMULA LA PELOTA Y PUNTOS
+  // ==============================
+  if (isHost) {
 
-      // Rebote techo/suelo
-      if(ball.y - ballRadius < 0 || ball.y + ballRadius > canvas.height) ball.vy = -ball.vy;
+    // Mover pelota
+    ball.x += ball.vx;
+    ball.y += ball.vy;
 
-      // Rebote palas
-      if(ball.x - ballRadius < player.x + paddleWidth && ball.y>player.y && ball.y<player.y+paddleHeight){
-        ball.vx = -ball.vx;
-      }
-      if(ball.x + ballRadius > opponent.x && ball.y>opponent.y && ball.y<opponent.y+paddleHeight){
-        ball.vx = -ball.vx;
-      }
+    // Rebote techo/suelo
+    if (ball.y - ballRadius < 0 || ball.y + ballRadius > canvas.height)
+      ball.vy = -ball.vy;
 
-      // Puntuación
-      if(ball.x - ballRadius < 0){ opponent.score++; resetBall(); }
-      if(ball.x + ballRadius > canvas.width){ player.score++; resetBall(); }
-
-      // ===== FINAL DE LA PARTIDA: gestionar historial aquí =====
-      if(player.score >= maxScore || opponent.score >= maxScore){
-        gameRunning = false;
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        drawText(player.score >= maxScore ? "You Win! 🏆" : "You Lose! 💀", canvas.width/2-60, canvas.height/2, "yellow", 24);
-        if (player.score == maxScore && isHost) {
-            updateEloTs(player, opponent);
-        } else if (opponent.score == maxScore && isHost) {
-            updateEloTs(opponent, player);
-        }
-        return;
-      }
+    // Rebote palas
+    if (
+      ball.x - ballRadius < player.x + paddleWidth &&
+      ball.y > player.y &&
+      ball.y < player.y + paddleHeight
+    ) {
+      ball.vx = -ball.vx;
+    }
+    if (
+      ball.x + ballRadius > opponent.x &&
+      ball.y > opponent.y &&
+      ball.y < opponent.y + paddleHeight
+    ) {
+      ball.vx = -ball.vx;
     }
 
-    // ===== Dibujar =====
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawRect(player.x,player.y,paddleWidth,paddleHeight,"white");
-    drawRect(opponent.x,opponent.y,paddleWidth,paddleHeight,"white");
-    drawCircle(ball.x,ball.y,ballRadius,"white");
-    drawText(`${player.score}`, canvas.width/4,25,"white");
-    drawText(`${opponent.score}`, canvas.width*3/4,25,"white");
+    // Puntuación
+    if (ball.x - ballRadius < 0) {
+      opponent.score++;
+      resetBall();
+    }
+    if (ball.x + ballRadius > canvas.width) {
+      player.score++;
+      resetBall();
+    }
+  }
 
-    requestAnimationFrame(gameLoop);
-  };
+  // ==============================
+  // FIN DE PARTIDA (AMBOS LADOS)
+  // ==============================
+  if (player.score >= maxScore || opponent.score >= maxScore) {
+    gameRunning = false;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawText(
+      player.score >= maxScore ? "You Win! 🏆" : "You Lose! 💀",
+      canvas.width / 2 - 60,
+      canvas.height / 2,
+      "yellow",
+      24
+    );
+
+    if (isHost) {
+      wsService.send({
+        type: "game-end",
+        gameId: gameId,
+      });
+
+      if (player.score >= maxScore)
+        updateEloTs(player, opponent);
+      else
+        updateEloTs(opponent, player);
+    }
+
+    return; // detener el loop
+  }
+
+  // ==============================
+  // DIBUJO
+  // ==============================
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawRect(player.x, player.y, paddleWidth, paddleHeight, "white");
+  drawRect(opponent.x, opponent.y, paddleWidth, paddleHeight, "white");
+  drawCircle(ball.x, ball.y, ballRadius, "white");
+  drawText(`${player.score}`, canvas.width / 4, 25, "white");
+  drawText(`${opponent.score}`, canvas.width * 3 / 4, 25, "white");
+
+  requestAnimationFrame(gameLoop);
+};
 
   const resetBall = () => {
     ball.x = canvas.width/2;

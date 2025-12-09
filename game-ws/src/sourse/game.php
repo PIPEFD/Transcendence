@@ -79,20 +79,13 @@ function handleNewGame(WebSocket $ws, $conn, $body) {
 function handlePlayerReady(WebSocket $ws, $conn, $body) {
     $gameId = $body['gameId'] ?? null;
     if (!$gameId || !isset($ws->activeGames[$gameId])) return;
-
-    // Referencia directa al juego
     $game =& $ws->activeGames[$gameId];
-
-    // Marcar jugador listo
     if ($conn->userId == $game['player1']) $game['player1Ready'] = true;
     if ($conn->userId == $game['player2']) $game['player2Ready'] = true;
 
-    // Inicializar pelota si no existe
     if (!isset($game['ball'])) {
         $game['ball'] = ['x'=>360,'y'=>200,'vx'=>rand(0,1)?5:-5,'vy'=>rand(0,1)?3:-3];
     }
-
-    // Comprobar si ambos están listos
     if (!empty($game['player1Ready']) && !empty($game['player2Ready'])) {
         $game['status'] = 'running';
         $msg = [
@@ -104,6 +97,57 @@ function handlePlayerReady(WebSocket $ws, $conn, $body) {
         $ws->usersConns[$game['player1']]->send(json_encode($msg));
         $ws->usersConns[$game['player2']]->send(json_encode($msg));
     }
+}
+
+function handleDisconnect(WebSocket $ws, $conn) {
+    $userId = $conn->userId ?? null;
+    if (!$userId) return;
+    $gameId = $conn->currentGameId ?? null;
+    if (!$gameId || !isset($ws->activeGames[$gameId])) {
+        return;
+    }
+    $game = $ws->activeGames[$gameId];
+    $opponentId = ($game['player1'] === $userId)
+        ? $game['player2']
+        : $game['player1'];
+    if (isset($ws->usersConns[$opponentId])) {
+        $ws->usersConns[$opponentId]->currentGameId = null;
+    }
+    unset($ws->activeGames[$gameId]);
+    $msg = [
+        'type' => 'game-ended',
+        'gameId' => $gameId
+    ];
+    $ws->usersConns[$opponentId]->send(json_encode($msg));
+    $ws->usersConns[$userId]->send(json_encode($msg));
+}
+
+function handleGameEnd(WebSocket $ws, $conn, $body) {
+    $gameId = $body['gameId'] ?? null;
+
+    if (!$gameId || !isset($ws->activeGames[$gameId])) {
+        $conn->send(json_encode(['type' => 'error', 'msg' => 'game not found']));
+        return;
+    }
+
+    $game = $ws->activeGames[$gameId];
+
+    $player1 = $game['player1'];
+    $player2 = $game['player2'];
+    $msg = [
+        'type' => 'game-ended',
+        'gameId' => $gameId
+    ];
+    if (isset($ws->usersConns[$player1])) {
+        $ws->usersConns[$player1]->send(json_encode($msg));
+        $ws->usersConns[$player1]->currentGameId = null;
+    }
+
+    if (isset($ws->usersConns[$player2])) {
+        $ws->usersConns[$player2]->send(json_encode($msg));
+        $ws->usersConns[$player2]->currentGameId = null;
+    }
+    unset($ws->activeGames[$gameId]);
 }
 
 ?>
