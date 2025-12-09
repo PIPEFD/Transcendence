@@ -21,6 +21,17 @@ class WebSocketService {
    */
   connect(): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        console.log("⚠ WebSocket ya conectado. No se crea otro.");
+        resolve(true);
+        return;
+      }
+      if (this.ws && this.ws.readyState === WebSocket.CONNECTING) {
+        console.log("⏳ WebSocket ya en proceso de conexión...");
+        resolve(true);
+        return;
+      }
+      
       const token = localStorage.getItem('tokenUser');
       const userId = localStorage.getItem('userId');
       const username = localStorage.getItem('username');
@@ -75,11 +86,9 @@ class WebSocketService {
             const data = JSON.parse(event.data);
             console.log('📩 Mensaje recibido:', data);
 
-            // Guardar el último game-start
-            if (data.type === "game-start") {
+            if (data.type === 'game-start') {
               this.lastGameStart = data;
             }
-
             // Cambios de estado de usuario
             if (data.type === 'user-status-changed') {
               this.userStatus.set(String(data.userId), data.status);

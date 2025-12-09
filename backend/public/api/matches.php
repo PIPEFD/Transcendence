@@ -108,8 +108,8 @@ function updateElo(SQLite3 $database, int $win_id, int $ls_id, $res): void
 	$winnerEloDiff = $newWinElo - $winElo;
 	$loserEloDiff = $newLsElo - $lsElo;
 
-	updateEloAux($database, $win_id, $newWinElo, true);
-	updateEloAux($database, $ls_id, $newLsElo, false);
+	updateEloAux($database, $win_id, $newWinElo);
+	updateEloAux($database, $ls_id, $newLsElo);
 
 	$winnerHistoryEntry = [
 		"status" => "win",
@@ -186,34 +186,18 @@ function operateElo(int $oldElo, int $oppElo, bool $win)
 }
 // op de elo robada del ajedrez
 
-function updateEloAux(SQLite3 $database, int $user_id, int $newElo, bool $win): void
+function updateEloAux(SQLite3 $database, int $user_id, int $newElo): void
 {
-	$sqlQ = "UPDATE users SET elo = :newElo WHERE user_id = :user_id";
-	$bind1 = [':newElo', $newElo, SQLITE3_INTEGER];
-	$bind2 = [':user_id', $user_id, SQLITE3_INTEGER];
-	$res = doQuery($database, $sqlQ, $bind1, $bind2);
-	if (!$res)
-		throw new Exception ('SQL error ' . $database->lastErrorMsg());
+    $sqlQ = "UPDATE users SET elo = :newElo WHERE user_id = :user_id";
+    $bind1 = [':newElo', $newElo, SQLITE3_INTEGER];
+    $bind2 = [':user_id', $user_id, SQLITE3_INTEGER];
 
-	$sqlQ = "SELECT games_played, games_win, games_lose FROM ranking WHERE user_id = :user_id";
-	$bind1 = [':user_id', $user_id, SQLITE3_INTEGER];
-	$res = doQuery($database, $sqlQ, $bind1);
-	if (!$res)
-		throw new Exception ('SQL error ' . $database->lastErrorMsg());
-	$row = $res->fetchArray(SQLITE3_ASSOC);
-	if (!$row)
-		throw new Exception ('Couldn\'t find ranked data');
-
-	$bind1 = [':games_played', $row['games_played'] + 1, SQLITE3_INTEGER];
-	$columnToUpdate = $win ? 'games_win' : 'games_lose';
-	$newValue = $row[$columnToUpdate] + 1;
-	$bind2 = [':newValue', $newValue, SQLITE3_INTEGER];
-	$bind3 = [':user_id', $user_id, SQLITE3_INTEGER];
-	$sqlQ = "UPDATE ranking SET games_played = :games_played, $columnToUpdate = :newValue WHERE user_id = :user_id";
-	$res = doQuery($database, $sqlQ, $bind1, $bind2, $bind3);
-	if (!$res)
-		throw new Exception ('SQL error ' . $database->lastErrorMsg());
+    $res = doQuery($database, $sqlQ, $bind1, $bind2);
+    if (!$res) {
+        throw new Exception('SQL error ' . $database->lastErrorMsg());
+    }
 }
+
 /*
 	actualiza el resto de campos de la tabla matches de la db
 	(los stats) mirando los anteriores

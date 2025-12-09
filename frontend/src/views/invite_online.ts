@@ -12,10 +12,15 @@ type Friend = {
 };
 
 // Variables de control de estado
-let invitationSent = false;
 let inGame = false;
+let wsListenersRegistered = false;
 
 export default async function loadFriends() {
+    if (!wsListenersRegistered) {
+        registerWsListeners();
+        wsListenersRegistered = true;
+    }
+
     const selfId = localStorage.getItem("userId");
     const token = localStorage.getItem("tokenUser");
 
@@ -24,7 +29,6 @@ export default async function loadFriends() {
         return;
     }
 
-    // --- Crear la estructura HTML si no existe ---
     let content = document.getElementById("friendsContent");
     if (!content) {
         const app = document.getElementById("app");
@@ -49,7 +53,6 @@ export default async function loadFriends() {
         }
     }
 
-    // --- Función para obtener amigos ---
     async function fetchFriends(): Promise<string> {
         try {
             const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${selfId}`, {
@@ -91,14 +94,12 @@ export default async function loadFriends() {
         }
     }
 
-    // --- Insertar la lista de amigos ---
     content.innerHTML = await fetchFriends();
 
-    // --- Configurar botones de invitación ---
     content.querySelectorAll<HTMLButtonElement>(".invite-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-            if (invitationSent || inGame) {
-                alert("You already have a pending invitation or are in a game.");
+            if (inGame) {
+                alert("You already in a game.");
                 return;
             }
 
@@ -110,58 +111,59 @@ export default async function loadFriends() {
                 from: parseInt(selfId, 10),
                 to: parseInt(to, 10)
             });
-
-            invitationSent = true;  // Marcar invitación pendiente
-            btn.disabled = true;    // Deshabilitar botón
         });
     });
 
-    // --- WebSocket events ---
-    wsService.on("game-invite-sent", (msg: any) => {
-        alert(`Invitation sent to ${msg.to}`);
-    });
+    function registerWsListeners() {
+        // Confirmación de invitación enviada
+        wsService.on("game-invite-sent", (msg: any) => {
+            alert(`Invitation sent to ${msg.to}`);
+        });
 
-    wsService.on("game-start", () => {
-        inGame = true;        // Marcar partida activa
-        invitationSent = false; // Reset de invitación pendiente
-        navigate("/1v1o");
-    });
-    wsService.on("game-ended", (msg: any) => {
-        if (msg.gameId) { // opcional: verificar si es tu partida
-            inGame = false;
-            invitationSent = false;
-        }
-    });
+        // Inicio de la partida
+        wsService.on("game-start", (msg: any) => {
+            if (!inGame) {
+                inGame = true; // Ahora sí, partida oficialmente activa
+                navigate("/1v1o");
+            }
+        });
 
-    wsService.on("game-invite-rejected", () => {
-        alert("Your invitation was rejected");
-        invitationSent = false;
-    });
+        // Fin de partida
+        wsService.on("game-ended", (msg: any) => {
+            if (msg.gameId) { // opcional: verificar si es tu partida
+                inGame = false;
+            }
+        });
 
-    wsService.on("game-invite", (msg: any) => {
-        if (inGame) {
+        // Invitación rechazada
+        wsService.on("game-invite-rejected", () => {
+            alert("Your invitation was rejected");
+        });
+
+        // Invitación entrante
+        wsService.on("game-invite", (msg: any) => {
+            if (inGame) {
+                // Rechazar automáticamente si ya hay partida activa
+                wsService.send({
+                    type: "game-invite-response",
+                    inviteId: msg.inviteId,
+                    response: false
+                });
+                return;
+            }
+
+            const accept = confirm(`Player ${msg.from} invites you to a game. Accept?`);
             wsService.send({
                 type: "game-invite-response",
                 inviteId: msg.inviteId,
-                response: false
+                response: accept
             });
-            return;
-        }
 
-        const accept = confirm(`Player ${msg.from} invites you to a game. Accept?`);
-        wsService.send({
-            type: "game-invite-response",
-            inviteId: msg.inviteId,
-            response: accept
+            // No navegamos ni marcamos inGame todavía; solo al recibir game-start
         });
+    }
 
-        if (accept) {
-            inGame = true;
-            navigate("/1v1o");
-        }
-    });
-
-    // --- Botón back ---
+    // Botón back
     const backBtn = document.getElementById("backBtn");
     if (backBtn) {
         backBtn.onclick = () => navigate("/");

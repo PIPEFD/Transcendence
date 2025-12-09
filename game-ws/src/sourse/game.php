@@ -34,69 +34,43 @@ function handleGameAction(WebSocket $ws, $conn, $body) {
 
 function handleNewGame(WebSocket $ws, $conn, $body) {
     if (!isset($body['player1'], $body['player2'])) {
-        $conn->send(json_encode([
-            'type' => 'error', 'msg' => 'missing players for game'
-        ]));
+        $conn->send(json_encode(['type'=>'error','msg'=>'missing players for game']));
         return ;
     }
 
-    $player1 = $body['player1'] ?? null;
-    $player2 = $body['player2'] ?? null;
-    if (!isset($ws->usersConns[$player1]) || !isset($ws->usersConns[$player2])) {
-        $conn->send(json_encode([
-            'type' => 'error', 'msg' => 'one or both players are not connected'
-        ]));
-        return ;
-    }
+    $player1 = $body['player1'];
+    $player2 = $body['player2'];
+
     $player1conn = $ws->usersConns[$player1];
     $player2conn = $ws->usersConns[$player2];
+
     $gameId = uniqid("game_", true);
+
     $player1conn->currentGameId = $gameId;
     $player2conn->currentGameId = $gameId;
+
     $ball = [
-        'x' => 360,
-        'y' => 200,
-        'vx' => rand(0,1) ? 5 : -5,
-        'vy' => rand(0,1) ? 3 : -3
+        'x'=>360,'y'=>200,
+        'vx'=> rand(0,1) ? 5 : -5,
+        'vy'=> rand(0,1) ? 3 : -3
     ];
+
     $ws->activeGames[$gameId] = [
-        'id' => $gameId,
-        'player1' => $player1,
-        'player2' => $player2,
-        'score' => [
-            $player1 => 0,
-            $player2 => 0 ],
-        'status' => 'starting'
+        'id'=>$gameId,
+        'player1'=>$player1,
+        'player2'=>$player2
     ];
-    $gameStartMsg = ['type' => 'game-start', 'gameId' => $gameId,
-        'player1' => $player1, 'player2' => $player2, 'msg' => 'game has started !',
-        'ball' => $ball];
-    
-    $player1conn->send(json_encode($gameStartMsg));
-    $player2conn->send(json_encode($gameStartMsg));
-}
 
-function handlePlayerReady(WebSocket $ws, $conn, $body) {
-    $gameId = $body['gameId'] ?? null;
-    if (!$gameId || !isset($ws->activeGames[$gameId])) return;
-    $game =& $ws->activeGames[$gameId];
-    if ($conn->userId == $game['player1']) $game['player1Ready'] = true;
-    if ($conn->userId == $game['player2']) $game['player2Ready'] = true;
+    $msg = [
+        'type'=>'game-start',
+        'gameId'=>$gameId,
+        'player1'=>$player1,
+        'player2'=>$player2,
+        'ball'=>$ball
+    ];
 
-    if (!isset($game['ball'])) {
-        $game['ball'] = ['x'=>360,'y'=>200,'vx'=>rand(0,1)?5:-5,'vy'=>rand(0,1)?3:-3];
-    }
-    if (!empty($game['player1Ready']) && !empty($game['player2Ready'])) {
-        $game['status'] = 'running';
-        $msg = [
-            'type'=>'game-started',
-            'gameId'=>$gameId,
-            'ball'=>$game['ball']
-        ];
-
-        $ws->usersConns[$game['player1']]->send(json_encode($msg));
-        $ws->usersConns[$game['player2']]->send(json_encode($msg));
-    }
+    $player1conn->send(json_encode($msg));
+    $player2conn->send(json_encode($msg));
 }
 
 function handleDisconnect(WebSocket $ws, $conn) {

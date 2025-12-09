@@ -26,29 +26,40 @@ function handleGameInvite(WebSocket $ws, $conn, $body) {
 function handleInviteResponse(WebSocket $ws, $conn, $body) {
     $inviteId = $body['inviteId'] ?? null;
     $response = $body['response'] ?? null;
+
     if (!$inviteId || !is_bool($response) || !isset($ws->pendingInvites[$inviteId])) {
-        $conn->send(json_encode(['type' => 'error', 
-            'msg' => 'bad petition']));
-        return ;
+        $conn->send(json_encode(['type' => 'error', 'msg' => 'bad petition']));
+        return;
+    }
+    if (!empty($ws->pendingInvites[$inviteId]['processing'])) {
+        return;
     }
 
+    $ws->pendingInvites[$inviteId]['processing'] = true;
+
     $invite = $ws->pendingInvites[$inviteId];
+
     if ($response === false) {
         $from = $invite['from'];
         $ws->usersConns[$from]->send(json_encode([
             'type' => 'game-invite-rejected',
             'inviteId' => $inviteId,
-            'msg' => 'invitacion rechazada'
+            'msg' => 'invitación rechazada'
         ]));
+
         unset($ws->pendingInvites[$inviteId]);
-        return ;
+        return;
     }
-    $player1 = $invite['from'];
+
+   $player1 = $invite['from'];
     $player2 = $invite['to'];
+
     unset($ws->pendingInvites[$inviteId]);
-    $start = ['type' => 'game', 'player1' => $player1, 'player2' => $player2];
-    handleNewGame($ws, $ws->usersConns[$player1], $start);
-    return ;
+
+    handleNewGame($ws, $ws->usersConns[$player1], [
+        'player1' => $player1,
+        'player2' => $player2
+    ]);
 }
 
 ?>
