@@ -1,5 +1,6 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 export function ProfileView(app: HTMLElement, state: any): void {
   app.innerHTML = `
@@ -24,7 +25,7 @@ export function ProfileView(app: HTMLElement, state: any): void {
     </div>
   `;
 
-  document.getElementById("userButton")?.addEventListener("click", () => {
+  document.getElementById("userButton")?.addEventListener("click", async () => {
     const input = document.getElementById("userEnter") as HTMLInputElement | null;
     if (!input) return;
 
@@ -56,7 +57,26 @@ export function ProfileView(app: HTMLElement, state: any): void {
     }
 
     state.player.user = user;
-    localStorage.setItem("player", JSON.stringify(state.player));
+    const userId = localStorage.getItem('userId');
+    const newUsername = user;
+    if (!userId) {
+      alert("No user logged in");
+      return ;
+    }
+
+    const response = await apiFetch(API_ENDPOINTS.USERS, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: parseInt(userId, 10),
+        username: newUsername
+      })
+    });
+    if (!response.ok) {
+      alert("error updating data");
+    } else {
+      console.log("username changed, relog to apply changes");
+    }
     if (state.player.avatar === 0)
       navigate("/choose");
     else

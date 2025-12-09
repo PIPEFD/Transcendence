@@ -136,8 +136,8 @@ function editUserData(array $body, SQLite3 $db): void {
     $updates = [];
     if (isset($body['username']))
         $updates['username'] = $body['username'];
-    if (isset($body['user_id']))
-        $updates['user_id'] = $body['user_id'];
+    if (!isset($body['user_id']))
+        errorSend(400, "bad petition");
     checkJWT($body['user_id']);
     foreach ($updates as $col => $val) {
         $sql = "UPDATE users SET $col = :val WHERE user_id = :id";
