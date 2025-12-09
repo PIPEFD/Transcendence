@@ -1,5 +1,7 @@
 # 🚀 Guía de Inicio del Sistema Transcendence
 
+> 📚 **NUEVO:** [Auditoría Completa del Proyecto](./DOCUMENTATION_INDEX.md) - Análisis técnico detallado para alcanzar 125/125 puntos en la evaluación ft_transcendence.
+
 ## 🎯 Referencia Rápida
 
 | Acción | Comando | Descripción |
