@@ -4,15 +4,15 @@ import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 let gameEndedByServer = false;
 
-async function updateEloTs(winner: {score: number}, loser: {score: number}) {
+async function updateEloTs(winner: {score: number, id: number}, loser: {score: number, id: number}) {
   try {
     const res = `${winner.score} - ${loser.score}`;
     const response = await apiFetch(API_ENDPOINTS.MATCHES, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        winner_id: winner,
-        loser_id: loser,
+        winner_id: winner.id,
+        loser_id: loser.id,
         result: res
       })
     });
@@ -52,8 +52,8 @@ export function GameOneo(app: HTMLElement) {
   const maxScore = 5;
 
   // ===== Estados locales de jugadores =====
-  const player = { x: 0, y: canvas.height/2 - paddleHeight/2, score: 0 };
-  const opponent = { x: 0, y: canvas.height/2 - paddleHeight/2, score: 0 };
+  const player = { x: 0, y: canvas.height/2 - paddleHeight/2, score: 0 , id: 0};
+  const opponent = { x: 0, y: canvas.height/2 - paddleHeight/2, score: 0, id: 0};
   const ball = { x: canvas.width/2, y: canvas.height/2, vx: 0, vy: 0 };
 
   let up = false, down = false;
@@ -67,7 +67,7 @@ export function GameOneo(app: HTMLElement) {
 
   const initFromGameStart = (msg:any) => {
     if(msg.type !== "game-start") return;
-
+  
     gameId = msg.gameId;
     isHost = msg.player1 == selfId;
 
@@ -77,12 +77,15 @@ export function GameOneo(app: HTMLElement) {
 
     player.score = 0;
     opponent.score = 0;
+    player.id = isHost ? msg.player1 : msg.player2;
+    opponent.id = isHost ? msg.player2 : msg.player1;
 
     ball.x = msg.ball.x;
     ball.y = msg.ball.y;
     ball.vx = msg.ball.vx;
     ball.vy = msg.ball.vy;
 
+    gameEndedByServer = false;
     gameRunning = true;
     requestAnimationFrame(gameLoop);
   };

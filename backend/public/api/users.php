@@ -89,6 +89,11 @@ function createUser(array $body, SQLite3 $db): void {
     $sql = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
     $res = doQuery($db, $sql, [':username', $username, SQLITE3_TEXT], [':email', $email, SQLITE3_TEXT], [':pass', $passHash, SQLITE3_TEXT]);
     if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    // init ranking
+    $rankingQuery = "INSERT INTO ranking (user_id, games_played, games_win, games_lose, history)
+        VALUES (:user_id, 0, 0, 0, '[]')";
+    $res = doQuery($db, $rankingQuery);
+    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
 }
 /*

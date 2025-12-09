@@ -21,8 +21,7 @@ export async function StatsView(app: HTMLElement, state: any): Promise <void> {
     headers: {'Authorization': `Bearer ${token}`},
     body: JSON.stringify({user_id: user_id})
   })
-  const stats = await response.json();
-  const data = JSON.parse(stats.details);
+  const data = await response.json();
   state.player.matches = data.matches;
   state.player.victories = data.victories;
   state.player.defeats = data.defeats;

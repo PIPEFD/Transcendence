@@ -16,13 +16,11 @@ switch ($requestMethod)
 			getHistory($database, $user_id);
 			break ;
 		}
-		if (!checkBodyData($body, 'win_id', 'loser_id'))
+		if (!checkBodyData($body, 'winner_id', 'loser_id'))
 			errorSend(400, 'bad request');
 		$winner_id = $body['winner_id'];
 		$loser_id = $body['loser_id'];
 		$game_result = $body['result'];
-		if (!(checkJWT($winner_id)))
-			errorSend(403, 'forbidden access');
 		updateElo($database, $winner_id, $loser_id, $game_result);
 		break;
 	case 'GET':
@@ -36,6 +34,7 @@ switch ($requestMethod)
 				errorSend(403, 'forbidden access');
 			getStats($database, $user_id);
 		}
+		break ;
 	default:
 		errorSend(405, 'unauthorized method');
 }
@@ -52,19 +51,15 @@ function getStats(SQLite3 $database, int $user_id) {
 	$sqlParams = [":user_id", $user_id, SQLITE3_INTEGER];
 	$res = doQuery($database, $query, $sqlParams);
 	$row = $res->fetchArray(SQLITE3_ASSOC);
+	$voidRes = json_encode(["matches" => 0, "victories" => 0, "defeats" => 0 ]);
+	http_response_code(200);
 	if (!$row) {
-		successSend("", 200, json_encode([
-			"matches" => 0,
-			"victories" => 0,
-			"defeats" => 0
-		]));
+		echo $voidRes;
 		return ;
 	}
-	successSend("", 200, [
-		"matches" => intval($row["games_played"]),
-		"victories" => intval($row["games_win"]),
-		"defeats" => intval($row["games_lose"])
-	]);
+	echo json_encode(["matches" => intval($row['games_played']),
+		"victories" => intval($row['games_win']), "defeats" => intval($row['games_lose'])]);
+	return ;
 }
 /*
 	hay 2 tipos de historial, este el cual retorna estadisticas generales
@@ -78,16 +73,23 @@ function getHistory(SQLite3 $database, int $user_id) {
         [":id", $user_id, SQLITE3_INTEGER]
     );
     $row = $res->fetchArray(SQLITE3_ASSOC);
-    if (!$row || !$row['history']) {
-        successSend("history empty", 200, json_encode([]));
-        return;
+
+    header('Content-Type: application/json');
+    http_response_code(200);
+
+    $historyArray = [];
+    if ($row && $row['history']) {
+        $historyArray = json_decode($row['history'], true);
+        if (!is_array($historyArray)) $historyArray = [];
     }
-    $historyArray = json_decode($row['history'], true);
-    if (!is_array($historyArray)) {
-        $historyArray = [];
-    }
-    successSend("history", 200, $historyArray);
+
+    echo json_encode([
+        "message" => "history",
+        "data" => $historyArray
+    ]);
+    return ;
 }
+
 /*
 	misma funcionalidad pero con el historial, su formato es:
 		- "status" => "win / lose"
@@ -96,7 +98,7 @@ function getHistory(SQLite3 $database, int $user_id) {
 		- "against" => "id de contrincante"
 */
 
-function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
+function updateElo(SQLite3 $database, int $win_id, int $ls_id, $res): void
 {
 	$winElo = getElo($database, $win_id);									
 	$lsElo = getElo($database, $ls_id);
@@ -106,8 +108,9 @@ function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
 	$winnerEloDiff = $newWinElo - $winElo;
 	$loserEloDiff = $newLsElo - $lsElo;
 
-	operateEloAux($database, $win_id, $newWinElo, true);
-	operateEloAux($database, $ls_id, $newLsElo, false);
+	updateEloAux($database, $win_id, $newWinElo, true);
+	updateEloAux($database, $ls_id, $newLsElo, false);
+
 	$winnerHistoryEntry = [
 		"status" => "win",
 		"result" => $res,
@@ -133,7 +136,7 @@ function updateElo(SQLite3 $database, int $win_id, int $ls_id, int $res): void
 function updateHistory(SQLite3 $database, int $id, array $entry, bool $flag) {
     $res = doQuery($database,
         "SELECT history FROM ranking WHERE user_id = :id",
-        [":id", $user_id, SQLITE3_INTEGER]
+        [":id", $id, SQLITE3_INTEGER]
     );
     $row = $res->fetchArray(SQLITE3_ASSOC);
     $historyArr = $row && $row['history']
@@ -151,9 +154,9 @@ function updateHistory(SQLite3 $database, int $id, array $entry, bool $flag) {
             games_lose   = games_lose + :l
          WHERE user_id = :id",
          [":history", $newJson, SQLITE3_TEXT],
-         [":w", $isWinner ? 1 : 0, SQLITE3_INTEGER],
-         [":l", $isWinner ? 0 : 1, SQLITE3_INTEGER],
-         [":id", $user_id, SQLITE3_INTEGER]
+         [":w", $flag ? 1 : 0, SQLITE3_INTEGER],
+         [":l", $flag ? 0 : 1, SQLITE3_INTEGER],
+         [":id", $id, SQLITE3_INTEGER]
     );
 }
 /*

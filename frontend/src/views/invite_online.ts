@@ -11,6 +11,10 @@ type Friend = {
     username: string;
 };
 
+// Variables de control de estado
+let invitationSent = false;
+let inGame = false;
+
 export default async function loadFriends() {
     const selfId = localStorage.getItem("userId");
     const token = localStorage.getItem("tokenUser");
@@ -93,6 +97,11 @@ export default async function loadFriends() {
     // --- Configurar botones de invitación ---
     content.querySelectorAll<HTMLButtonElement>(".invite-btn").forEach(btn => {
         btn.addEventListener("click", () => {
+            if (invitationSent || inGame) {
+                alert("You already have a pending invitation or are in a game.");
+                return;
+            }
+
             const to = btn.dataset.id;
             if (!to) return;
 
@@ -101,6 +110,9 @@ export default async function loadFriends() {
                 from: parseInt(selfId, 10),
                 to: parseInt(to, 10)
             });
+
+            invitationSent = true;  // Marcar invitación pendiente
+            btn.disabled = true;    // Deshabilitar botón
         });
     });
 
@@ -110,32 +122,43 @@ export default async function loadFriends() {
     });
 
     wsService.on("game-start", () => {
+        inGame = true;        // Marcar partida activa
+        invitationSent = false; // Reset de invitación pendiente
         navigate("/1v1o");
+    });
+    wsService.on("game-ended", (msg: any) => {
+        if (msg.gameId) { // opcional: verificar si es tu partida
+            inGame = false;
+            invitationSent = false;
+        }
     });
 
     wsService.on("game-invite-rejected", () => {
         alert("Your invitation was rejected");
+        invitationSent = false;
     });
+
     wsService.on("game-invite", (msg: any) => {
-    const fromId = msg.from;
-    const inviteId = msg.inviteId;
+        if (inGame) {
+            wsService.send({
+                type: "game-invite-response",
+                inviteId: msg.inviteId,
+                response: false
+            });
+            return;
+        }
 
-    // Puedes usar alert simple
-    const accept = confirm(`Player ${fromId} invites you to a game. Accept?`);
+        const accept = confirm(`Player ${msg.from} invites you to a game. Accept?`);
+        wsService.send({
+            type: "game-invite-response",
+            inviteId: msg.inviteId,
+            response: accept
+        });
 
-    // Enviar respuesta al servidor
-    wsService.send({
-        type: "game-invite-response",
-        inviteId,
-        response: accept
-    });
-
-    if (accept) {
-        // Opcional: navegar a la pantalla de juego
-        navigate("/1v1o");
-    } else {
-        alert("Invitation declined.");
-    }
+        if (accept) {
+            inGame = true;
+            navigate("/1v1o");
+        }
     });
 
     // --- Botón back ---
