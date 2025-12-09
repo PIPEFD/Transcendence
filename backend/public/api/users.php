@@ -52,17 +52,11 @@ function getUserAvatar(SQLite3 $db, int $id): void {
     if (!$resultObject) {
         errorSend(500, "Sqlite error: " . $db->lastErrorMsg());
     }
-
-    // 1. EXTRAER EL ARRAY ASOCIATIVO de la fila del resultado
-    $row = $resultObject->fetchArray(SQLITE3_ASSOC); // $row es ahora un array o false/null
-
-    // 2. Comprobar si la fila existe Y si contiene la URL
+    $row = $resultObject->fetchArray(SQLITE3_ASSOC);
     if (!$row || empty($row['avatar_url'])) {
         errorSend(404, "avatar not found in db");
     }
-    
-    // 3. Usar el array $row (¡NO el objeto $res o $resultObject!)
-    $avatarPath = __DIR__ . $row['avatar_url']; // Usar $row en lugar de la variable antigua incorrecta
+    $avatarPath = __DIR__ . $row['avatar_url'];
     
     if (!file_exists($avatarPath))
         errorSend(404, "file not found");
@@ -88,12 +82,13 @@ function createUser(array $body, SQLite3 $db): void {
 
     $sql = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
     $res = doQuery($db, $sql, [':username', $username, SQLITE3_TEXT], [':email', $email, SQLITE3_TEXT], [':pass', $passHash, SQLITE3_TEXT]);
-    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
-    // init ranking
+    if (!$res)
+        errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     $rankingQuery = "INSERT INTO ranking (user_id, games_played, games_win, games_lose, history)
         VALUES (:user_id, 0, 0, 0, '[]')";
     $res = doQuery($db, $rankingQuery);
-    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    if (!$res)
+        errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
 }
 /*

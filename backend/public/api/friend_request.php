@@ -21,12 +21,12 @@ switch ($requestMethod)
         $sender_id = (int)$body['sender_id'];
         $receiver_id = (int)$body['receiver_id'];
 
-        // if (!checkJWT($sender_id)) errorSend(403, 'forbidden access');
+        if (!checkJWT($sender_id)) errorSend(403, 'forbidden access');
         sendFriendRequest($database, $sender_id, $receiver_id);
         break;
 
     case 'GET':
-        // if (!checkJWT($queryId)) errorSend(403, 'forbidden access');
+        if (!checkJWT($queryId)) errorSend(403, 'forbidden access');
         requestListId($database, $queryId);
         break;
 
@@ -38,7 +38,7 @@ switch ($requestMethod)
         $receiver_id = (int)$body['receiver_id'];
         $action = $body['action'];
 
-        // if (!checkJWT($receiver_id)) errorSend(403, 'forbidden access');
+        if (!checkJWT($receiver_id)) errorSend(403, 'forbidden access');
         acceptDeclineRequest($database, $sender_id, $receiver_id, $action);
         break;
 
