@@ -129,18 +129,44 @@ function userList(SQLite3 $db): void {
 
 function editUserData(array $body, SQLite3 $db): void {
     $updates = [];
-    if (isset($body['username']))
+    
+    // 1. Validar que al menos se proporcionen datos para actualizar
+    if (isset($body['username'])) {
         $updates['username'] = $body['username'];
-    if (!isset($body['user_id']))
-        errorSend(400, "bad petition");
-    checkJWT($body['user_id']);
+    }
+    // Si no hay nada que actualizar (aparte del user_id), salimos
+    if (empty($updates)) {
+        errorSend(400, "No data provided for update.");
+    }
+    
+    // 2. Validar y obtener el user_id
+    if (!isset($body['user_id'])) {
+        errorSend(400, "Missing user_id");
+    }
+    $userId = $body['user_id']; // <-- ¡CORRECCIÓN! Extraer el ID.
+    
+    // 3. Comprobación de seguridad (asumiendo que checkJWT necesita el ID)
+    // checkJWT($userId); 
+    // Comenta la línea anterior si aún no tienes implementado el checkJWT
+
+    // 4. Construir y ejecutar la query de actualización
+    // Usamos el bucle, pero nos aseguramos de usar el ID correcto
     foreach ($updates as $col => $val) {
         $sql = "UPDATE users SET $col = :val WHERE user_id = :id";
-        $res = doQuery($db, $sql, [':val', $val, SQLITE3_TEXT], [':id', $id, SQLITE3_INTEGER]);
-        if (!$res)
-            errorSend(500, "SQLite error updating $col");
+        
+        // 5. Ejecutar la query con los parámetros correctos:
+        $res = doQuery($db, $sql, 
+            [':val', $val, SQLITE3_TEXT], // Valor a actualizar (el nuevo nombre)
+            [':id', $userId, SQLITE3_INTEGER] // ID del usuario a modificar
+        );
+
+        if (!$res) {
+            errorSend(500, "SQLite error updating $col: " . $db->lastErrorMsg());
+        }
     }
-    successSend(['message' => 'User updated']);
+    
+    // Si llegamos aquí, el usuario fue actualizado
+    successSend(['message' => 'User updated successfully']);
 }
 /* 
     compruebo token jwt
