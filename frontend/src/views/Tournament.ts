@@ -16,10 +16,6 @@ export function TournamentView(app: HTMLElement, state?: any): void {
           ${t("Plaayers")}
         </button>
 
-        <button id="btn16" class="bg-poke-red text-white py-2 px-6 rounded hover:bg-red-600">
-          ${t("Plaaayers")}
-        </button>
-
         <button id="btnBack" class="bg-poke-blue text-white py-2 px-6 rounded hover:bg-blue-600">
           ${t("goBack")}
         </button>

@@ -70,4 +70,6 @@ export default {
   PLayer3: "Jugador 3",
   PLayer4: "Jugador 4",
   StartTournament : "Empieza el torneo",
+  Chooseafriend :"Elige un amigo",
+
 };

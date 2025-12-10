@@ -39,7 +39,7 @@ export default async function loadFriends() {
 
         app.innerHTML = `
             <div class="max-w-3xl mx-auto p-4">
-                <h1 class="text-xl font-bold mb-4">${t("Choose a friend")}</h1>
+                <h1 class="text-xl font-bold mb-4">${t("Chooseafriend")}</h1>
                 <div id="friendsContent" class="h-96 overflow-y-auto bg-white bg-opacity-40 rounded border p-2">
                     <p class="text-center mt-4">${t("loading_friends")}</p>
                 </div>
