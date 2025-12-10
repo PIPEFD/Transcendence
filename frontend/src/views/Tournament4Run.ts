@@ -12,6 +12,13 @@ export function GameTournament(app: HTMLElement, state: any): void {
   const match = state.currentMatch;
   const M = state.tournamentMatches;
 
+  // 1. DYNAMIC ROUTE DETERMINATION
+  // Check if the match structure has keys specific to an 8-player bracket (e.g., Q1)
+  // If not, assume it's the 4-player bracket (semi1, final)
+  const isEightPlayerBracket = M.hasOwnProperty('Q1');
+  const returnRoute = isEightPlayerBracket ? "/tournament8start" : "/tournament4start";
+
+
   app.innerHTML = `
     <div class="flex flex-col items-center w-full">
       <div class="text-center mb-4">
@@ -68,7 +75,7 @@ export function GameTournament(app: HTMLElement, state: any): void {
       // Clear the current match and navigate back to the bracket view
       delete state.currentMatch;
       setTimeout(() => {
-          navigate("/tournament4start");
+          navigate(returnRoute); // USE DYNAMIC ROUTE
       }, 2000); // Give 2 seconds to read the "Winner" message
   };
 
@@ -158,11 +165,11 @@ export function GameTournament(app: HTMLElement, state: any): void {
 
   // ===== Buttons =====
   
-  // Go Back/Cancel Button: Clears the current match state and returns to the bracket
+  // Go Back/Cancel Button: Clears the current match state and returns to the correct bracket
   document.getElementById("goBackBtn")?.addEventListener("click",()=>{
     delete state.currentMatch;
     gameRunning=false;
-    navigate("/tournament4start");
+    navigate(returnRoute); // USE DYNAMIC ROUTE
   });
 
   // Start the game immediately

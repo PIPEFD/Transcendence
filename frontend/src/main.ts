@@ -9,6 +9,7 @@ import { AvatarView1 } from "./views/Avatarlogin.js";
 import { GameView } from "./views/Game.js";
 import { TournamentView } from "./views/Tournament.js";
 import { Tournament4View } from "./views/tournament4.js";
+import { Tournament8View } from "./views/tournament8.js";
 import { ChatView } from "./views/Chat.js";
 import { HomeView } from "./views/Home.js";
 import { SettingsView } from "./views/Settings.js";
@@ -29,6 +30,7 @@ import { WebSocketTestView } from "./views/WebSocketTest.js";
 import { wsService } from "./services/WebSocketService.js";
 import { ChooseView1 } from "./views/Choose1.js";
 import { Tournament4StartView } from "./views/tournament4start.js";
+import { Tournament8StartView } from "./views/tournament8start.js";
 import { GameTournament } from "./views/Tournament4Run.js";
 import InviteView from "./views/invite_online.js";
 
@@ -128,6 +130,12 @@ function router(): void {
       break;
       case "/game-tournament":
     GameTournament(app, state);
+      break;
+    case "/tournament8":
+      Tournament8View(app, state);
+      break;
+      case "/tournament8start":
+    Tournament8StartView(app, state);
       break;
     case "/chat":
       ChatView(app, state);

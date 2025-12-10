@@ -313,4 +313,12 @@ reset: down
 	fi
 
 # Marca los objetivos que no son archivos
-.PHONY: help init create-dirs generate-secrets create-certs create-env up up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps test test-unit test-integration clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs
+.PHONY: help init create-dirs generate-secrets create-certs create-env up up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps test test-unit test-integration clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs frontend-sync
+
+# ======================================
+# DESARROLLO - SINCRONIZACIÓN FRONTEND
+# ======================================
+
+# Sincronizar cambios del frontend y recompilar
+frontend-sync:
+	@bash ./scripts/sync-frontend.sh
