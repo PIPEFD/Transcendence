@@ -7,14 +7,16 @@ NC='\033[0m'
 
 echo "🔍 Iniciando pruebas de servicios..."
 
-# Función para probar un endpoint HTTP
+# Función para probar un endpoint HTTP/HTTPS
 test_http() {
     local name=$1
     local url=$2
     local expected_code=$3
     
     echo -n "Probando $name... "
-    code=$(curl -s -o /dev/null -w "%{http_code}" $url)
+    # -k: permite certificados autofirmados
+    # -L: sigue redirecciones
+    code=$(curl -k -L -s -o /dev/null -w "%{http_code}" $url)
     
     if [ "$code" = "$expected_code" ]; then
         echo -e "${GREEN}OK${NC} (código $code)"
@@ -56,15 +58,18 @@ test_ws() {
 
 echo "📡 Probando servicios principales..."
 
-# Frontend
-test_http "Frontend" "http://localhost:9180" 200
+# Frontend (HTTPS en puerto 9443)
+test_http "Frontend" "https://localhost:9443" 200
 
-# Backend
-test_http "Backend Health" "http://localhost:9180/api/health" 200
-test_http "Backend API" "http://localhost:9180/api/status" 200
+# Backend (API real que existe)
+test_http "Backend API Users" "https://localhost:9443/api/users.php" 200
 
-# WebSocket
-test_ws "Game WebSocket" "ws://localhost:9180/ws"
+# WebSocket - Skip si npm no está disponible
+if command -v npm >/dev/null 2>&1; then
+    test_ws "Game WebSocket" "wss://localhost:9443/ws"
+else
+    echo "WebSocket test skipped (npm no disponible para instalar wscat)"
+fi
 
 echo "🔍 Probando servicios de monitorización..."
 
@@ -74,17 +79,27 @@ test_http "Prometheus" "http://localhost:9090/-/healthy" 200
 # Grafana
 test_http "Grafana" "http://localhost:3001/api/health" 200
 
-# cAdvisor
-test_http "cAdvisor" "http://localhost:8080/healthz" 200
+# cAdvisor (puerto 8081 con prefijo /cadvisor/)
+test_http "cAdvisor" "http://localhost:8081/cadvisor/containers/" 200
 
 # Node Exporter
 test_http "Node Exporter" "http://localhost:9100/metrics" 200
 
-# Nginx Exporter
-test_http "Nginx Exporter" "http://localhost:9113/metrics" 200
+# Nginx Exporter (verificar métricas desde Prometheus)
+echo -n "Probando Nginx Exporter... "
+if docker exec transcendence-prometheus wget -q -O- http://nginx-exporter:9113/metrics 2>/dev/null | grep -q "nginx_connections"; then
+    echo -e "${GREEN}OK${NC} (métricas activas)"
+else
+    echo -e "${RED}ERROR${NC}"
+fi
 
-# PHP-FPM Exporter
-test_http "PHP-FPM Exporter" "http://localhost:9253/metrics" 200
+# PHP-FPM Exporter (puerto interno, acceder a través de docker exec)
+echo -n "Probando PHP-FPM Exporter... "
+if docker exec transcendence-php-fpm-exporter wget -q -O- http://localhost:9253/metrics >/dev/null 2>&1; then
+    echo -e "${GREEN}OK${NC} (vía docker exec)"
+else
+    echo -e "${RED}ERROR${NC}"
+fi
 
 echo "🌐 Probando Weave Scope..."
 

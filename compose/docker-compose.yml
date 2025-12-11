@@ -321,8 +321,9 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
-      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana/
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      # Allow direct access on port 3001 and via Nginx subpath
+      - GF_SERVER_ROOT_URL=http://localhost:3001/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=false
     secrets:
       - grafana_admin_user
       - grafana_admin_password
@@ -436,7 +437,7 @@ services:
     image: nginx/nginx-prometheus-exporter:latest
     container_name: transcendence-nginx-exporter
     command:
-      - -nginx.scrape-uri=http://nginx:8080/nginx_status
+      - -nginx.scrape-uri=http://nginx:80/nginx_status
     expose:
       - "9113"
     networks: [monitoring]
@@ -606,9 +607,14 @@ services:
     # 🔑 Permisos y visibilidad
     privileged: true          # acceso a /proc, netns, conntrack
     pid: "host"               # ve los PIDs reales del host
+    # Add docker group to access socket in restricted environments (42 campus)
+    group_add:
+      - "999"                 # docker group GID from host
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - /var/run/scope/plugins:/var/run/scope/plugins
+      - ../docker/scope/entrypoint.sh:/custom-entrypoint.sh:ro
+    entrypoint: ["/custom-entrypoint.sh"]
     command:
       - "--probe.docker=true"
       - "--weave=false"

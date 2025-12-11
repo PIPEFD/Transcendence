@@ -11,6 +11,18 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
+# Verificar permisos de Docker
+if ! docker ps >/dev/null 2>&1; then
+    echo -e "${RED}Error: No tienes permisos para ejecutar comandos de Docker.${NC}"
+    echo -e "${YELLOW}Soluciones posibles:${NC}"
+    echo -e "  1. Ejecutar con: ${CYAN}newgrp docker${NC} (luego reintentar)"
+    echo -e "  2. Agregar usuario al grupo docker: ${CYAN}sudo usermod -aG docker \$USER${NC}"
+    echo -e "  3. Ejecutar solo tests HTTP sin docker exec"
+    echo ""
+    echo -e "${YELLOW}Nota: En ambiente 42, puede que necesites reiniciar sesión.${NC}"
+    exit 1
+fi
+
 echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║   VALIDACIÓN COMPLETA DE SERVICIOS - TRANSCENDENCE    ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
