@@ -141,7 +141,12 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button id="msg-${idAmigo}" class="msg-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press">${t("message")}</button>
+                                <button 
+                                    id="msg-${idAmigo}" 
+                                    class="msg-btn px-3 py-1 bg-poke-blue bg-opacity-80 text-poke-light rounded border-2 border-poke-blue active:animate-press"
+                                    data-friend-id="${idAmigo}"> 
+                                    ${t("message")}
+                                </button>
                                 <button 
                                     data-friend-id="${idAmigo}" 
                                     class="remove-friend-btn px-3 py-1 bg-poke-red bg-opacity-80 text-poke-light rounded border-2 border-poke-red active:animate-press">
@@ -165,14 +170,18 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
     const setupListListeners = (container: HTMLElement) => {
         container.querySelectorAll('.msg-btn').forEach(btn => {
             btn.addEventListener("click", (e) => {
-                const chatContainer = document.getElementById("chatSection") as HTMLElement;
-                if (!chatContainer) return;
-        
-                chatContainer.classList.remove("hidden");
-                chatContainer.innerHTML = "";
-                ChatView(chatContainer, state); 
+                
+                const targetButton = e.currentTarget as HTMLButtonElement;
+                const friendId = targetButton.getAttribute('data-friend-id');
+                
+                if (friendId) {
+                    navigate("/chat");
+                } else {
+                    console.error("ERROR: No se pudo obtener el ID del amigo para el chat.");
+                }
             });
         });
+        
 
         container.querySelectorAll('.remove-friend-btn').forEach(btn => {
             btn.addEventListener("click", async (e) => {
