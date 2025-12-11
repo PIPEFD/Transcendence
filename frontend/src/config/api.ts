@@ -5,25 +5,36 @@
 
 // Determinar la URL base según el entorno
 const getApiBaseUrl = (): string => {
-  // Si estamos en desarrollo local (puerto 3000), usar nginx
-  // Si estamos en producción (a través de nginx), usar rutas relativas
-  
   const currentHost = window.location.hostname;
   const currentPort = window.location.port;
   const currentProtocol = window.location.protocol;
   
-  // Si accedemos a través de nginx (puerto 9443 o sin puerto específico)
-  if (currentPort === '9443' || currentPort === '' || currentPort === '443') {
-    // Usar rutas relativas que nginx proxeará al backend
-    return `${currentProtocol}//${currentHost}${currentPort ? ':' + currentPort : ''}`;
+  // Estrategia: Siempre usar rutas relativas para que funcione desde cualquier origen
+  // El navegador enviará las peticiones al mismo host/puerto desde el que cargó el frontend
+  
+  // Caso 1: Acceso a través de nginx en puerto 9443 (HTTPS)
+  // Ejemplo: https://192.168.1.100:9443 -> /api/... se proxea a backend
+  if (currentPort === '9443' || currentPort === '443') {
+    // Usar rutas relativas - funciona tanto desde localhost como desde IP externa
+    return '';
   }
   
-  // Si estamos en desarrollo directo (puerto 3000), apuntar a nginx
+  // Caso 2: Acceso a través de nginx sin puerto explícito (producción)
+  // Ejemplo: https://example.com -> /api/... se proxea a backend
+  if (currentPort === '') {
+    return '';
+  }
+  
+  // Caso 3: Acceso directo al frontend en puerto 3000 o 9280 (desarrollo)
+  // Necesita conectar al nginx en puerto 9443
+  // IMPORTANTE: Usar currentHost en lugar de 'localhost' para soportar acceso externo
   if (currentPort === '3000' || currentPort === '9280') {
-    return 'https://localhost:9443';
+    // Si estamos en localhost, usar localhost; si es desde red, usar la IP actual
+    const targetHost = currentHost === '127.0.0.1' ? 'localhost' : currentHost;
+    return `https://${targetHost}:9443`;
   }
   
-  // Por defecto, usar rutas relativas
+  // Caso 4: Cualquier otro puerto (fallback seguro - rutas relativas)
   return '';
 };
 
