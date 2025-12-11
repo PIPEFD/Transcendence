@@ -3,6 +3,9 @@ import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { wsService } from "../services/WebSocketService.js";
 
+// Mensaje de error para sesión duplicada (debes asegurar que tu backend lo devuelva)
+const CONCURRENT_SESSION_MESSAGE = "This user is already logged in on another device. Please log out there first.";
+
 export function LoginView(app: HTMLElement, state: any): void {
   app.innerHTML = `
     <div class="text-center mb-4">
@@ -58,8 +61,6 @@ export function LoginView(app: HTMLElement, state: any): void {
       const text = await response.text();
       console.log("Backend returned:", text);
 
-      console.log("Backend returned:", JSON.stringify({ username, pass }));
-
       let data: any;
       try {
         data = JSON.parse(text);
@@ -69,7 +70,19 @@ export function LoginView(app: HTMLElement, state: any): void {
 
       console.log("📦 Response data:", data);
 
-      // Aquí comprobamos si hay error y lo mostramos
+      // ----------------------------------------------------------------------
+      // NUEVO: 1. Manejo de Sesión Concurrente (Rechazar la nueva sesión)
+      // ----------------------------------------------------------------------
+      if (data.concurrent_session_error) {
+        errorDiv.textContent = t("concurrent_session_error") || CONCURRENT_SESSION_MESSAGE;
+        // Opcional: limpiar los campos de contraseña
+        passwordInput.value = "";
+        return; // ¡Detener el login y la navegación!
+      }
+      // ----------------------------------------------------------------------
+
+
+      // 2. Comprobar si hay error general y mostrarlo
       if (data.error) {
         errorDiv.textContent = data.error;
         return; // ¡detenemos la navegación!
@@ -86,13 +99,6 @@ export function LoginView(app: HTMLElement, state: any): void {
       if (data.details && data.test_mode) {
         localStorage.setItem("tokenUser", data.details);
         console.log("✅ Login en modo test (sin 2FA)");
-        console.log("✅ Token guardado:", data.details.substring(0, 50) + "...");
-        
-        // Verificar que se guardó
-        const savedToken = localStorage.getItem("tokenUser");
-        const savedUserId = localStorage.getItem("userId");
-        console.log("🔍 Verificación - Token guardado:", !!savedToken);
-        console.log("🔍 Verificación - UserId guardado:", savedUserId);
         
         // Conectar WebSocket después del login
         wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));

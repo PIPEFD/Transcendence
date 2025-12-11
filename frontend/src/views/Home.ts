@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
-import { API_ENDPOINTS, apiFetch } from "../config/api.js"; 
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+import { updateHeader } from "./Header.js";
 
 export async function HomeView(app: HTMLElement, state: any): Promise<void> {
   
@@ -27,6 +28,8 @@ export async function HomeView(app: HTMLElement, state: any): Promise<void> {
         </button>
     </div>
   `;
+
+  updateHeader(state);
 
   document.getElementById("gameBtn")?.addEventListener("click", () => navigate("/game"));
   document.getElementById("tournamentBtn")?.addEventListener("click", () => navigate("/tournament"));

@@ -16,21 +16,26 @@ export async function ProfileView(app: HTMLElement, state: any): Promise<void> {
         
       <p id="profileErrorMsg" class="text-poke-red text-center text-sm mb-2 hidden"></p>
       
-      <div class="flex justify-center">
+      <div class="flex justify-center gap-4">
         <button id="userButton"
           class="bg-poke-blue bg-opacity-80 text-poke-light py-2 border-3 border-poke-blue border-b-blue-800 rounded hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-600 hover:border-b-blue-800 active:animate-press active:border-b-blue-800">
           ${t("enter_username")}
-        </button>   
+        </button>
+        <button id="goBackBtn" class="bg-poke-red bg-opacity-80 text-poke-light py-2 border-3 border-poke-red border-b-red-800 rounded hover:bg-gradient-to-b hover:from-red-500 hover:to-red-600 active:animate-press active:border-b-red-800">
+            ${t("goBack")}
+          </button>
       </div>
     </div>
   `;
+
+  document.getElementById("goBackBtn")?.addEventListener("click", () => navigate("/settings"));
 
   const input = document.getElementById("userEnter") as HTMLInputElement | null;
   const userButton = document.getElementById("userButton");
   const errorMsg = document.getElementById("profileErrorMsg") as HTMLElement;
 
   const userId = localStorage.getItem('userId');
-    const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
+  const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
   
   if (userIdPlaceholder) {
         const token = localStorage.getItem('tokenUser');
@@ -76,43 +81,71 @@ export async function ProfileView(app: HTMLElement, state: any): Promise<void> {
     errorMsg.classList.add("hidden"); // Ocultar errores anteriores
 
     if (!newUsername) {
-      errorMsg.textContent = t("error_empty_user");
-      errorMsg.classList.remove("hidden");
+      alert(t("error_empty_user") || "El nombre de usuario no puede estar vacío.");
       return;
     }
 
     const userId = localStorage.getItem('userId');
-    if (!userId) {
+    const token = localStorage.getItem('tokenUser');
+    const currentUserId = userId ? parseInt(userId, 10) : null;
+
+    if (!currentUserId) {
       alert("No user logged in");
       return;
     }
+    
+    // --- NUEVO: 2. Comprobar si el username ya está en uso ---
+    try {
+        // Usamos GET_USER_ID que asume buscar por el query param 'user='
+        const checkResponse = await apiFetch(`${API_ENDPOINTS.GET_USER_ID}?user=${newUsername}`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-    // 2. Llamada a la API con el nuevo nombre de usuario (newUsername)
+        if (checkResponse.ok) {
+            const userData = await checkResponse.json();
+            const existingUserId = userData.success?.user_id;
+
+            // El nombre existe. Comprobamos si pertenece a otro usuario.
+            if (existingUserId && existingUserId !== currentUserId) {
+                alert(t("error_username_taken") || "Error: Este nombre de usuario ya está en uso.");
+                return; // Detenemos la ejecución
+            }
+            // Si existingUserId === currentUserId, el usuario está intentando establecer
+            // su nombre actual, lo cual es permitido y se continúa al PATCH.
+
+        } 
+        // Si checkResponse falla (ej. 404 Not Found), el nombre está disponible y continuamos.
+
+    } catch (error) {
+        // Manejo de errores de red o errores inesperados durante la verificación
+        console.error("Error al verificar nombre de usuario:", error);
+        alert(t("error_network_check") || "Error de red al verificar el nombre. Inténtalo de nuevo.");
+        return;
+    }
+    // --- FIN: Comprobación de username ---
+
+
+    // 3. Llamada a la API con el nuevo nombre de usuario (PATCH)
     const response = await apiFetch(API_ENDPOINTS.USERS, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user_id: parseInt(userId, 10),
-        username: newUsername // **CORREGIDO: Usamos newUsername**
+        user_id: currentUserId,
+        username: newUsername
       })
     });
     
-    // 3. Manejo de la respuesta
+    // 4. Manejo de la respuesta del PATCH
     if (!response.ok) {
-      // Usamos el elemento de error para el feedback de la API
-      errorMsg.textContent = "Error al actualizar el nombre de usuario o nombre ya tomado."; 
-      errorMsg.classList.remove("hidden");
+      // Usamos alert() para el error general del PATCH (si no fue capturado arriba)
+      const errorData = await response.json().catch(() => ({ message: "Error desconocido." }));
+      alert(errorData.message || "Error al actualizar el nombre de usuario."); 
     } else {
       console.log("username changed, relog to apply changes");
-      // Opcional: Si la API devuelve el usuario actualizado, puedes actualizar el estado aquí:
-      // state.player.user = newUsername; 
-
-      // 4. Navegación final
-      if (state.player.avatar === 0) {
-        navigate("/choose");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     }
   });
 }
+
+//<div class="flex justify-between items-center p-2 border-2 border-poke-dark rounded mb-2 ${m.status === "win" ? "bg-green-100" : "bg-red-100"}">
