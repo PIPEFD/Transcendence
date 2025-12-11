@@ -4,6 +4,7 @@
 **/google_token.json
 OUT.txt
 .env
+compose/.env
 # test reports
 reports/
 
@@ -14,7 +15,8 @@ config/cloudflare/certs/*.pem
 
 # Secretos y configuración sensible
 config/secrets/*.secret
-config/auth/
+config/secrets/*.key
+config/auth/.htpasswd
 
 # Archivos compilados del frontend
 frontend/dist/
@@ -22,6 +24,7 @@ frontend/node_modules/
 
 # Uploads y archivos de usuario
 backend/public/api/uploads/
+backend/database/database.sqlite
 
 # Logs y archivos temporales
 nohup.out

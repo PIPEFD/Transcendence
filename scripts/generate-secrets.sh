@@ -23,13 +23,13 @@ echo -e "${BLUE}Generando secretos para la aplicación...${NC}"
 
 # 1. Generar app_key (Laravel-style key base64)
 echo -e "${YELLOW}Generando APP_KEY...${NC}"
-APP_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 | base64)
+APP_KEY=$(openssl rand -base64 32)
 echo "base64:$APP_KEY" > "$SECRETS_DIR/app_key.secret"
 echo -e "${GREEN}APP_KEY generada y guardada en $SECRETS_DIR/app_key.secret${NC}"
 
 # 2. Generar JWT Secret (base64 más largo)
 echo -e "${YELLOW}Generando JWT_SECRET...${NC}"
-JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 | base64)
+JWT_SECRET=$(openssl rand -base64 64)
 echo "base64:$JWT_SECRET" > "$SECRETS_DIR/jwt_secret.secret"
 echo -e "${GREEN}JWT_SECRET generado y guardado en $SECRETS_DIR/jwt_secret.secret${NC}"
 
@@ -38,7 +38,7 @@ echo -e "${YELLOW}Generando credenciales para Grafana...${NC}"
 # Usuario administrador de Grafana
 GRAFANA_USER="admin"
 # Contraseña aleatoria
-GRAFANA_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+GRAFANA_PASSWORD=$(openssl rand -base64 16 | tr -d '/+=' | cut -c1-16)
 
 echo "$GRAFANA_USER" > "$SECRETS_DIR/grafana_admin_user.secret"
 echo "$GRAFANA_PASSWORD" > "$SECRETS_DIR/grafana_admin_password.secret"
@@ -50,7 +50,7 @@ echo -e "${BLUE}Contraseña:${NC} $GRAFANA_PASSWORD"
 # 4. Generar archivo htpasswd para Weave Scope
 echo -e "${YELLOW}Generando credenciales para Weave Scope...${NC}"
 SCOPE_USER="scopeadmin"
-SCOPE_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+SCOPE_PASSWORD=$(openssl rand -base64 16 | tr -d '/+=' | cut -c1-16)
 
 # Generar hash htpasswd (dependiendo de si htpasswd está disponible)
 if command -v htpasswd &> /dev/null; then
