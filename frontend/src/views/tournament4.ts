@@ -38,7 +38,6 @@ export function Tournament4View(app: HTMLElement, state?: any): void {
     </div>
   `;
 
-  // inputs
   const p1 = document.getElementById("p1") as HTMLInputElement;
   const p2 = document.getElementById("p2") as HTMLInputElement;
   const p3 = document.getElementById("p3") as HTMLInputElement;
@@ -51,26 +50,21 @@ export function Tournament4View(app: HTMLElement, state?: any): void {
   startBtn.addEventListener("click", () => {
     const names = [p1.value.trim(), p2.value.trim(), p3.value.trim(), p4.value.trim()];
 
-    // Check empty fields
     if (names.some(n => n === "")) {
       showError("All player names are required.");
       return;
     }
 
-    // Check uniqueness
     const unique = new Set(names);
     if (unique.size !== names.length) {
       showError("Player names must be unique. No duplicates allowed.");
       return;
     }
 
-    // Clear error
     errorMsg.classList.add("hidden");
 
-    // Save players in state for next screen
     state.tournamentPlayers = names;
 
-    // navigate to bracket or game start
     navigate("/tournament4start");
   });
 

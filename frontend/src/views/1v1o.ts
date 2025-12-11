@@ -29,7 +29,6 @@ export function GameOneo(app: HTMLElement) {
   const selfId = localStorage.getItem("userId");
   if (!selfId) { alert("User not logged in"); navigate("/"); return; }
 
-  // Prevenir abrir varias partidas
   if ((window as any).currentGameId) {
     alert("You already have a game in progress!");
     navigate("/game");
@@ -151,7 +150,6 @@ export function GameOneo(app: HTMLElement) {
 
       sendGameUpdate();
     } else {
-      // cliente solo se mueve y manda update, host maneja la bola
       sendGameUpdate();
     }
 
@@ -178,7 +176,6 @@ export function GameOneo(app: HTMLElement) {
     requestAnimationFrame(gameLoop);
   };
 
-  // WS events
   wsService.on("game-update", (msg:any) => {
     if(msg.gameId !== gameId) return;
     const data = msg.data;
@@ -202,7 +199,6 @@ export function GameOneo(app: HTMLElement) {
     drawText("Game End", canvas.width/2-60, canvas.height/2, "yellow", 24);
   });
 
-  // Controles
   document.addEventListener("keydown", e => { if(e.key==="ArrowUp"||e.key==="w") up=true; if(e.key==="ArrowDown"||e.key==="s") down=true; });
   document.addEventListener("keyup", e => { if(e.key==="ArrowUp"||e.key==="w") up=false; if(e.key==="ArrowDown"||e.key==="s") down=false; });
 

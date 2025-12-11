@@ -30,8 +30,8 @@ export function AuthView(app: HTMLElement, state: any): void {
     const emailInput = document.getElementById("mailEnter") as HTMLInputElement;
 
     const code = emailInput.value.trim();
-    const userIdStr = localStorage.getItem("userId"); // cojo el id del user, pero esta en tipo string
-    const id = userIdStr ? parseInt(userIdStr, 10) : null; // paso a int
+    const userIdStr = localStorage.getItem("userId");
+    const id = userIdStr ? parseInt(userIdStr, 10) : null;
     console.log(id);
     console.log(code);
     if (!code) {
@@ -59,7 +59,7 @@ export function AuthView(app: HTMLElement, state: any): void {
       alert("Codigo correcto");
 
       localStorage.setItem("userId", String(id));
-      localStorage.setItem("tokenUser", data.details); // Guardo token
+      localStorage.setItem("tokenUser", data.details);
       wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
       navigate("/");
     } catch (err) {

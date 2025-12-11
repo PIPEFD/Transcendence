@@ -69,7 +69,16 @@ export default {
   PLayer2: "Joueur 2",
   PLayer3: "Joueur 3",
   PLayer4: "Joueur 4",
-  StartTournament : "Start Tournament",
-  Chooseafriend :"Choose a friend"
+  StartTournament : "Commencer le  Tournoi",
+  Chooseafriend :"Choisir un ami",
+  no_friends_yet : "pas d'amis",
+  Player3Mode : "Mode 3 joueurs",
+  Player4Mode : "Mode 4 joueurs",
+  PlayerTournament : "Joueurs tournoi",
+    Winner : "Gagnant",
+  Champion : "Champion",
+ Semifinales : "Demifinal",
+ CuartosdeFinal :"Quart de final",
+
 
 };

@@ -7,7 +7,6 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
     return;
   }
 
-  // Randomize only the first time
   if (!state.tournamentMatches) {
     const players = [...state.tournamentPlayers].sort(() => Math.random() - 0.5);
     state.tournamentMatches = {
@@ -19,22 +18,19 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
 
   const M = state.tournamentMatches;
   
-  // Determine if the tournament is complete
   const isTournamentComplete = M.final.winner !== null;
 
-  // Determine the next match to be played for the single "Start Tournament" button
   let nextMatchData = null;
   let nextMatchRound = null;
   
   if (!M.semi1.winner) {
-      nextMatchRound = "semi1";
+      nextMatchRound = "Semi1";
       nextMatchData = M.semi1;
   } else if (!M.semi2.winner) {
-      nextMatchRound = "semi2";
+      nextMatchRound = "Semi2";
       nextMatchData = M.semi2;
   } else if (M.semi1.winner && M.semi2.winner && !M.final.winner) {
-      nextMatchRound = "final";
-      // Ensure Final players are set for the state object before using them in the button logic
+      nextMatchRound = "Final";
       if (!M.final.p1 || !M.final.p2) {
           M.final.p1 = M.semi1.winner;
           M.final.p2 = M.semi2.winner;
@@ -49,7 +45,7 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
                 text-white p-6">
 
       <h1 class="text-3xl font-bold text-poke-yellow drop-shadow-lg mb-6">
-        ⭐ 4 Player Tournament ⭐
+        ⭐ 4 ${t("PlayerTournament")} ⭐
       </h1>
 
       <div class="backdrop-blur-md bg-black bg-opacity-40 
@@ -63,8 +59,8 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
 
           ${
             M.semi1.winner
-              ? `<p class="text-green-400 text-lg">Winner: <b>${M.semi1.winner}</b></p>`
-              : "" // Removed Start Match button here
+              ? `<p class="text-green-400 text-lg">${t("Winner")}: <b>${M.semi1.winner}</b></p>`
+              : "" 
           }
         </div>
 
@@ -75,8 +71,8 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
 
           ${
             M.semi2.winner
-              ? `<p class="text-green-400 text-lg">Winner: <b>${M.semi2.winner}</b></p>`
-              : "" // Removed Start Match button here
+              ? `<p class="text-green-400 text-lg">${t("Winner")}: <b>${M.semi2.winner}</b></p>`
+              : ""
           }
         </div>
 
@@ -86,7 +82,7 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
           ${
             M.final.winner
               ? `<p class="text-green-300 text-2xl font-bold drop-shadow-md">
-                   🏆Champion: ${M.final.winner}🏆
+                   🏆${t("Champion")}: ${M.final.winner}🏆
                  </p>`
               : `
                 <p class="text-lg">
@@ -96,7 +92,6 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
                       : "<span class='opacity-50'>Waiting for semifinal winners…</span>"
                   }
                 </p>`
-              // Removed Start Final button here
           }
         </div>
         
@@ -105,7 +100,7 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
                       class="bg-green-600 hover:bg-green-700 
                              text-white text-xl font-bold 
                              py-3 px-8 rounded-lg shadow-lg mt-6">
-                  ▶️ Start Tournament
+                  ▶️ ${t("StartTournament")}
               </button>`
             : ""
         }
@@ -119,13 +114,11 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
     </div>
   `;
 
-  // --- EVENTS ---
 
   const startTournamentBtn = document.getElementById("startTournamentBtn");
   
   if (startTournamentBtn && nextMatchRound && nextMatchData) {
     startTournamentBtn.addEventListener("click", () => {
-      // Logic: Navigate to the next pending match
       state.currentMatch = { 
         round: nextMatchRound, 
         p1: nextMatchData.p1, 
@@ -135,7 +128,6 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
     });
   }
 
-  // Back Button (remains the same)
   document.getElementById("backBtn")!.addEventListener("click", () => {
     delete state.tournamentMatches;
     delete state.tournamentPlayers;
