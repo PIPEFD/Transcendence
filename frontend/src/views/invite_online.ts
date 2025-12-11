@@ -4,14 +4,12 @@ import { fetchAvatarUrl } from "./Header.js";
 import { wsService } from "../services/WebSocketService.js";
 import { navigate } from "../main.js";
 
-// Tipos
 type Friend = {
     id?: number;
     user_id?: number;
     username: string;
 };
 
-// Variables de control de estado
 let inGame = false;
 let wsListenersRegistered = false;
 
@@ -115,35 +113,29 @@ export default async function loadFriends() {
     });
 
     function registerWsListeners() {
-        // Confirmación de invitación enviada
         wsService.on("game-invite-sent", (msg: any) => {
             alert(`Invitation sent to ${msg.to}`);
         });
 
-        // Inicio de la partida
         wsService.on("game-start", (msg: any) => {
             if (!inGame) {
-                inGame = true; // Ahora sí, partida oficialmente activa
+                inGame = true; 
                 navigate("/1v1o");
             }
         });
 
-        // Fin de partida
         wsService.on("game-ended", (msg: any) => {
-            if (msg.gameId) { // opcional: verificar si es tu partida
+            if (msg.gameId) { 
                 inGame = false;
             }
         });
 
-        // Invitación rechazada
         wsService.on("game-invite-rejected", () => {
             alert("Your invitation was rejected");
         });
 
-        // Invitación entrante
         wsService.on("game-invite", (msg: any) => {
             if (inGame) {
-                // Rechazar automáticamente si ya hay partida activa
                 wsService.send({
                     type: "game-invite-response",
                     inviteId: msg.inviteId,
@@ -159,11 +151,9 @@ export default async function loadFriends() {
                 response: accept
             });
 
-            // No navegamos ni marcamos inGame todavía; solo al recibir game-start
         });
     }
 
-    // Botón back
     const backBtn = document.getElementById("backBtn");
     if (backBtn) {
         backBtn.onclick = () => navigate("/");

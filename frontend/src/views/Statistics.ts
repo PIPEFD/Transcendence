@@ -4,17 +4,14 @@ import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { fetchAvatarUrl } from "./Header.js";
 
 export async function StatsView(app: HTMLElement, state: any): Promise <void> {
-  // Determine avatar source
   const token = localStorage.getItem('tokenUser');
   const user_id = localStorage.getItem('userId');
-  console.log("id entrar stats: ", user_id);
-  console.log("token al entrar stats", token);
   let avatarSrc = "";
   if (state.player.avatar !== null && state.player.avatar !== undefined) {
     if (typeof state.player.avatar === "number") {
-      avatarSrc = `/assets/avatar${state.player.avatar}.png`; // built-in
+      avatarSrc = `/assets/avatar${state.player.avatar}.png`;
     } else if (typeof state.player.avatar === "string") {
-      avatarSrc = state.player.avatar; // uploaded
+      avatarSrc = state.player.avatar;
     }
   }
   const response = await apiFetch(API_ENDPOINTS.MATCHES, {

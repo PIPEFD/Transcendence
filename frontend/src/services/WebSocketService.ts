@@ -22,12 +22,10 @@ class WebSocketService {
   connect(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        console.log("⚠ WebSocket ya conectado. No se crea otro.");
         resolve(true);
         return;
       }
       if (this.ws && this.ws.readyState === WebSocket.CONNECTING) {
-        console.log("⏳ WebSocket ya en proceso de conexión...");
         resolve(true);
         return;
       }
@@ -43,13 +41,11 @@ class WebSocketService {
       }
 
       const wsUrl = WS_BASE_URL;
-      console.log('🔌 Conectando a WebSocket:', wsUrl);
 
       try {
         this.ws = new WebSocket(wsUrl);
 
         this.ws.onopen = () => {
-          console.log('✅ WebSocket conectado. Enviando autenticación...');
           this.send({ type: 'auth', token, id: userId, username });
 
           const authTimeout = setTimeout(() => {
@@ -63,7 +59,6 @@ class WebSocketService {
               clearTimeout(authTimeout);
 
               if (data.type === 'auth-ok') {
-                console.log('✅ Autenticación exitosa');
                 this.isAuthenticated = true;
                 this.reconnectAttempts = 0;
                 this.ws?.removeEventListener('message', tempHandler);
@@ -74,7 +69,6 @@ class WebSocketService {
                 reject(new Error(data.reason || 'Auth failed'));
               }
             } catch (e) {
-              // Ignorar
             }
           };
 
@@ -84,31 +78,24 @@ class WebSocketService {
         this.ws.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
-            console.log('📩 Mensaje recibido:', data);
 
             if (data.type === 'game-start') {
               this.lastGameStart = data;
             }
-            // Cambios de estado de usuario
             if (data.type === 'user-status-changed') {
               this.userStatus.set(String(data.userId), data.status);
-              console.log(`👤 ${data.username} ahora está ${data.status}`);
             }
 
-            // Lista de usuarios online
             if (data.type === 'online-users') {
               data.users.forEach((user: any) => {
                 this.userStatus.set(String(user.userId), user.status);
               });
-              console.log(`👥 ${data.count} usuarios online`);
             }
 
-            // Distribuir a handlers registrados
             const type = data.type || 'unknown';
             const handlers = this.messageHandlers.get(type) || [];
             handlers.forEach(handler => handler(data));
 
-            // Handlers genéricos
             const genericHandlers = this.messageHandlers.get('*') || [];
             genericHandlers.forEach(handler => handler(data));
 
@@ -123,12 +110,10 @@ class WebSocketService {
         };
 
         this.ws.onclose = (event) => {
-          console.log('🔌 WebSocket cerrado:', event.code, event.reason);
           this.isAuthenticated = false;
 
           if (this.shouldReconnect && this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
-            console.log(`🔄 Reintentando conexión (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`);
             setTimeout(() => this.connect(), this.reconnectDelay);
           }
         };
@@ -139,9 +124,6 @@ class WebSocketService {
     });
   }
 
-  /**
-   * Registra un handler para un tipo de mensaje específico
-   */
   on(messageType: string, handler: MessageHandler): void {
     if (!this.messageHandlers.has(messageType)) {
       this.messageHandlers.set(messageType, []);
@@ -149,9 +131,6 @@ class WebSocketService {
     this.messageHandlers.get(messageType)!.push(handler);
   }
 
-  /**
-   * Elimina un handler
-   */
   off(messageType: string, handler: MessageHandler): void {
     const handlers = this.messageHandlers.get(messageType);
     if (handlers) {
@@ -162,9 +141,6 @@ class WebSocketService {
     }
   }
 
-  /**
-   * Envía un mensaje al servidor
-   */
   send(data: any): boolean {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.error('❌ WebSocket no está conectado');
@@ -173,7 +149,6 @@ class WebSocketService {
 
     try {
       this.ws.send(JSON.stringify(data));
-      console.log('📤 Mensaje enviado:', data);
       return true;
     } catch (error) {
       console.error('❌ Error enviando mensaje:', error);

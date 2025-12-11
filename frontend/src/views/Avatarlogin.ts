@@ -37,7 +37,6 @@ export function AvatarView1(app: HTMLElement, state: any): void {
 	</div>
   `;
 
-  // Select pre-defined avatars
   document.querySelectorAll("[data-avatar]").forEach(btn => {
 	btn.addEventListener("click", () => {
 	  const value = btn.getAttribute("data-avatar");
@@ -48,14 +47,13 @@ export function AvatarView1(app: HTMLElement, state: any): void {
 	});
   });
 
-  // Upload custom avatar
   const uploadBtn = document.getElementById("uploadAvatarBtn1");
   const uploadInput = document.getElementById("uploadAvatarInput") as HTMLInputElement;
   const preview = document.getElementById("previewAvatar1") as HTMLImageElement;
   const saveBtn = document.getElementById("saveUploadBtn");
 
   uploadBtn?.addEventListener("click", () => {
-	uploadInput.click(); // trigger file picker
+	uploadInput.click();
   });
 
   uploadInput?.addEventListener("change", () => {
@@ -76,36 +74,10 @@ export function AvatarView1(app: HTMLElement, state: any): void {
   
 	const formData = new FormData();
 	formData.append("avatar", file);
-	const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
-    console.log("id entrar upload: ", userId);
+	const userId = localStorage.getItem('userId');
     const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
-	formData.append("user_id", String(userId)); // asegúrate de tener el user ID
+	formData.append("user_id", String(userId));
     const token = localStorage.getItem('tokenUser');
-
-	// try {
-	//   const res = await fetch("http://localhost:8085/api/upload.php", {
-	// 	method: "POST",
-	// 	body: formData,
-	//   });
-  
-	//   const data = await res.json();
-  
-	//   if (!res.ok) {
-	// 	alert("Error al subir el avatar: " + data.error);
-	// 	return;
-	//   }
-  
-	//   // Guardar la ruta recibida desde el backend en el estado
-	//   state.player.avatar = data.path; 
-	//   updateHeader(state);
-  
-	//   alert("Avatar subido correctamente!");
-	//   navigate("/register"); 
-  
-	// } catch (err) {
-	//   console.error("Error al subir avatar:", err);
-	//   alert("Error de conexión con el servidor");
-	// }
 	try {
 		const response = await apiFetch(API_ENDPOINTS.UPLOAD, {
 			method: 'POST',
@@ -119,7 +91,6 @@ export function AvatarView1(app: HTMLElement, state: any): void {
 			})
 		});
 		const data = await response.json();
-		console.log("Friends data:", data);
 		await updateHeader(state);
 	} catch (error) {
             console.error("Error fetching friend list:", error);

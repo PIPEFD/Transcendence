@@ -2,13 +2,11 @@ import { navigate } from "../main.js";
 import { API_ENDPOINTS } from "../config/api.js";
 import { t } from "../translations/index.js";
 
-// --- fetchAvatarUrl (Corrección: Solo devuelve la URL temporal del Blob) ---
 
 export async function fetchAvatarUrl(userId: number | null, token: string | null): Promise<string | null> {
     if (!userId || !token) return null;
 
     try {
-        // Primero intentar obtener la URL del avatar desde avatar_photo.php
         const avatarInfoResponse = await fetch(`${API_ENDPOINTS.AVATAR_PHOTO}?user_id=${userId}`, {
             method: 'GET',
             headers: {
@@ -18,27 +16,20 @@ export async function fetchAvatarUrl(userId: number | null, token: string | null
 
         if (avatarInfoResponse.ok) {
             const avatarData = await avatarInfoResponse.json();
-            console.log('🖼️ Avatar data received:', avatarData);
             const avatarUrl = avatarData.success?.avatar_url;
             
-            console.log('🖼️ Avatar URL from API:', avatarUrl);
             
             if (avatarUrl) {
-                // Si es una URL de uploads, construir la URL completa
                 if (avatarUrl.startsWith('/uploads/')) {
                     const fullUrl = `${window.location.protocol}//${window.location.host}${avatarUrl}`;
-                    console.log('🖼️ Full avatar URL:', fullUrl);
                     return fullUrl;
                 }
-                // Si es una URL completa o un path de assets
-                console.log('🖼️ Using avatar URL as-is:', avatarUrl);
                 return avatarUrl;
             }
         } else {
             console.error('❌ Avatar API response not OK:', avatarInfoResponse.status);
         }
 
-        // Si no hay avatar personalizado, intentar obtener la imagen del endpoint PATCH
         const response = await fetch(`${API_ENDPOINTS.USERS}?id=${userId}`, {
             method: 'PATCH',
             headers: {
@@ -51,17 +42,14 @@ export async function fetchAvatarUrl(userId: number | null, token: string | null
             return null; 
         }
 
-        // Lee el cuerpo como datos binarios
         const imageBlob = await response.blob();
         
-        // Si el Blob es un JSON, significa que el servidor falló
         if (imageBlob.type.includes('application/json')) {
              const jsonText = await imageBlob.text();
              console.error("El servidor envió un error JSON en lugar de la imagen:", jsonText);
              return null;
         }
 
-        // Crea la URL temporal para usarla en el src del <img>
         const imageObjectURL = URL.createObjectURL(imageBlob);
         
         return imageObjectURL;
@@ -73,7 +61,6 @@ export async function fetchAvatarUrl(userId: number | null, token: string | null
 }
 
 
-// --- updateHeader (Corrección: Usa la Blob URL en el HTML recién creado) ---
 
 export function updateHeader(state: any): void {
     const header = document.querySelector("header");
@@ -83,14 +70,10 @@ export function updateHeader(state: any): void {
     const userId = localStorage.getItem('userId');
     const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 
-    // Llamamos a la función async
     fetchAvatarUrl(userIdPlaceholder, token).then((avatarUrl) => {
-        
-        // 1. Usa la URL del Blob o un avatar por defecto
-        // Si avatarUrl es null (error o JSON), usa el avatar por defecto
+
         let avatarSrc = avatarUrl || "/assets/avatar_39.png"; 
 
-        // 2. Reemplaza el header y asigna la URL temporal a avBtn
         header.innerHTML = `
       <div class="relative flex items-center justify-center">
         <p class="text-lg font-bold">PONG</p>

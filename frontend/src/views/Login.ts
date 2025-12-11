@@ -3,6 +3,8 @@ import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { wsService } from "../services/WebSocketService.js";
 
+const CONCURRENT_SESSION_MESSAGE = "This user is already logged in on another device. Please log out there first.";
+
 export function LoginView(app: HTMLElement, state: any): void {
   app.innerHTML = `
     <div class="text-center mb-4">
@@ -56,9 +58,6 @@ export function LoginView(app: HTMLElement, state: any): void {
       });
 
       const text = await response.text();
-      console.log("Backend returned:", text);
-
-      console.log("Backend returned:", JSON.stringify({ username, pass }));
 
       let data: any;
       try {
@@ -67,52 +66,42 @@ export function LoginView(app: HTMLElement, state: any): void {
         throw new Error("Invalid JSON response from backend");
       }
 
-      console.log("📦 Response data:", data);
 
-      // Aquí comprobamos si hay error y lo mostramos
-      if (data.error) {
-        errorDiv.textContent = data.error;
-        return; // ¡detenemos la navegación!
+
+      if (data.concurrent_session_error) {
+        errorDiv.textContent = t("concurrent_session_error") || CONCURRENT_SESSION_MESSAGE;
+        passwordInput.value = "";
+        return;
       }
 
-      // Guardar userId siempre
+      if (data.error) {
+        errorDiv.textContent = data.error;
+        return;
+      }
+
       if (data.user_id) {
         localStorage.setItem("username", String(username));
         localStorage.setItem("userId", String(data.user_id));
-        console.log("✅ userId guardado:", data.user_id);
       }
 
-      // ⚠️ MODO TEST: Si el backend devuelve el token directamente (sin 2FA)
       if (data.details && data.test_mode) {
         localStorage.setItem("tokenUser", data.details);
-        console.log("✅ Login en modo test (sin 2FA)");
-        console.log("✅ Token guardado:", data.details.substring(0, 50) + "...");
         
-        // Verificar que se guardó
-        const savedToken = localStorage.getItem("tokenUser");
-        const savedUserId = localStorage.getItem("userId");
-        console.log("🔍 Verificación - Token guardado:", !!savedToken);
-        console.log("🔍 Verificación - UserId guardado:", savedUserId);
-        
-        // Conectar WebSocket después del login
         wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
         
         navigate("/choose");
         return;
       }
 
-      // Guardar token JWT si viene en la respuesta (flujo normal)
       if (data.token) {
         localStorage.setItem("tokenUser", data.token);
       }
 
-      // Si requiere 2FA
       if (data.pending_2fa) {
         navigate("/authentication");
       } else {
-        // Conectar WebSocket después del login exitoso
         wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
-        navigate("/choose"); // login exitoso directo
+        navigate("/choose");
       }
 
     } catch (err) {

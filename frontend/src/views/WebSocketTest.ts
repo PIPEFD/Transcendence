@@ -77,7 +77,6 @@ export function WebSocketTestView(app: HTMLElement, state: any) {
           const data = JSON.parse(event.data);
           log(`   Parsed: ${JSON.stringify(data, null, 2)}`, 'success');
         } catch (e) {
-          // No es JSON
         }
       };
     } catch (error) {
@@ -116,7 +115,6 @@ export function WebSocketTestView(app: HTMLElement, state: any) {
     if (logs) logs.innerHTML = '';
   }
 
-  // Auto-detectar URL basado en la ubicación actual
   setTimeout(() => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const defaultUrl = `${protocol}//${window.location.host}/ws/`;
@@ -127,7 +125,6 @@ export function WebSocketTestView(app: HTMLElement, state: any) {
     }
   }, 100);
 
-  // Event listeners
   document.getElementById('connectBtn')?.addEventListener('click', connect);
   document.getElementById('disconnectBtn')?.addEventListener('click', disconnect);
   document.getElementById('sendBtn')?.addEventListener('click', sendMessage);

@@ -17,9 +17,7 @@ export function MenuView(app: HTMLElement, state: any): void {
   const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 
   fetchAvatarUrl(userIdPlaceholder, token).then((avatarUrl) => {
-        
-        // 1. Usa la URL del Blob o un avatar por defecto
-        // Si avatarUrl es null (error o JSON), usa el avatar por defecto
+
         let avatarSrc = avatarUrl || "/assets/avatar_39.png";
 
     app.innerHTML = `

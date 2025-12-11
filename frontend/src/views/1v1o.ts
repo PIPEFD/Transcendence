@@ -19,9 +19,8 @@ async function updateEloTs(winner: {score: number, id: number}, loser: {score: n
 
     if (!response.ok) throw new Error('Failed to update Elo');
     const data = await response.json();
-    console.log('✅ Elo updated:', data);
   } catch (error) {
-    console.error('❌ Error updating Elo:', error);
+    console.error('Error updating Elo:', error);
   }
 }
 

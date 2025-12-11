@@ -1,6 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
-import { API_ENDPOINTS, apiFetch } from "../config/api.js"; 
+import { API_ENDPOINTS, apiFetch } from "../config/api.js";
+import { updateHeader } from "./Header.js";
 
 export async function HomeView(app: HTMLElement, state: any): Promise<void> {
   
@@ -28,6 +29,8 @@ export async function HomeView(app: HTMLElement, state: any): Promise<void> {
     </div>
   `;
 
+  updateHeader(state);
+
   document.getElementById("gameBtn")?.addEventListener("click", () => navigate("/game"));
   document.getElementById("tournamentBtn")?.addEventListener("click", () => navigate("/tournament"));
   document.getElementById("chatBtn")?.addEventListener("click", () => navigate("/chat"));
@@ -35,7 +38,6 @@ export async function HomeView(app: HTMLElement, state: any): Promise<void> {
     const userId = localStorage.getItem('userId');
     const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 
-    // Obtener y mostrar el nombre de usuario
     if (userIdPlaceholder) {
         const token = localStorage.getItem('tokenUser');
         const userNameDisplay = document.getElementById("userNameDisplay");
@@ -66,7 +68,6 @@ export async function HomeView(app: HTMLElement, state: any): Promise<void> {
             userNameDisplay.textContent = "Usuario (Error Red)";
         }
     } else {
-        // Usuario no logueado
         document.getElementById("userNameDisplay")!.textContent = "Invitado";
     }
 }

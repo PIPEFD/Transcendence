@@ -28,7 +28,6 @@ export function GameView(app: HTMLElement, state?: any): void {
     </div>
   `;
 
-  // Button event listeners
   document.getElementById("btn1v1")?.addEventListener("click", () => navigate("/1v1"));
   document.getElementById("btn1v1o")?.addEventListener("click", () => navigate("/invite_on"));
   document.getElementById("btnVsAI")?.addEventListener("click", () => navigate("/vsAI"));
