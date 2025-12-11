@@ -112,6 +112,7 @@ services:
     volumes:
       - ../backend/public:/var/www/html/public
       - ../backend/database:/var/www/html/database
+      - ../backend/srcs:/var/www/html/srcs
       - ../config/auth/google_oauth_client.json:/var/www/html/config/google_oauth_client.json:ro
     labels:
       - "app=transcendence"

@@ -84,12 +84,14 @@ function createUser(array $body, SQLite3 $db): void {
     $res = doQuery($db, $sql, [':username', $username, SQLITE3_TEXT], [':email', $email, SQLITE3_TEXT], [':pass', $passHash, SQLITE3_TEXT]);
     if (!$res)
         errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    
+    $userId = $db->lastInsertRowID();
     $rankingQuery = "INSERT INTO ranking (user_id, games_played, games_win, games_lose, history)
         VALUES (:user_id, 0, 0, 0, '[]')";
-    $res = doQuery($db, $rankingQuery);
+    $res = doQuery($db, $rankingQuery, [':user_id', $userId, SQLITE3_INTEGER]);
     if (!$res)
         errorSend(500, "SQLite error: " . $db->lastErrorMsg());
-    successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
+    successSend(['message' => 'User created', 'user_id' => $userId], 201);
 }
 /*
     comprobaciones minimas sobre formato de correo y contrasenha
@@ -176,6 +178,8 @@ function editUserData(array $body, SQLite3 $db): void {
 
 function deleteUser(int $id, SQLite3 $db): void {
     checkJWT($id);
+    if(checkJWT($id) === false)
+        errorSend(403, "Forbidden: Invalid token");
     $sql = "DELETE FROM users WHERE user_id = :id";
     $res = doQuery($db, $sql, [':id', $id, SQLITE3_INTEGER]);
     if (!$res)

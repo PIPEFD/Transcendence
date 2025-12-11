@@ -51,7 +51,7 @@ for user_data in "${USERS[@]}"; do
     pass_hash=$(echo -n "$password" | sha256sum | cut -d' ' -f1)
     
     # Insertar en la BD
-    insert_result=$(docker exec transcendence-backend sqlite3 /var/www/html/database/db.sqlite \
+    insert_result=$(docker exec transcendence-backend sqlite3 /var/www/html/srcs/database/database.sqlite \
         "INSERT INTO users (username, email, pass, elo, is_online) 
          VALUES ('$username', '$email', '$pass_hash', 200, 0);" 2>&1)
     
@@ -60,7 +60,7 @@ for user_data in "${USERS[@]}"; do
         ((SUCCESS++))
         
         # Obtener el user_id asignado
-        user_id=$(docker exec transcendence-backend sqlite3 /var/www/html/database/db.sqlite \
+        user_id=$(docker exec transcendence-backend sqlite3 /var/www/html/srcs/database/database.sqlite \
             "SELECT user_id FROM users WHERE username='$username';" 2>/dev/null)
         
         if [ -n "$user_id" ]; then
@@ -86,7 +86,7 @@ echo ""
 echo "📋 FASE 2: Verificando usuarios en la BD"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-docker exec transcendence-backend sqlite3 /var/www/html/database/db.sqlite \
+docker exec transcendence-backend sqlite3 /var/www/html/srcs/database/database.sqlite \
     "SELECT user_id, username, email, elo, is_online FROM users ORDER BY user_id;"
 
 echo ""
@@ -152,6 +152,6 @@ echo ""
 echo "⚙️  Nota técnica:"
 echo "   • Usuarios creados directamente en SQLite (no vía API)"
 echo "   • Passwords hasheados con SHA256 (para pruebas)"
-echo "   • La BD está en: /var/www/html/database/db.sqlite"
+echo "   • La BD está en: /var/www/html/srcs/database/database.sqlite"
 echo ""
 
