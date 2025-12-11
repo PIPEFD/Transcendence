@@ -101,6 +101,10 @@ create-dirs:
 	@mkdir -p ./backend/srcs/public/api/uploads
 	@mkdir -p ./waf/logs
 	@chmod 700 $(CONFIG_DIR)/secrets
+	@echo -e "$(YELLOW)Creando directorio frontend/dist...$(RESET)"
+	@rm -rf ./frontend/dist 2>/dev/null || true
+	@mkdir -p ./frontend/dist
+	@echo -e "$(GREEN)✓ Directorio dist creado (permisos se gestionan en el contenedor)$(RESET)"
 
 # Creación de certificados SSL usando el script dedicado
 create-certs: create-dirs
