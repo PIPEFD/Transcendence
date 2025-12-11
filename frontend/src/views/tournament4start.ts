@@ -24,13 +24,13 @@ export function Tournament4StartView(app: HTMLElement, state: any) {
   let nextMatchRound = null;
   
   if (!M.semi1.winner) {
-      nextMatchRound = "Semi1";
+      nextMatchRound = "semi1";
       nextMatchData = M.semi1;
   } else if (!M.semi2.winner) {
-      nextMatchRound = "Semi2";
+      nextMatchRound = "semi2";
       nextMatchData = M.semi2;
   } else if (M.semi1.winner && M.semi2.winner && !M.final.winner) {
-      nextMatchRound = "Final";
+      nextMatchRound = "final";
       if (!M.final.p1 || !M.final.p2) {
           M.final.p1 = M.semi1.winner;
           M.final.p2 = M.semi2.winner;

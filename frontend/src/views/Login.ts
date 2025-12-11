@@ -3,7 +3,6 @@ import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { wsService } from "../services/WebSocketService.js";
 
-// Mensaje de error para sesión duplicada (debes asegurar que tu backend lo devuelva)
 const CONCURRENT_SESSION_MESSAGE = "This user is already logged in on another device. Please log out there first.";
 
 export function LoginView(app: HTMLElement, state: any): void {
@@ -59,7 +58,6 @@ export function LoginView(app: HTMLElement, state: any): void {
       });
 
       const text = await response.text();
-      console.log("Backend returned:", text);
 
       let data: any;
       try {
@@ -68,57 +66,42 @@ export function LoginView(app: HTMLElement, state: any): void {
         throw new Error("Invalid JSON response from backend");
       }
 
-      console.log("📦 Response data:", data);
 
-      // ----------------------------------------------------------------------
-      // NUEVO: 1. Manejo de Sesión Concurrente (Rechazar la nueva sesión)
-      // ----------------------------------------------------------------------
+
       if (data.concurrent_session_error) {
         errorDiv.textContent = t("concurrent_session_error") || CONCURRENT_SESSION_MESSAGE;
-        // Opcional: limpiar los campos de contraseña
         passwordInput.value = "";
-        return; // ¡Detener el login y la navegación!
+        return;
       }
-      // ----------------------------------------------------------------------
 
-
-      // 2. Comprobar si hay error general y mostrarlo
       if (data.error) {
         errorDiv.textContent = data.error;
-        return; // ¡detenemos la navegación!
+        return;
       }
 
-      // Guardar userId siempre
       if (data.user_id) {
         localStorage.setItem("username", String(username));
         localStorage.setItem("userId", String(data.user_id));
-        console.log("✅ userId guardado:", data.user_id);
       }
 
-      // ⚠️ MODO TEST: Si el backend devuelve el token directamente (sin 2FA)
       if (data.details && data.test_mode) {
         localStorage.setItem("tokenUser", data.details);
-        console.log("✅ Login en modo test (sin 2FA)");
         
-        // Conectar WebSocket después del login
         wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
         
         navigate("/choose");
         return;
       }
 
-      // Guardar token JWT si viene en la respuesta (flujo normal)
       if (data.token) {
         localStorage.setItem("tokenUser", data.token);
       }
 
-      // Si requiere 2FA
       if (data.pending_2fa) {
         navigate("/authentication");
       } else {
-        // Conectar WebSocket después del login exitoso
         wsService.connect().catch(err => console.error('Error conectando WebSocket:', err));
-        navigate("/choose"); // login exitoso directo
+        navigate("/choose");
       }
 
     } catch (err) {

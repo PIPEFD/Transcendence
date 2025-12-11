@@ -45,16 +45,13 @@ export class WsClient {
     }
   }
 
-  /**
-   * Connect to WebSocket server and authenticate
-   */
+
   async connect(token: string, userId: string): Promise<void> {
     this.token = token;
     this.userId = userId;
 
     return new Promise((resolve, reject) => {
       try {
-        // Close existing connection if any
         if (this.ws) {
           this.ws.close();
         }
@@ -62,10 +59,8 @@ export class WsClient {
         this.ws = new WebSocket(WS_BASE_URL);
         
         this.ws.onopen = () => {
-          console.log('🔌 WebSocket connected');
           this.reconnectAttempts = 0;
           
-          // Send authentication message
           this.sendRaw({
             type: 'auth',
             token: this.token,
@@ -77,11 +72,9 @@ export class WsClient {
           try {
             const data = JSON.parse(event.data) as WsMessage;
             
-            // Handle auth response
             if (data.type === 'auth') {
               if (data.success || !data.error) {
                 this.authenticated = true;
-                console.log('✅ WebSocket authenticated');
                 this.startHeartbeat();
                 this.options.onConnected();
                 resolve();
@@ -94,12 +87,10 @@ export class WsClient {
               return;
             }
 
-            // Handle pong response
             if (data.type === 'pong') {
               return;
             }
 
-            // Dispatch to registered handlers
             this.dispatchMessage(data);
           } catch (err) {
             console.error('Error parsing WebSocket message:', err);
@@ -113,12 +104,10 @@ export class WsClient {
         };
 
         this.ws.onclose = () => {
-          console.log('🔌 WebSocket disconnected');
           this.authenticated = false;
           this.stopHeartbeat();
           this.options.onDisconnected();
           
-          // Auto-reconnect if enabled
           if (this.options.autoReconnect && this.reconnectAttempts < this.options.maxReconnectAttempts) {
             this.scheduleReconnect();
           }
@@ -130,9 +119,6 @@ export class WsClient {
     });
   }
 
-  /**
-   * Send a message to the server
-   */
   send(type: WsMessageType, data: any = {}): boolean {
     if (!this.authenticated) {
       console.warn('⚠️ Cannot send message: not authenticated');
@@ -148,18 +134,13 @@ export class WsClient {
     return true;
   }
 
-  /**
-   * Send raw message (used internally)
-   */
   private sendRaw(data: any): void {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(data));
     }
   }
 
-  /**
-   * Register a message handler for a specific message type
-   */
+
   on(type: WsMessageType, handler: (data: any) => void): void {
     if (!this.messageHandlers.has(type)) {
       this.messageHandlers.set(type, []);
@@ -167,9 +148,6 @@ export class WsClient {
     this.messageHandlers.get(type)!.push(handler);
   }
 
-  /**
-   * Unregister a message handler
-   */
   off(type: WsMessageType, handler: (data: any) => void): void {
     const handlers = this.messageHandlers.get(type);
     if (handlers) {
@@ -180,9 +158,6 @@ export class WsClient {
     }
   }
 
-  /**
-   * Dispatch message to registered handlers
-   */
   private dispatchMessage(message: WsMessage): void {
     const handlers = this.messageHandlers.get(message.type);
     if (handlers) {
@@ -196,9 +171,6 @@ export class WsClient {
     }
   }
 
-  /**
-   * Start heartbeat (ping/pong)
-   */
   private startHeartbeat(): void {
     this.stopHeartbeat();
     
@@ -209,9 +181,6 @@ export class WsClient {
     }, this.options.heartbeatInterval);
   }
 
-  /**
-   * Stop heartbeat
-   */
   private stopHeartbeat(): void {
     if (this.heartbeatTimer) {
       clearInterval(this.heartbeatTimer);
@@ -219,18 +188,14 @@ export class WsClient {
     }
   }
 
-  /**
-   * Schedule a reconnection attempt
-   */
   private scheduleReconnect(): void {
     if (this.reconnectTimer) {
-      return; // Already scheduled
+      return;
     }
 
     this.reconnectAttempts++;
     const delay = this.options.reconnectDelay * this.reconnectAttempts;
     
-    console.log(`🔄 Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.options.maxReconnectAttempts})`);
     
     this.reconnectTimer = window.setTimeout(() => {
       this.reconnectTimer = null;
@@ -243,11 +208,9 @@ export class WsClient {
     }, delay);
   }
 
-  /**
-   * Close the WebSocket connection
-   */
+ 
   close(): void {
-    this.options.autoReconnect = false; // Disable auto-reconnect
+    this.options.autoReconnect = false; 
     this.stopHeartbeat();
     
     if (this.reconnectTimer) {
@@ -262,19 +225,13 @@ export class WsClient {
     
     this.authenticated = false;
     this.messageHandlers.clear();
-    console.log('🔌 WebSocket closed');
   }
 
-  /**
-   * Check if connected and authenticated
-   */
   isConnected(): boolean {
     return this.authenticated && this.ws?.readyState === WebSocket.OPEN;
   }
 
-  /**
-   * Get current connection state
-   */
+
   getState(): 'connecting' | 'open' | 'closing' | 'closed' {
     if (!this.ws) return 'closed';
     

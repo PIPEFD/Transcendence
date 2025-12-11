@@ -1,9 +1,7 @@
 import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 
-// The core game logic adapted for tournament use
 export function GameTournament(app: HTMLElement, state: any): void {
-  // Check if we have the necessary match data
   if (!state.currentMatch || !state.tournamentMatches) {
       navigate("/tournament");
       return;
@@ -12,9 +10,7 @@ export function GameTournament(app: HTMLElement, state: any): void {
   const match = state.currentMatch;
   const M = state.tournamentMatches;
 
-  // 1. DYNAMIC ROUTE DETERMINATION
-  // Check if the match structure has keys specific to an 8-player bracket (e.g., Q1)
-  // If not, assume it's the 4-player bracket (semi1, final)
+
   const isEightPlayerBracket = M.hasOwnProperty('Q1');
   const returnRoute = isEightPlayerBracket ? "/tournament8start" : "/tournament4start";
 
@@ -45,7 +41,6 @@ export function GameTournament(app: HTMLElement, state: any): void {
   const ctx = canvasEl.getContext("2d");
   if (!ctx) return;
 
-  // ===== Game variables (from GameOne) =====
   const paddleWidth = 10, paddleHeight = 80, ballRadius = 8;
   const playerSpeed = 6, maxScore = 3, speedIncrement = 1.05;
 
@@ -56,27 +51,21 @@ export function GameTournament(app: HTMLElement, state: any): void {
   const player2 = { name: match.p2, x: canvasEl.width - paddleWidth - 10, y: canvasEl.height / 2 - paddleHeight / 2, score: 0 };
   const ball = { x: canvasEl.width / 2, y: canvasEl.height / 2, dx: 3.5 * (Math.random() > 0.5 ? 1 : -1), dy: 3.5 * (Math.random() > 0.5 ? 1 : -1) };
 
-  // ===== Drawing helpers (from GameOne) =====
   const drawRect = (x:number, y:number, w:number, h:number, color:string) => { ctx.fillStyle=color; ctx.fillRect(x,y,w,h); };
   const drawCircle = (x:number, y:number, r:number, color:string) => { ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.closePath(); ctx.fill(); };
-  // Updated drawText to include player names
   const drawText = (text:string, x:number, y:number, color:string, size=20) => { ctx.fillStyle=color; ctx.font=`${size}px monospace`; ctx.fillText(text,x,y); };
 
-  // ===== Tournament Logic Handlers =====
 
-  // Function to finalize the match and update state
   const endMatch = (winnerName: string) => {
       gameOver = true;
       gameRunning = false;
       
-      // Update the winner in the main tournament state
       M[match.round].winner = winnerName;
       
-      // Clear the current match and navigate back to the bracket view
       delete state.currentMatch;
       setTimeout(() => {
-          navigate(returnRoute); // USE DYNAMIC ROUTE
-      }, 2000); // Give 2 seconds to read the "Winner" message
+          navigate(returnRoute); 
+      }, 2000); 
   };
 
   const checkWinner = () => {
@@ -85,11 +74,9 @@ export function GameTournament(app: HTMLElement, state: any): void {
   };
   
   const endGame = (msg:string) => {
-    // We keep this function for the visual message, but use endMatch for state update
     drawText(msg, canvasEl.width / 2 - 80, canvasEl.height / 2, "yellow", 24);
   };
 
-  // ===== Game logic (Mostly from GameOne) =====
   const movePlayers = () => {
     if(wPressed && player1.y>0) player1.y-=playerSpeed;
     if(sPressed && player1.y+paddleHeight<canvasEl.height) player1.y+=playerSpeed;
@@ -111,7 +98,6 @@ export function GameTournament(app: HTMLElement, state: any): void {
 
     if(ball.y+ballRadius>canvasEl.height || ball.y-ballRadius<0) ball.dy=-ball.dy;
 
-    // paddle collisions
     if(ball.x-ballRadius<player1.x+paddleWidth && ball.y>player1.y && ball.y<player1.y+paddleHeight) { 
       ball.dx=-ball.dx*speedIncrement; ball.dy*=speedIncrement; ball.x=player1.x+paddleWidth+ballRadius;
     }
@@ -119,7 +105,6 @@ export function GameTournament(app: HTMLElement, state: any): void {
       ball.dx=-ball.dx*speedIncrement; ball.dy*=speedIncrement; ball.x=player2.x-ballRadius;
     }
 
-    // scoring
     if(ball.x-ballRadius<0){ 
       player2.score++; resetBall(); checkWinner(); 
     } else if(ball.x+ballRadius>canvasEl.width){ 
@@ -133,7 +118,6 @@ export function GameTournament(app: HTMLElement, state: any): void {
     drawRect(player2.x,player2.y,paddleWidth,paddleHeight,"white");
     drawCircle(ball.x,ball.y,ballRadius,"white");
     
-    // Display names and scores
     drawText(`${player1.name}: ${player1.score}`, canvasEl.width/4 - 60, 25, "white");
     drawText(`${player2.name}: ${player2.score}`, canvasEl.width*3/4 + 20, 25, "white");
     
@@ -149,7 +133,6 @@ export function GameTournament(app: HTMLElement, state: any): void {
     if(!gameOver) requestAnimationFrame(gameLoop); 
   };
 
-  // ===== Controls (from GameOne) =====
   document.addEventListener("keydown",e=>{
     if(e.key.toLowerCase()==="w") wPressed=true; 
     if(e.key.toLowerCase()==="s") sPressed=true; 
@@ -163,16 +146,13 @@ export function GameTournament(app: HTMLElement, state: any): void {
     if(e.key==="ArrowDown") downPressed=false;
   });
 
-  // ===== Buttons =====
   
-  // Go Back/Cancel Button: Clears the current match state and returns to the correct bracket
   document.getElementById("goBackBtn")?.addEventListener("click",()=>{
     delete state.currentMatch;
     gameRunning=false;
-    navigate(returnRoute); // USE DYNAMIC ROUTE
+    navigate(returnRoute);
   });
 
-  // Start the game immediately
   gameRunning=true;
   gameLoop();
 }

@@ -38,7 +38,6 @@ export async function HomeView(app: HTMLElement, state: any): Promise<void> {
     const userId = localStorage.getItem('userId');
     const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 
-    // Obtener y mostrar el nombre de usuario
     if (userIdPlaceholder) {
         const token = localStorage.getItem('tokenUser');
         const userNameDisplay = document.getElementById("userNameDisplay");
@@ -69,7 +68,6 @@ export async function HomeView(app: HTMLElement, state: any): Promise<void> {
             userNameDisplay.textContent = "Usuario (Error Red)";
         }
     } else {
-        // Usuario no logueado
         document.getElementById("userNameDisplay")!.textContent = "Invitado";
     }
 }

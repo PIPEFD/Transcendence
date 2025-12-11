@@ -2,7 +2,6 @@ import { navigate } from "../main.js";
 import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
-// Definimos la constante para el límite de partidos
 const MAX_MATCHES = 8;
 
 export async function MatchHistoryView(app: HTMLElement, state: any): Promise<void> {
@@ -28,17 +27,14 @@ export async function MatchHistoryView(app: HTMLElement, state: any): Promise<vo
       body: JSON.stringify({ user_id: userId })
     });
 
-    // Se verifica el estado de la respuesta antes de intentar el JSON
     if (res.ok) {
         const json = await res.json();
         
-        // Asignamos todos los partidos
         matches = json.data ?? [];
 
         if (matches.length > MAX_MATCHES) {
              matches = matches.slice(-MAX_MATCHES);
         }
-        // -----------------------------------------------------------------
         
     } else {
         console.error("API error fetching match history:", res.status);
@@ -66,7 +62,6 @@ export async function MatchHistoryView(app: HTMLElement, state: any): Promise<vo
             const isWin = m.status === "win";
             const statusText = isWin ? t("win") : t("loss");
             
-            // Clases de color para las filas (corregidas de la versión anterior)
             const bgColorClass = isWin ? "bg-green-200 border-green-700" : "bg-red-200 border-red-700";
             const textColorClass = isWin ? "text-green-800" : "text-red-800";
             

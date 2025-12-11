@@ -67,18 +67,14 @@ export async function ProfileView(app: HTMLElement, state: any): Promise<void> {
             userNameDisplay.textContent = "Usuario (Error Red)";
         }
     } else {
-        // Usuario no logueado
         document.getElementById("userNameDisplay")!.textContent = "Invitado";
     }
   
   userButton?.addEventListener("click", async () => {
-    // Si el input no existe, salimos
     if (!input) return;
 
-    // 1. Obtener y validar el nuevo nombre de usuario
     const newUsername = input.value.trim();
-    console.log("username: ", newUsername);
-    errorMsg.classList.add("hidden"); // Ocultar errores anteriores
+    errorMsg.classList.add("hidden");
 
     if (!newUsername) {
       alert(t("error_empty_user") || "El nombre de usuario no puede estar vacío.");
@@ -94,9 +90,7 @@ export async function ProfileView(app: HTMLElement, state: any): Promise<void> {
       return;
     }
     
-    // --- NUEVO: 2. Comprobar si el username ya está en uso ---
     try {
-        // Usamos GET_USER_ID que asume buscar por el query param 'user='
         const checkResponse = await apiFetch(`${API_ENDPOINTS.GET_USER_ID}?user=${newUsername}`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -106,27 +100,21 @@ export async function ProfileView(app: HTMLElement, state: any): Promise<void> {
             const userData = await checkResponse.json();
             const existingUserId = userData.success?.user_id;
 
-            // El nombre existe. Comprobamos si pertenece a otro usuario.
             if (existingUserId && existingUserId !== currentUserId) {
                 alert(t("error_username_taken") || "Error: Este nombre de usuario ya está en uso.");
-                return; // Detenemos la ejecución
+                return; 
             }
-            // Si existingUserId === currentUserId, el usuario está intentando establecer
-            // su nombre actual, lo cual es permitido y se continúa al PATCH.
+
 
         } 
-        // Si checkResponse falla (ej. 404 Not Found), el nombre está disponible y continuamos.
 
     } catch (error) {
-        // Manejo de errores de red o errores inesperados durante la verificación
         console.error("Error al verificar nombre de usuario:", error);
         alert(t("error_network_check") || "Error de red al verificar el nombre. Inténtalo de nuevo.");
         return;
     }
-    // --- FIN: Comprobación de username ---
 
 
-    // 3. Llamada a la API con el nuevo nombre de usuario (PATCH)
     const response = await apiFetch(API_ENDPOINTS.USERS, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -136,16 +124,12 @@ export async function ProfileView(app: HTMLElement, state: any): Promise<void> {
       })
     });
     
-    // 4. Manejo de la respuesta del PATCH
     if (!response.ok) {
-      // Usamos alert() para el error general del PATCH (si no fue capturado arriba)
       const errorData = await response.json().catch(() => ({ message: "Error desconocido." }));
       alert(errorData.message || "Error al actualizar el nombre de usuario."); 
     } else {
-      console.log("username changed, relog to apply changes");
       navigate("/");
     }
   });
 }
 
-//<div class="flex justify-between items-center p-2 border-2 border-poke-dark rounded mb-2 ${m.status === "win" ? "bg-green-100" : "bg-red-100"}">

@@ -4,11 +4,10 @@ import { t } from "../translations/index.js";
 import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 
 /**
- * Función reutilizable para manejar la lógica de subida de archivos de avatar al backend.
- * @param file El objeto File (o Blob convertido a File) a subir.
- * @param state El estado actual de la aplicación.
- * @param previewElement Elemento opcional de vista previa a ocultar en caso de éxito.
- * @param saveBtnElement Botón opcional de guardar a ocultar en caso de éxito.
+ * @param file 
+ * @param state 
+ * @param previewElement 
+ * @param saveBtnElement
  */
 async function uploadAvatarFile(
   file: File, 
@@ -17,7 +16,6 @@ async function uploadAvatarFile(
   saveBtnElement?: HTMLElement
 ) {
   const formData = new FormData();
-  // El nombre 'avatar' debe coincidir con lo que espera tu backend para el archivo
   formData.append("avatar", file, file.name); 
 
   const userId = localStorage.getItem('userId');
@@ -25,12 +23,10 @@ async function uploadAvatarFile(
   formData.append("user_id", String(userIdPlaceholder)); 
   
   const token = localStorage.getItem('tokenUser');
-  console.log("Iniciando subida: userId:", String(userIdPlaceholder), "token:", token);
   
   try {
     const response = await apiFetch(API_ENDPOINTS.UPLOAD, {
       method: 'POST',
-      // No incluimos 'Content-Type', el navegador lo añade automáticamente con FormData
       headers: {
         'Authorization': `Bearer ${token}`
       },
@@ -38,18 +34,15 @@ async function uploadAvatarFile(
     });
 
     const text = await response.text();
-    console.log("Server response:", text);
 
     if (!response.ok) {
       alert("Error al subir avatar. Revisa la consola para la respuesta del servidor.");
       return;
     }
 
-    // Éxito
     updateHeader(state);
     alert("Avatar subido correctamente!");
     
-    // Ocultar elementos si están presentes (principalmente para la subida de usuario)
     previewElement?.classList.add("hidden"); 
     saveBtnElement?.classList.add("hidden");
 
@@ -61,9 +54,7 @@ async function uploadAvatarFile(
   }
 }
 
-// --- Inicio de la Vista ---
 export function AvatarView(app: HTMLElement, state: any): void {
-  // ... (Tu plantilla HTML sigue siendo la misma) ...
   app.innerHTML = `
     <div class="text-center mb-4">
         <h1 class="text-poke-yellow text-2xl">POKéMON</h1>
@@ -96,7 +87,6 @@ export function AvatarView(app: HTMLElement, state: any): void {
     </div>
   `;
 
-  // --- 1. Lógica para avatares predefinidos (MODIFICADA) ---
   document.querySelectorAll("[data-avatar]").forEach(btn => {
     btn.addEventListener("click", async () => {
       const avatarId = btn.getAttribute("data-avatar");
@@ -105,19 +95,15 @@ export function AvatarView(app: HTMLElement, state: any): void {
       const avatarPath = `/assets/avatar${avatarId}.png`;
 
       try {
-        // 1. Obtener la imagen como un Blob/ArrayBuffer
         const response = await fetch(avatarPath);
         if (!response.ok) {
           throw new Error(`Error al cargar el asset: ${response.statusText}`);
         }
         
         const blob = await response.blob();
-        
-        // 2. Crear un objeto File a partir del Blob
-        // Usamos un nombre de archivo único o descriptivo
+
         const file = new File([blob], `avatar_predefinido_${avatarId}.png`, { type: blob.type });
 
-        // 3. Usar la función de subida común
         await uploadAvatarFile(file, state);
 
       } catch (error) {
@@ -127,7 +113,6 @@ export function AvatarView(app: HTMLElement, state: any): void {
     });
   });
   
-  // --- 2. Lógica de Subida de Avatar Local (AJUSTADA) ---
   const uploadBtn = document.getElementById("uploadAvatarBtn");
   const uploadInput = document.getElementById("uploadAvatarInput") as HTMLInputElement;
   const preview = document.getElementById("previewAvatar") as HTMLImageElement;
@@ -153,7 +138,6 @@ export function AvatarView(app: HTMLElement, state: any): void {
     if (!uploadInput.files || uploadInput.files.length === 0) return;
     const file = uploadInput.files[0];
     
-    // Usar la función de subida común, pasando los elementos a ocultar
     await uploadAvatarFile(file, state, preview, saveBtn);
   });
 }

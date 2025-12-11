@@ -5,9 +5,6 @@ import { API_ENDPOINTS, apiFetch } from "../config/api.js";
 import { fetchAvatarUrl } from "./Header.js";
 import { wsService } from "../services/WebSocketService.js";
 
-// !!! IMPORTANTE: REEMPLAZA ESTE VALOR !!!
-// Debe ser el ID del usuario actualmente logueado. Podría venir de 'state', de un token JWT decodificado, etc.
-
 
 export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
     app.innerHTML = `
@@ -43,9 +40,8 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
         </div>
     `;
   
-    const userId = localStorage.getItem('userId'); // EJEMPLO: Reemplaza con el ID de usuario real (e.g., state.currentUser.id)
-    console.log("id entrar friends: ", userId);
-    const userIdPlaceholder = userId ? parseInt(userId, 10) : null; // ESO ES EL NUMERO ID AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    const userId = localStorage.getItem('userId'); 
+    const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
 
     const content = document.getElementById("friendsContent") as HTMLElement;
 
@@ -53,7 +49,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
         let relatedIds: Set<number> = new Set();
         
         try {
-            // 1. Obtener Amigos Actuales
             const friendsResponse = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${currentUserId}`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -62,7 +57,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             const friends = Array.isArray(friendsData.success) ? friendsData.success : [];
             friends.forEach((f: any) => relatedIds.add(f.id || f.user_id));
 
-            // 2. Obtener Solicitudes Recibidas (Sender IDs)
             const requestsRecievedResponse = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}?id=${currentUserId}`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -75,26 +69,21 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             console.error("Error fetching related IDs:", error);
         }
         
-        // Añadir el propio ID del usuario
         if (currentUserId) relatedIds.add(currentUserId);
         
         return Array.from(relatedIds) as number[];
     };
 
-    // --- LÓGICA ASÍNCRONA PARA CARGAR LA LISTA DE AMIGOS ---
     const fetchFriendList = async (): Promise<string> => {
         const token = localStorage.getItem('tokenUser');
         if (!token) {
             return `<p class="text-red-500">${t("error_no_login") || "Error: No se ha iniciado sesión."}</p>`;
         }
-        console.log("tt:", token);
         const userId = localStorage.getItem('userId');
-        console.log("id entrar friends: ", userId);
         const userIdPlaceholder = userId ? parseInt(userId, 10) : null;
             
     
         try {
-            console.log("User ID:", userIdPlaceholder);
             const response = await apiFetch(`${API_ENDPOINTS.FRIENDS}?id=${userIdPlaceholder}`, {
                 method: 'GET',
                 headers: {
@@ -103,9 +92,7 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             });
     
             const data = await response.json();
-            console.log("Friends data:", data);
     
-            // Ajuste importante: tu backend devuelve { success: [...] }
             const friends = Array.isArray(data.success) ? data.success : [];
     
             if (friends.length === 0) {
@@ -123,7 +110,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                     
                     const avatarSrc = avatarUrl || "/assets/avatar_39.png";
                     
-                    // Obtener estado del usuario desde WebSocket
                     const status = wsService.getUserStatus(String(friendId)) || 'offline';
                     const statusText = status === 'online' ? 'Online' : 
                                       status === 'in-game' ? 'In Game' : 'Offline';
@@ -139,7 +125,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                 })
             );
     
-            // Genera el HTML con los datos de amigos reales
             return `
                 <h2 class="text-lg mb-3">${t("friends_list")}</h2>
                 <ul class="space-y-2">
@@ -177,7 +162,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
     
     
 
-    // --- FUNCIÓN PARA ASIGNAR LISTENERS DESPUÉS DE LA CARGA ---
     const setupListListeners = (container: HTMLElement) => {
         container.querySelectorAll('.msg-btn').forEach(btn => {
             btn.addEventListener("click", (e) => {
@@ -190,13 +174,11 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             });
         });
 
-        // Configura el evento para eliminar amigo
         container.querySelectorAll('.remove-friend-btn').forEach(btn => {
             btn.addEventListener("click", async (e) => {
                 const targetButton = e.currentTarget as HTMLButtonElement; 
                 const friendId = targetButton.dataset.friendId;
                 
-                console.log("friendId LEÍDO del botón:", friendId);
 
                 if (!friendId || friendId.trim() === "") {
                     console.error("ERROR: friendId es nulo o vacío. Deteniendo remoción.");
@@ -219,7 +201,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                         if (response.ok) {
                             alert(data.message || `Amigo eliminado correctamente.`);
             
-                            // Refrescar lista de amigos
                             const listHtml = await fetchFriendList();
                             container.innerHTML = listHtml;
                             setupListListeners(container);
@@ -237,14 +218,11 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
 
     const requestsList = async (): Promise<string> => {
     const token = localStorage.getItem('tokenUser');
-    console.log('🔍 requestsList - userId:', userIdPlaceholder, 'token:', token?.substring(0, 20));
     
     if (!token) return `<p class="text-red-500">${t("error_no_login")}</p>`;
 
     try {
-        // Traer solicitudes de amistad pendientes
         const url = `${API_ENDPOINTS.FRIEND_REQUEST}?id=${userIdPlaceholder}`;
-        console.log('📡 Fetching friend requests from:', url);
         
         const response = await apiFetch(url, {
             method: 'GET',
@@ -254,9 +232,7 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             }
         });
 
-        console.log('📥 Response status:', response.status, response.ok);
         const data: { success: { sender_id: number; created_at: string }[] } = await response.json();
-        console.log('📦 Friend requests data:', data);
 
         if (!response.ok || !Array.isArray(data.success)) {
             console.error('❌ Invalid response format or error:', data);
@@ -264,55 +240,43 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
         }
 
         const requests = data.success;
-        console.log('✅ Found', requests.length, 'friend requests');
 
         if (requests.length === 0) {
             return `<p class="mt-4 text-center text-poke-dark">${t("no_request_yet")}</p>`;
         }
 
         console.log("error");
-        // Obtener información de cada sender
-        // Obtener información de cada sender
+
         const usersInfo = await Promise.all(
             requests.map(async r => {
-                console.log("sec");
                 const senderId = r.sender_id;
-                let username = `User#${senderId}`; // Valor por defecto
+                let username = `User#${senderId}`; 
                 
                 try {
-                    // 1. Obtener el avatar usando tu función específica
                     const avatarUrl = await fetchAvatarUrl(senderId, token);
-                    const avatarSrc = avatarUrl || '/assets/avatar_39.png'; // Usar avatar por defecto si falla
+                    const avatarSrc = avatarUrl || '/assets/avatar_39.png'; 
                     
-                    // 2. Opcional: Si necesitas el username, mantienes la llamada a USER_INFO
-                    console.log("sender id", senderId);
                     const res = await apiFetch(`${API_ENDPOINTS.USER_INFO}?id=${senderId}`, {
                         method: 'GET',
                         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
                     });
-                    console.log("ooooo", res);
                     if (res.ok) {
                         const userData = await res.json();
-                        console.log("ttttt ", userData);
-                        // Asegura que la clave 'username' se obtiene correctamente de la respuesta
                         username = userData.success?.username || username;
                     }
-                    console.log("username ", username);
                     return {
-                        username: username, // Se devuelve el nombre de usuario (o el valor por defecto)
+                        username: username, 
                         
-                        avatar_url: avatarSrc // Usamos la URL generada por fetchAvatarUrl
+                        avatar_url: avatarSrc 
                     };
                     
                 } catch (error) {
                     console.error(`Error fetching info for sender ${senderId}:`, error);
-                    console.log("username ", username);
                     return { username: username, avatar_url: '/assets/avatar_39.png' };
                 }
             })
         );
         
-        // Generación del HTML usando usersInfo para obtener el nombre y el avatar
         return `
             <h2 class="text-lg mb-3">${t("request_list")}</h2>
             <ul class="space-y-2">
@@ -365,7 +329,7 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                     })
                 });
     
-                const text = await response.text(); // Leer body solo una vez
+                const text = await response.text(); 
                 let data;
                 try { data = JSON.parse(text); } catch {
                     console.error(`Respuesta inesperada del servidor al ${action}:`, text);
@@ -376,12 +340,10 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                 if (response.ok) {
                     alert(data.message || `Solicitud ${action}ada`);
     
-                    // Refrescar lista de solicitudes
                     const reqHtml = await requestsList();
                     container.innerHTML = reqHtml;
                     setupRequestListeners(container);
     
-                    // Refrescar lista de amigos si la pestaña está activa
                     if (document.getElementById("friendsContent")?.dataset.tab === "list") {
                         const listHtml = await fetchFriendList();
                         container.innerHTML = listHtml;
@@ -397,7 +359,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             }
         };
     
-        // --- Botones Accept ---
         container.querySelectorAll<HTMLButtonElement>('.accept-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const senderId = parseInt(btn.dataset.senderId!);
@@ -406,7 +367,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
             });
         });
     
-        // --- Botones Decline ---
         container.querySelectorAll<HTMLButtonElement>('.decline-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const senderId = parseInt(btn.dataset.senderId!);
@@ -417,7 +377,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
     };
 
     const sections = {
-        // CONTENIDO DE LISTA: Se reemplaza por un estado de carga
         list: `
             <div class="text-center p-8">
                 <p>${t("loading_friends") || "Cargando amigos..."}</p>
@@ -452,28 +411,24 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
         `
     };
 
-    // La función principal 'switchTab' ahora es ASÍNCRONA
     const switchTab = async (tab: keyof typeof sections) => {
       const inner = content;
       inner.style.opacity = '0';
       
-      // Lógica especial para la pestaña "list" que requiere FETCH
       if (tab === "list") {
-          inner.innerHTML = sections.list; // Muestra el estado de carga
+          inner.innerHTML = sections.list;
           
-          // Espera la respuesta del servidor
           const listHtml = await fetchFriendList(); 
           
           setTimeout(() => {
-              inner.innerHTML = listHtml; // Inserta el contenido final
+              inner.innerHTML = listHtml; 
               inner.style.opacity = '1';
-              setupListListeners(inner); // Asigna los eventos de Message/Remove
+              setupListListeners(inner); 
           }, 120);
           return;
       }
 
       if (tab === "requests") {
-        // Mostrar estado de carga mientras se hace fetch
         inner.innerHTML = `
           <div class="text-center p-8">
             <p>${t("loading_requests") || "Cargando solicitudes..."}</p>
@@ -481,16 +436,12 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
           </div>
         `;
     
-        // Obtener solicitudes del servidor
-        console.log("antes de");
         const reqHtml = await requestsList();
-        console.log("dess de");
     
         setTimeout(() => {
             inner.innerHTML = reqHtml;
             inner.style.opacity = '1';
     
-            // Asignar listeners a los botones Accept / Decline
             setupRequestListeners(inner);
         }, 120);
     
@@ -513,7 +464,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                       const username = r_id_Input.value.trim();
                       
                      try {
-                        // Buscar el user_id por username
                         const getUserResponse = await apiFetch(`${API_ENDPOINTS.GET_USER_ID}?user=${username}`, {
                             method: 'GET',
                             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
@@ -543,7 +493,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                             return;
                         }
                         
-                        // Enviar friend request
                         const sendRequestResponse = await apiFetch(`${API_ENDPOINTS.FRIEND_REQUEST}`, {
                             method: 'POST',
                             headers: {
@@ -557,7 +506,6 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
                         });
 
                         if (!sendRequestResponse.ok) {
-                            // Tu backend puede devolver errores específicos como "Ya existe una solicitud"
                             const errorData = await sendRequestResponse.json();
                             alert(errorData.message || "Error al enviar solicitud de amistad");
                             return;
@@ -576,9 +524,7 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
       }, 120);
   };
   
-    // --- LISTENERS DE NAVEGACIÓN ---
-    // Carga la lista de amigos por defecto al inicio
-    // Nota: Llama a 'switchTab' directamente, no necesita ser asíncrono
+ 
     window.addEventListener('load', () => switchTab("list")); 
 
     document.getElementById("friendsListBtn")?.addEventListener("click", () => switchTab("list"));
@@ -586,6 +532,5 @@ export async function FriendsView(app: HTMLElement, state: any): Promise<void> {
     document.getElementById("requestsBtn")?.addEventListener("click", () => switchTab("requests"));
     document.getElementById("backBtn")?.addEventListener("click", () => navigate("/"));
     
-    // Iniciar con la pestaña de lista de amigos
     switchTab("list");
 }

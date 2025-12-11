@@ -32,8 +32,7 @@ export function AuthView(app: HTMLElement, state: any): void {
     const code = emailInput.value.trim();
     const userIdStr = localStorage.getItem("userId");
     const id = userIdStr ? parseInt(userIdStr, 10) : null;
-    console.log(id);
-    console.log(code);
+ 
     if (!code) {
       alert("Introduce el codigo");
       return;

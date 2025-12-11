@@ -1,15 +1,11 @@
-// src/views/Chat.ts
 import { t } from "../translations/index.js";
 import { wsService } from "../services/WebSocketService.js";
 import { API_ENDPOINTS } from "../config/api.js";
 import { fetchAvatarUrl } from "./Header.js";
 import { navigate } from "../main.js";
 
-// --- Constante para el límite de mensajes en pantalla ---
 const MAX_MESSAGES = 10;
-// ---
 
-// --- Funciones de Gestión de Historial Local ---
 
 const getChatKey = (id1: number, id2: number): string => {
     const numId1 = parseInt(String(id1), 10);
@@ -19,7 +15,6 @@ const getChatKey = (id1: number, id2: number): string => {
 };
 
 const saveMessage = (senderId: number, receiverId: number, message: string, isSelf: boolean) => {
-    // La persistencia local NO tiene límite de mensajes, solo la vista.
     const key = getChatKey(senderId, receiverId);
     const historyJson = localStorage.getItem(key);
     
@@ -36,11 +31,9 @@ const saveMessage = (senderId: number, receiverId: number, message: string, isSe
     localStorage.setItem(key, JSON.stringify(history));
 };
 
-// MODIFICADA: Ahora solo renderiza los últimos MAX_MESSAGES
 const renderHistory = (messages: any[], msgContainer: HTMLElement) => {
     if (!messages || messages.length === 0) return;
 
-    // Solo tomamos los últimos MAX_MESSAGES del historial
     const messagesToRender = messages.slice(-MAX_MESSAGES);
 
     messagesToRender.forEach((msg: any) => {
@@ -58,15 +51,11 @@ const renderHistory = (messages: any[], msgContainer: HTMLElement) => {
     msgContainer.scrollTop = msgContainer.scrollHeight;
 };
 
-// --- FIN de Funciones de Gestión de Historial Local ---
 
-// --- Función Auxiliar para Limitar Mensajes en DOM ---
 const limitMessagesInDOM = (container: HTMLElement) => {
-    // Contamos los elementos que no son el placeholder
     const messageElements = container.querySelectorAll('div:not(#chatPlaceholder)');
 
     if (messageElements.length > MAX_MESSAGES) {
-        // Encontramos y eliminamos el mensaje más antiguo (el primero en el DOM)
         const firstMessage = messageElements[0];
         if (firstMessage) {
             firstMessage.remove();
@@ -74,17 +63,13 @@ const limitMessagesInDOM = (container: HTMLElement) => {
     }
 };
 
-// --- DEFINICIONES DE HANDLERS FUERA DE CHATVIEW PARA REUSO Y LIMPIEZA ---
 
 const handleUserStatusChanged = (data: any) => {
-  // ...
 };
 
 const handleOnlineUsers = (data: any) => {
-  // ...
 };
 
-// MODIFICADA: Aplica el límite de mensajes
 const handleChatMessage = (data: any) => {
   const chatPanel = document.getElementById("chatPanel") as HTMLElement;
   const userId = localStorage.getItem("userId");
@@ -101,16 +86,13 @@ const handleChatMessage = (data: any) => {
   const currentFriendName = chatHeader.textContent; 
 
   if (data.senderName === currentFriendName) {
-      // Dibujar mensaje entrante
       const msgDiv = document.createElement('div');
       msgDiv.className = "bg-gray-200 text-poke-dark p-2 rounded-xl max-w-[80%] mr-auto shadow";
       msgDiv.textContent = data.message;
       messagesContainer.appendChild(msgDiv);
       
-      // Aplicar límite después de añadir el mensaje
       limitMessagesInDOM(messagesContainer);
 
-      // Auto-scroll
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
   
@@ -120,17 +102,11 @@ const handleChatMessage = (data: any) => {
 };
 
 
-// Función de limpieza para desvincular TODOS los handlers de la vista
 export function cleanupChatView() {
   wsService.off('user-status-changed', handleUserStatusChanged);
   wsService.off('online-users', handleOnlineUsers);
   wsService.off('chat-friends', handleChatMessage);
-  console.log('🧹 Cleanup Chat View: Handlers WebSocket removidos.');
 }
-
-// ----------------------------------------------------------------------------------
-// --------------------------------- CHAT VIEW --------------------------------------
-// ----------------------------------------------------------------------------------
 
 export function ChatView(app: HTMLElement, state: any) {
   
@@ -247,7 +223,6 @@ export function ChatView(app: HTMLElement, state: any) {
   };
 
 
-  // Función para abrir el chat con un amigo
   const openChat = (friendId: number, friendName: string) => {
     chatPanel.innerHTML = `
       <div class="flex flex-col w-full h-full">
@@ -268,13 +243,11 @@ export function ChatView(app: HTMLElement, state: any) {
     const msgInput = document.getElementById("chatInput") as HTMLInputElement;
     const sendBtn = document.getElementById("sendMsgBtn")!;
 
-    // 1. Recuperar y Renderizar historial (solo los últimos 10)
     const currentUserId = userIdPlaceholder!;
     const chatKey = getChatKey(currentUserId, friendId);
     const savedHistoryJson = localStorage.getItem(chatKey);
     const savedHistory = savedHistoryJson ? JSON.parse(savedHistoryJson) : [];
     
-    // Si hay historial, eliminar el placeholder
     if (savedHistory.length > 0) {
         const placeholder = document.getElementById('chatPlaceholder');
         if (placeholder) placeholder.remove();
@@ -286,26 +259,21 @@ export function ChatView(app: HTMLElement, state: any) {
       const text = msgInput.value.trim();
       if (!text) return;
       
-      // Eliminar placeholder si existe
       const placeholder = document.getElementById('chatPlaceholder');
       if (placeholder) placeholder.remove();
       
-      // Mostrar mensaje localmente
       const msgEl = document.createElement("div");
       msgEl.className = "bg-poke-blue text-white p-2 rounded-xl max-w-[80%] ml-auto shadow";
       msgEl.textContent = text;
       msgContainer.appendChild(msgEl);
       msgInput.value = "";
       
-      // 2. Aplicar límite de 10 mensajes en la interfaz
       limitMessagesInDOM(msgContainer);
 
       msgContainer.scrollTop = msgContainer.scrollHeight;
       
-      // 3. Guardar mensaje saliente en el historial (sin límite)
       saveMessage(currentUserId, friendId, text, true); 
 
-      // 4. Enviar mensaje vía WebSocket
       const userId = localStorage.getItem('userId');
       if (!userId) {
         console.error('No userId found');
@@ -328,7 +296,6 @@ export function ChatView(app: HTMLElement, state: any) {
     msgInput.addEventListener("keypress", (e) => e.key === "Enter" && sendMessage());
   };
 
-  // Vincular clics de la lista con el chat
   listContainer.addEventListener("click", (e) => {
     const item = (e.target as HTMLElement).closest(".friend-item") as HTMLElement;
     if (!item) return;
@@ -337,13 +304,10 @@ export function ChatView(app: HTMLElement, state: any) {
     openChat(id, name);
   });
 
-  // Cargar lista de amigos al iniciar
   loadFriends();
   
-  // Solicitar lista de usuarios online al cargar
   wsService.getOnlineUsers();
   
-  // REGISTRAR HANDLERS: 
   wsService.on('user-status-changed', handleUserStatusChanged);
   wsService.on('online-users', handleOnlineUsers);
   wsService.on('chat-friends', handleChatMessage);

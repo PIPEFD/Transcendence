@@ -79,4 +79,9 @@ export default {
   Champion : "Champion",
  Semifinales : "Semifinal",
 CuartosdeFinal :"Cuarters",
+upload_custom_avatar : "Upload you avatar!",
+opponentId : "Id",
+eloChange :"Points",
+noMatchesPlayed : "No matches played",
+
 };

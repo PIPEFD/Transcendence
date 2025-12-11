@@ -29,7 +29,6 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
   const ctx = canvasEl.getContext("2d");
   if (!ctx) return;
 
-  // ===== Game variables =====
   const paddleWidth = 10, paddleHeight = 80, ballRadius = 8;
   const playerSpeed = 6, aiSpeed = 4, maxScore = 3, speedIncrement = 1.05;
 
@@ -40,28 +39,22 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
   const player2 = { x: canvasEl.width - paddleWidth - 10, y: canvasEl.height/2 - paddleHeight/2, score: 0 };
   const ball = { x: canvasEl.width/2, y: canvasEl.height/2, dx: 3.5*(Math.random()>0.5?1:-1), dy: 3.5*(Math.random()>0.5?1:-1) };
 
-  // ===== Drawing helpers =====
   const drawRect = (x:number, y:number, w:number, h:number, color:string) => { ctx.fillStyle=color; ctx.fillRect(x,y,w,h); };
   const drawCircle = (x:number, y:number, r:number, color:string) => { ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.closePath(); ctx.fill(); };
   const drawText = (text:string, x:number, y:number, color:string, size=20) => { ctx.fillStyle=color; ctx.font=`${size}px monospace`; ctx.fillText(text,x,y); };
 
-  // ===== Move Players =====
   function movePlayers() {
-    // Player 1 controls
     if(wPressed && player1.y>0) player1.y-=playerSpeed;
     if(sPressed && player1.y+paddleHeight<canvasEl.height) player1.y+=playerSpeed;
 
-    // AI movement for player 2
     const target = ball.y - paddleHeight/2 + ballRadius;
     if(player2.y + paddleHeight/2 < target) player2.y += aiSpeed;
     else if(player2.y + paddleHeight/2 > target) player2.y -= aiSpeed;
 
-    // Prevent AI from going out of bounds
     if(player2.y < 0) player2.y = 0;
     if(player2.y + paddleHeight > canvasEl.height) player2.y = canvasEl.height - paddleHeight;
   }
 
-  // ===== Ball reset =====
   function resetBall() {
     ball.x = canvasEl.width/2;
     ball.y = canvasEl.height/2;
@@ -69,7 +62,6 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
     ball.dy = 3.5*(Math.random()>0.5?1:-1);
   }
 
-  // ===== Check Winner =====
   function checkWinner() {
     if(player1.score>=maxScore) endGame("Player wins! 🏆");
     else if(player2.score>=maxScore) endGame("AI wins 😢");
@@ -81,17 +73,14 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
     restartBtn!.classList.remove("hidden");
   }
 
-  // ===== Update =====
   function update() {
     if(!gameRunning || gameOver) return;
     movePlayers();
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Bounce top/bottom walls
     if(ball.y-ballRadius<0 || ball.y+ballRadius>canvasEl.height) ball.dy=-ball.dy;
 
-    // Paddle collisions
     if(ball.x-ballRadius<player1.x+paddleWidth && ball.y>player1.y && ball.y<player1.y+paddleHeight){
       ball.dx=-ball.dx*speedIncrement;
       ball.dy*=speedIncrement;
@@ -103,12 +92,10 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
       ball.x=player2.x-ballRadius;
     }
 
-    // Scoring
     if(ball.x-ballRadius<0){ player2.score++; resetBall(); checkWinner(); }
     if(ball.x+ballRadius>canvasEl.width){ player1.score++; resetBall(); checkWinner(); }
   }
 
-  // ===== Draw =====
   function draw() {
     drawRect(0,0,canvasEl.width,canvasEl.height,"black");
     drawRect(player1.x,player1.y,paddleWidth,paddleHeight,"white");
@@ -118,14 +105,12 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
     drawText(`${player2.score}`, canvasEl.width*3/4,25,"white");
   }
 
-  // ===== Game Loop =====
   function gameLoop() {
     draw();
     update();
     if(gameRunning) requestAnimationFrame(gameLoop);
   }
 
-  // ===== Controls =====
   document.addEventListener("keydown", e=>{
     if(e.key.toLowerCase()==="w") wPressed=true;
     if(e.key.toLowerCase()==="s") sPressed=true;
@@ -135,7 +120,6 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
     if(e.key.toLowerCase()==="s") sPressed=false;
   });
 
-  // ===== Buttons =====
   const restartBtn = document.getElementById("restartBtn")!;
   const goBackBtn = document.getElementById("goBackBtn")!;
 
@@ -153,7 +137,6 @@ export function GameVsAI(app: HTMLElement, state?: any): void {
     navigate("/game");
   });
 
-  // Start the game
   gameRunning = true;
   gameLoop();
 }

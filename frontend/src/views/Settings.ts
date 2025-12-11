@@ -48,9 +48,7 @@ export function SettingsView(app: HTMLElement, state: any): void {
         body: JSON.stringify({user_id}),
       });
       const data = await response.json();
-      console.log("Logout response:", data);
 
-      // Borrar JWT del localStorage y volver al inicio
       localStorage.removeItem('tokenUser');
       localStorage.removeItem('userId');
       navigate("/register");
