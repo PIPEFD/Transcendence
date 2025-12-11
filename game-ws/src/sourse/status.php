@@ -2,9 +2,7 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-/**
- * Broadcast user status to all connected users
- */
+
 function broadcastUserStatus($webSocket, $userId, $userName, $status) {
     $message = json_encode([
         'type' => 'user-status-changed',
@@ -13,8 +11,7 @@ function broadcastUserStatus($webSocket, $userId, $userName, $status) {
         'status' => $status, // online, offline, in-game
         'timestamp' => time()
     ]);
-    
-    // Enviar a todos los usuarios conectados
+
     foreach ($webSocket->client as $client) {
         if ($client->auth) {
             $client->send($message);
@@ -22,9 +19,6 @@ function broadcastUserStatus($webSocket, $userId, $userName, $status) {
     }
 }
 
-/**
- * Get list of all online users
- */
 function handleGetOnlineUsers($webSocket, $conn) {
     if (!$conn->auth) {
         $conn->send(json_encode(['type' => 'error', 'message' => 'unauthorized']));
@@ -47,9 +41,6 @@ function handleGetOnlineUsers($webSocket, $conn) {
     ]));
 }
 
-/**
- * Set user status (online, in-game, etc.)
- */
 function handleSetStatus($webSocket, $conn, $body) {
     if (!$conn->auth) {
         $conn->send(json_encode(['type' => 'error', 'message' => 'unauthorized']));
@@ -69,10 +60,7 @@ function handleSetStatus($webSocket, $conn, $body) {
     }
     
     $conn->status = $newStatus;
-    
-    // Notificar a todos el cambio de estado
     broadcastUserStatus($webSocket, $conn->userId, $conn->userName, $newStatus);
-    
     $conn->send(json_encode([
         'type' => 'status-changed',
         'status' => $newStatus

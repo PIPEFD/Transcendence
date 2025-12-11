@@ -175,7 +175,7 @@ services:
       # Montar solo archivos necesarios, no node_modules
       - ../frontend/index.html:/app/index.html:ro
       - ../frontend/indexf.html:/app/indexf.html:ro
-      - ../frontend/dist:/app/dist
+      - ../frontend/src:/app/src
       - ../frontend/assets:/app/assets:ro
     labels:
       - "app=transcendence"

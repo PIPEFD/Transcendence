@@ -6,7 +6,7 @@ export function GameThree(app: HTMLElement, state?: any): void {
     <div class="flex flex-col items-center w-full">
       <div class="text-center mb-4">
           <h1 class="text-poke-yellow text-2xl">POKéMON</h1>
-          <p class="text-poke-light text-xs">3 Player Mode</p>
+          <p class="text-poke-light text-xs">${t("Player3Mode")}</p>
       </div>
 
       <div id="gameCanvasContainer"
@@ -29,10 +29,9 @@ export function GameThree(app: HTMLElement, state?: any): void {
   const ctx = canvasEl.getContext("2d");
   if (!ctx) return;
 
-  // ===== Game variables =====
   const paddleWidth = 10;
   const paddleHeight = 80;
-  const topPaddleWidth = 140;  // pala superior mejorada
+  const topPaddleWidth = 140;  
   const topPaddleHeight = 12;
 
   const ballRadius = 8;
@@ -47,7 +46,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
   let gameRunning = false;
   let gameOver = false;
 
-  // ===== Players =====
   const player1 = { x: 10, y: canvasEl.height/2 - paddleHeight/2, score: 0, active: true };
   const player2 = { x: canvasEl.width - paddleWidth - 10, y: canvasEl.height/2 - paddleHeight/2, score: 0, active: true };
   const player3 = {
@@ -66,7 +64,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     dy: 3.5 * (Math.random()>0.5?1:-1)
   };
 
-  // ===== Helpers =====
   const drawRect = (x:number,y:number,w:number,h:number,color:string)=>{
     ctx!.fillStyle = color;
     ctx!.fillRect(x,y,w,h);
@@ -86,7 +83,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     ctx!.fillText(text,x,y);
   };
 
-  // ===== Move Players =====
   function movePlayers() {
     if (player1.active) {
       if (wPressed && player1.y > 0) player1.y -= playerSpeed;
@@ -104,7 +100,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     }
   }
 
-  // ===== Ball Reset =====
   function resetBall() {
     ball.x = canvasEl.width/2;
     ball.y = canvasEl.height/2;
@@ -112,7 +107,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     ball.dy = 3.5 * (Math.random()>0.5?1:-1);
   }
 
-  // ===== Winner =====
   function checkWinner() {
     const actives = [player1, player2, player3].filter(p => p.active);
     if (actives.length <= 1) {
@@ -127,7 +121,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     restartBtn!.classList.remove("hidden");
   }
 
-  // ===== Update =====
   function update() {
     if (!gameRunning || gameOver) return;
 
@@ -135,15 +128,12 @@ export function GameThree(app: HTMLElement, state?: any): void {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Static wall if eliminated
     if (!player1.active && ball.x - ballRadius < 0) ball.dx = Math.abs(ball.dx);
     if (!player2.active && ball.x + ballRadius > canvasEl.width) ball.dx = -Math.abs(ball.dx);
     if (!player3.active && ball.y - ballRadius < 0) ball.dy = Math.abs(ball.dy);
 
-    // Bottom wall
     if (ball.y + ballRadius > canvasEl.height) ball.dy = -Math.abs(ball.dy);
 
-    // Left paddle
     if (player1.active &&
         ball.x - ballRadius < player1.x + paddleWidth &&
         ball.y > player1.y &&
@@ -153,7 +143,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
       ball.x = player1.x + paddleWidth + ballRadius;
     }
 
-    // Right paddle
     if (player2.active &&
         ball.x + ballRadius > player2.x &&
         ball.y > player2.y &&
@@ -163,7 +152,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
       ball.x = player2.x - ballRadius;
     }
 
-    // Top paddle
     if (player3.active &&
         ball.y - ballRadius < player3.y + player3.height &&
         ball.x > player3.x &&
@@ -175,7 +163,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
       ball.y = player3.y + player3.height + ballRadius;
     }
 
-    // Scoring
     if (ball.x - ballRadius < 0 && player1.active) {
       player1.score++;
       if (player1.score >= maxScore) player1.active = false;
@@ -195,7 +182,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     }
   }
 
-  // ===== Draw =====
   function draw() {
     drawRect(0,0,canvasEl.width,canvasEl.height,"black");
 
@@ -210,14 +196,12 @@ export function GameThree(app: HTMLElement, state?: any): void {
     drawText(`${player3.score}`, canvasEl.width/2 - 10, 40, "white");
   }
 
-  // ===== Loop =====
   function gameLoop() {
     draw();
     update();
     if (gameRunning) requestAnimationFrame(gameLoop);
   }
 
-  // ===== Controls =====
   document.addEventListener("keydown", e=>{
     if(e.key.toLowerCase()==="w") wPressed=true;
     if(e.key.toLowerCase()==="s") sPressed=true;
@@ -236,7 +220,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     if(e.key.toLowerCase()==="y") yPressed=false;
   });
 
-  // ===== Buttons =====
   const restartBtn = document.getElementById("restartBtn")!;
   const goBackBtn = document.getElementById("goBackBtn")!;
 
@@ -258,7 +241,6 @@ export function GameThree(app: HTMLElement, state?: any): void {
     navigate("/game");
   });
 
-  // Start
   gameRunning = true;
   gameLoop();
 }

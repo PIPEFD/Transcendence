@@ -13,7 +13,7 @@ RUN npm install --no-audit --no-fund
 # Copiar código fuente
 COPY . .
 
-# Build del proyecto
+# Build del proyecto (compila TypeScript y Tailwind)
 RUN npm run build
 
 # Stage 2: Production
@@ -43,12 +43,19 @@ EXPOSE 3000
 # Script de inicio optimizado
 USER root
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo 'set -e' >> /entrypoint.sh && \
     echo 'cd /app' >> /entrypoint.sh && \
     echo 'if [ "$NODE_ENV" = "development" ]; then' >> /entrypoint.sh && \
     echo '  echo "🚀 Starting in DEVELOPMENT mode"' >> /entrypoint.sh && \
-    echo '  npm run watch:css &' >> /entrypoint.sh && \
-    echo '  npm run watch:ts &' >> /entrypoint.sh && \
+    echo '  echo "Frontend: Creating dist..."' >> /entrypoint.sh && \
+    echo '  rm -rf dist && mkdir -p dist && chmod -R 777 dist' >> /entrypoint.sh && \
+    echo '  echo "Frontend: Compiling TypeScript..."' >> /entrypoint.sh && \
+    echo '  npx tsc' >> /entrypoint.sh && \
+    echo '  chmod -R 777 dist' >> /entrypoint.sh && \
+    echo '  echo "Frontend: Compiling Tailwind..."' >> /entrypoint.sh && \
+    echo '  npm run build:css' >> /entrypoint.sh && \
+    echo '  chmod -R 777 dist' >> /entrypoint.sh && \
+    echo '  echo "Frontend: Starting watchers..."' >> /entrypoint.sh && \
+    echo '  npm run watch:css & npm run watch:ts &' >> /entrypoint.sh && \
     echo 'else' >> /entrypoint.sh && \
     echo '  echo "🚀 Starting in PRODUCTION mode"' >> /entrypoint.sh && \
     echo 'fi' >> /entrypoint.sh && \

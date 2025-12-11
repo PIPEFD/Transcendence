@@ -10,7 +10,6 @@ export function setLanguage(lang: "en" | "fr" | "es") {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   
-  // Disparar evento personalizado para notificar el cambio
   window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 

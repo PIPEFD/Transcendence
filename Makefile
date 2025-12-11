@@ -112,6 +112,10 @@ create-dirs:
 	@mkdir -p ./backend/srcs/public/api/uploads
 	@mkdir -p ./waf/logs
 	@chmod 700 $(CONFIG_DIR)/secrets
+	@echo -e "$(YELLOW)Creando directorio frontend/dist...$(RESET)"
+	@rm -rf ./frontend/dist 2>/dev/null || true
+	@mkdir -p ./frontend/dist
+	@echo -e "$(GREEN)✓ Directorio dist creado (permisos se gestionan en el contenedor)$(RESET)"
 
 # Creación de certificados SSL usando el script dedicado
 create-certs: create-dirs
@@ -333,7 +337,7 @@ reset: down
 	fi
 
 # Marca los objetivos que no son archivos
-.PHONY: help init create-dirs generate-secrets create-certs create-env up up-full up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps status metrics exporters-check prometheus-ui grafana-ui test test-unit test-integration test-docker clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs
+.PHONY: help init create-dirs generate-secrets create-certs create-env up up-full up-dev up-prod up-monitoring up-waf up-frontend up-backend up-game up-nginx down build rebuild restart logs ps status metrics exporters-check prometheus-ui grafana-ui test test-unit test-integration test-docker clean reset reset-env cleanup-files clean-all check-ports scope-up scope-down scope-restart scope-logs frontend-sync
 
 # ======================================
 # Nuevos comandos de monitoreo y métricas
@@ -391,3 +395,11 @@ test-docker:
 	@echo -e "$(YELLOW)Ejecutando tests de integración...$(RESET)"
 	@docker run --rm --network host transcendence-tests pytest -v --tb=line
 	@echo -e "$(GREEN)✓ Tests completados$(RESET)"
+
+# ======================================
+# DESARROLLO - SINCRONIZACIÓN FRONTEND
+# ======================================
+
+# Sincronizar cambios del frontend y recompilar
+frontend-sync:
+	@bash ./scripts/sync-frontend.sh

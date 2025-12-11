@@ -6,7 +6,7 @@ export function GameFour(app: HTMLElement, state?: any): void {
     <div class="flex flex-col items-center w-full">
       <div class="text-center mb-4">
           <h1 class="text-poke-yellow text-2xl">POKéMON</h1>
-          <p class="text-poke-light text-xs">4 Player Mode</p>
+          <p class="text-poke-light text-xs">${t("Player4Mode")}</p>
       </div>
 
       <div id="gameCanvasContainer"
@@ -29,7 +29,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
   const ctx = canvasEl.getContext("2d")!;
   if (!ctx) return;
 
-  // ===== Game variables =====
   const paddleWidth = 10,
         paddleHeight = 80,
         paddleHorizontalWidth = 140,
@@ -38,7 +37,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
 
   const playerSpeed = 6, maxScore = 3, speedIncrement = 1.05;
 
-  // Keys
   let wPressed = false, sPressed = false;
   let upPressed = false, downPressed = false;
   let tPressed = false, yPressed = false;
@@ -46,7 +44,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
 
   let gameRunning = false, gameOver = false;
 
-  // ===== Players =====
   const player1 = { x: 10, y: canvasEl.height/2 - paddleHeight/2, score: 0, active: true }; // left
   const player2 = { x: canvasEl.width - paddleWidth - 10, y: canvasEl.height/2 - paddleHeight/2, score: 0, active: true }; // right
   const player3 = { x: canvasEl.width/2 - paddleHorizontalWidth/2, y: 10, score: 0, active: true }; // top
@@ -59,7 +56,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     dy: 3.5 * (Math.random() > 0.5 ? 1 : -1)
   };
 
-  // ===== Drawing helpers =====
   const drawRect = (x:number, y:number, w:number, h:number, color:string) => {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
@@ -79,7 +75,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     ctx.fillText(text, x, y);
   };
 
-  // ===== Move Players =====
   function movePlayers() {
     if(player1.active){
       if(wPressed && player1.y>0) player1.y -= playerSpeed;
@@ -99,7 +94,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     }
   }
 
-  // ===== Ball reset =====
   function resetBall() {
     ball.x = canvasEl.width/2;
     ball.y = canvasEl.height/2;
@@ -107,7 +101,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     ball.dy = 3.5 * (Math.random() > 0.5 ? 1 : -1);
   }
 
-  // ===== Winner check =====
   function checkWinner() {
     const activePlayers = [player1, player2, player3, player4].filter(p => p.active);
     if(activePlayers.length <= 1) {
@@ -123,7 +116,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     restartBtn.classList.remove("hidden");
   }
 
-  // ===== Update =====
   function update() {
     if(!gameRunning || gameOver) return;
 
@@ -132,13 +124,11 @@ export function GameFour(app: HTMLElement, state?: any): void {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Walls for inactive players
     if(ball.x-ballRadius<0 && !player1.active) ball.dx = Math.abs(ball.dx);
     if(ball.x+ballRadius>canvasEl.width && !player2.active) ball.dx = -Math.abs(ball.dx);
     if(ball.y-ballRadius<0 && !player3.active) ball.dy = Math.abs(ball.dy);
     if(ball.y+ballRadius>canvasEl.height && !player4.active) ball.dy = -Math.abs(ball.dy);
 
-    // Paddle collisions
     if(player1.active &&
       ball.x-ballRadius < player1.x + paddleWidth &&
       ball.y > player1.y && ball.y < player1.y+paddleHeight) {
@@ -171,7 +161,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
         ball.y = player4.y - ballRadius;
     }
 
-    // Scoring
     if(ball.x - ballRadius < 0 && player1.active){
       player1.score++;
       if(player1.score >= maxScore) player1.active = false;
@@ -194,7 +183,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     }
   }
 
-  // ===== Draw =====
   function draw() {
     drawRect(0,0,canvasEl.width,canvasEl.height,"black");
 
@@ -205,21 +193,18 @@ export function GameFour(app: HTMLElement, state?: any): void {
 
     drawCircle(ball.x, ball.y, ballRadius, "white");
 
-    // Scores
     drawText(`${player1.score}`, 20, canvasEl.height - 20, "white");
     drawText(`${player2.score}`, canvasEl.width - 40, canvasEl.height - 20, "white");
     drawText(`${player3.score}`, canvasEl.width/2 - 10, 40, "white");
     drawText(`${player4.score}`, canvasEl.width/2 - 10, canvasEl.height - 20, "white");
   }
 
-  // ===== Game Loop =====
   function gameLoop() {
     draw();
     update();
     if(gameRunning) requestAnimationFrame(gameLoop);
   }
 
-  // ===== Controls =====
   document.addEventListener("keydown", e=>{
     const k = e.key.toLowerCase();
     if(k==="w") wPressed=true;
@@ -244,7 +229,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     if(k==="b") vPressed=false;
   });
 
-  // ===== Buttons =====
   const restartBtn = document.getElementById("restartBtn")!;
   const goBackBtn = document.getElementById("goBackBtn")!;
 
@@ -262,7 +246,6 @@ export function GameFour(app: HTMLElement, state?: any): void {
     navigate("/game");
   });
 
-  // Start the game
   gameRunning = true;
   gameLoop();
 }

@@ -10,7 +10,7 @@ function handleChatGlobal($webSocket, $conn, $body) {
         if ($client !== $conn && $client->auth) {
             $client->send(json_encode([
                 'type'    => 'chat-global',
-                'from'    => $conn->userName, // aqui podria poner el username
+                'from'    => $conn->userName,
                 'message' => $message
             ]));
         }
