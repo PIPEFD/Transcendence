@@ -65,6 +65,7 @@ $issuedAt = time(); // timestamp Unix
 $expire = $issuedAt + 3600; // el token expira en 1 hora (3600 segundos)
 $payload = ['iss' => $issuer, 'aud' => $audience, 'iat' => $issuedAt, 'exp' => $expire, 'data' => ['user_id' => $user_id]]; // 'data' => para añadir datos personalizados
 $secretKey = getenv('JWTsecretKey'); //necesitamos getenv para leer la variable de entorno
+$secretKey = getJWTsecret();
 
 $jwt = Firebase\JWT\JWT::encode($payload, $secretKey, 'HS256'); // Codificamos el payload para generar el string del JWT, usando el algoritmo HS256
 
